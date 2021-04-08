@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="集合," />
 
 
 
@@ -79,12 +79,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="BenBen">
-<meta property="og:url" content="https://yefawei.github.io/index.html">
+<meta name="description" content="BitSet Java平台上存放位序列的集合。如果需要高效的存储位序列（例如：标志）就可以使用位集。由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。  常用函数12345int length()	 		&#x2F;&#x2F; 返回最高位为1的索引boolean get(int bit)	&#x2F;&#x2F; 获得一个位，返回true则为开void set(int bit)		&#x2F;&#x2F; 设置一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BitSet.md">
+<meta property="og:url" content="https://yefawei.github.io/2020/09/14/BitSet-md/index.html">
 <meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="BitSet Java平台上存放位序列的集合。如果需要高效的存储位序列（例如：标志）就可以使用位集。由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。  常用函数12345int length()	 		&#x2F;&#x2F; 返回最高位为1的索引boolean get(int bit)	&#x2F;&#x2F; 获得一个位，返回true则为开void set(int bit)		&#x2F;&#x2F; 设置一">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-09-14T14:33:04.000Z">
+<meta property="article:modified_time" content="2021-04-08T14:53:02.780Z">
 <meta property="article:author" content="BenBen">
+<meta property="article:tag" content="集合">
 <meta name="twitter:card" content="summary">
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://yefawei.github.io/"/>
+  <link rel="canonical" href="https://yefawei.github.io/2020/09/14/BitSet-md/"/>
 
 
 
 
 
-  <title>BenBen</title>
+  <title>BitSet.md | BenBen</title>
   
 
 
@@ -140,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -214,9 +218,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -246,9 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/14/BitSet-md/" itemprop="url">BitSet.md</a></h1>
+          <h1 class="post-title" itemprop="name headline">BitSet.md</h1>
         
 
         <div class="post-meta">
@@ -298,17 +300,13 @@
       
 
       
-        
-          
-            <h1 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h1><blockquote>
+        <h1 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h1><blockquote>
 <p>Java平台上存放位序列的集合。<br>如果需要高效的存储位序列（例如：标志）就可以使用位集。<br>由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。</p>
 </blockquote>
 <h5 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span>	 		<span class="comment">// 返回最高位为1的索引</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> bit)</span>	<span class="comment">// 获得一个位，返回true则为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为关</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span>			<span class="comment">// 将所有设置为关</span></span></span><br></pre></td></tr></table></figure>
 
 <h5 id="计算素数个数"><a href="#计算素数个数" class="headerlink" title="计算素数个数"></a>计算素数个数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算2~2000000之间的所有素数</span></span><br><span class="line"><span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">200_0000</span>;</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">BitSet bit = <span class="keyword">new</span> BitSet(n + <span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    bit.set(i);</span><br><span class="line">&#125;</span><br><span class="line">i = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> k;</span><br><span class="line"><span class="keyword">while</span> (i * i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">        k = i * <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (k &lt;= n) &#123;</span><br><span class="line">            bit.clear(k);</span><br><span class="line">            k += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">System.out.println(<span class="string">&quot;count: &quot;</span> + count); <span class="comment">// count: 148933</span></span><br><span class="line">System.out.println(<span class="string">&quot;time: &quot;</span> + (end - start));</span><br></pre></td></tr></table></figure>
 
-          
-        
       
     </div>
     
@@ -323,136 +321,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/13/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/13/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-13T22:33:04+08:00">
-                2020-09-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
-<p>Welcome to my blog.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/13/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -462,10 +360,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -473,6 +372,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -493,8 +396,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -545,6 +457,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BitSet"><span class="nav-number">1.</span> <span class="nav-text">BitSet</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.0.0.1.</span> <span class="nav-text">常用函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%B4%A0%E6%95%B0%E4%B8%AA%E6%95%B0"><span class="nav-number">1.0.0.0.2.</span> <span class="nav-text">计算素数个数</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -685,6 +613,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
