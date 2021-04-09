@@ -386,89 +386,32 @@
       
         
           
-            <h1 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h1><h5 id="队列描述描述"><a href="#队列描述描述" class="headerlink" title="队列描述描述"></a>队列描述描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">LinkedBlockingQueue</td>
-<td align="left">一种容量没有上边界的阻塞队列，亦可指定最大容量</td>
-</tr>
-<tr>
-<td align="left">LinkedBlockingDeque</td>
-<td align="left">一种双端队列版本</td>
-</tr>
-<tr>
-<td align="left">ArrayBlockingQueue</td>
-<td align="left">一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性</td>
-</tr>
-<tr>
-<td align="left">PriorityBlockingQueue</td>
-<td align="left">一种带优先级的队列</td>
-</tr>
-<tr>
-<td align="left">DelayQueue</td>
-<td align="left">一种延迟阻塞队列【可实现如下单后三十分钟内没有付款就自动取消订单的操作】</td>
-</tr>
-<tr>
-<td align="left">TransferQueue</td>
-<td align="left">一种等待消费者准备就绪才可接收的阻塞队列，如果调用<code>transfer</code>那么会阻塞，直到另一个线程将其取出</td>
-</tr>
-</tbody></table>
-<h5 id="阻塞队列通用方法"><a href="#阻塞队列通用方法" class="headerlink" title="阻塞队列通用方法"></a>阻塞队列通用方法</h5><table>
-<thead>
-<tr>
-<th>方法</th>
-<th>动作</th>
-<th>特殊情况</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>add</td>
-<td>添加一个元素</td>
-<td>如果队列满， 则抛出IllegalStateException 异常</td>
-</tr>
-<tr>
-<td>element</td>
-<td>返回队列头元素</td>
-<td>如果队列空，抛出NoSuchElementException 异常</td>
-</tr>
-<tr>
-<td>offer</td>
-<td>添加一个元素并返回true</td>
-<td>如果队列满， 返回false</td>
-</tr>
-<tr>
-<td>peek</td>
-<td>返回队列头元素</td>
-<td>如果队列空， 则返回null</td>
-</tr>
-<tr>
-<td>poll</td>
-<td>移除并返回队列的头元素</td>
-<td>如果队列空， 则返回null</td>
-</tr>
-<tr>
-<td>put</td>
-<td>添加一个元素</td>
-<td>如果队列满， 则阻塞</td>
-</tr>
-<tr>
-<td>remove</td>
-<td>移出并返回头元素</td>
-<td>如果队列空， 则抛出NoSuchElementException 异常</td>
-</tr>
-<tr>
-<td>take</td>
-<td>移出并返回头元素</td>
-<td>如果队列空， 则阻塞</td>
-</tr>
-</tbody></table>
+          阻塞队列队列描述描述
 
-          
+
+名称
+描述
+
+
+
+LinkedBlockingQueue
+一种容量没有上边界的阻塞队列，亦可指定最大容量
+
+
+LinkedBlockingDeque
+一种双端队列版本
+
+
+ArrayBlockingQueue
+一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/11/08/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -608,14 +551,18 @@
       
         
           
-            <h1 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h1><blockquote>
-<p>Java平台上存放位序列的集合。<br>如果需要高效的存储位序列（例如：标志）就可以使用位集。<br>由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。</p>
-</blockquote>
-<h5 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span>	 		<span class="comment">// 返回最高位为1的索引</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> bit)</span>	<span class="comment">// 获得一个位，返回true则为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为关</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span>			<span class="comment">// 将所有设置为关</span></span></span><br></pre></td></tr></table></figure>
+          BitSet
+Java平台上存放位序列的集合。如果需要高效的存储位序列（例如：标志）就可以使用位集。由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。
 
-<h5 id="计算素数个数"><a href="#计算素数个数" class="headerlink" title="计算素数个数"></a>计算素数个数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算2~2000000之间的所有素数</span></span><br><span class="line"><span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">200_0000</span>;</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">BitSet bit = <span class="keyword">new</span> BitSet(n + <span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    bit.set(i);</span><br><span class="line">&#125;</span><br><span class="line">i = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> k;</span><br><span class="line"><span class="keyword">while</span> (i * i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">        k = i * <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (k &lt;= n) &#123;</span><br><span class="line">            bit.clear(k);</span><br><span class="line">            k += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">System.out.println(<span class="string">&quot;count: &quot;</span> + count); <span class="comment">// count: 148933</span></span><br><span class="line">System.out.println(<span class="string">&quot;time: &quot;</span> + (end - start));</span><br></pre></td></tr></table></figure>
-
-          
+常用函数12345int length()	 		// 返回最高位为1的索引boolean get(in
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/09/14/BitSet-md/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -733,11 +680,18 @@
       
         
           
-            <h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
-<p>Welcome to my blog.</p>
-</blockquote>
+          Hello World
+Welcome to my blog.
+
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/09/13/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
