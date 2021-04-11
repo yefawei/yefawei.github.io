@@ -14,8 +14,72 @@
         <category>Java</category>
       </categories>
       <tags>
-        <tag>集合</tag>
         <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java核心技术卷一基础知识-笔记</title>
+    <url>/2020/09/13/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
+<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
+<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
+</ol>
+<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
+
+<p>带资源try方式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Java日志"><a href="#Java日志" class="headerlink" title="Java日志"></a>Java日志</h5><p>全局日志记录器：<br><code>Logger.getGlobal().info(&quot;msg&quot;);</code></p>
+<p>自定义日志记录器：<br><code>private static final Logger myLogger = Logger.getLogger(&quot;com.mycompany.myapp&quot;);</code></p>
+<h5 id="内联"><a href="#内联" class="headerlink" title="内联"></a>内联</h5><blockquote>
+<p>消除函数调用,采用类变量直接访问，可以减少函数栈的调用，提高效率</p>
+<p>从【c.getName()】 变更为【c.name】的形式</p>
+</blockquote>
+<p>即时编译器可以监控经常执行哪些代码并优化这些代码以提高速度。更为复杂的优化是消除函数调用（即“ 内联”）。即时编译器知道那些类已经加载。基于当前加载的类集，如果特定的函数不会被覆盖，就可以使用内联。必要时，还可以撤销优化。</p>
+<p>是否将某个方法设置为内联方法是Java 虚拟机的任务。即时编译器会监视调用那些<strong>简洁</strong>、<strong>经常被调用</strong>、<strong>没有被重载</strong>以及<strong>可优化</strong>的方法。</p>
+<p>在早期的Java 中， 有些程序员为了避免动态绑定带来的系统开销而使用final 关键字。如果一个方法没有被覆盖并且很短， 编译器就能够对它进行优化处理， 这个过程为称为内联( inlining )。例如，内联调用e.getName( ) 将被替换为访问e.name 域。这是一项很有意义的改进， 这是由于CPU 在处理调用方法的指令时， 使用的分支转移会扰乱预取指令的策略， 所以，这被视为不受欢迎的。然而， 如果getName 在另外一个类中被覆盖， 那么编译器就无法知道覆盖的代码将会做什么操作， 因此也就不能对它进行内联处理了。</p>
+<p>幸运的是， 虚拟机中的即时编译器比传统编译器的处理能力强得多。这种编译器可以准确地知道类之间的继承关系， 并能够检测出类中是否真正地存在覆盖给定的方法。如果方法很简短、被频繁调用且没有真正地被覆盖， 那么即时编译器就会将这个方法进行内联处理。如果虚拟机加载了另外一个子类，而在这个子类中包含了对内联方法的覆盖， 那么将会发生什么情况呢？ 优化器将取消对覆盖方法的内联。这个过程很慢， 但却很少发生。</p>
+<h5 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">TestEnum</span> </span>&#123;</span><br><span class="line">    Red(<span class="string">&quot;red&quot;</span>), Blue(<span class="string">&quot;blue&quot;</span>), Green(<span class="string">&quot;green&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    TestEnum(String color) &#123;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TestEnum</span> <span class="keyword">extends</span> <span class="title">Enum</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> TestEnum[] values()&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TestEnum <span class="title">valueOf</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum)Enum.valueOf(com/benben/TestEnum, s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TestEnum</span><span class="params">(String s, <span class="keyword">int</span> i, String s1)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        mColor = s1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Red;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Blue;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Green;</span><br><span class="line">    <span class="keyword">private</span> String mColor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum $VALUES[];</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        Red = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Red&quot;</span>, <span class="number">0</span>, <span class="string">&quot;red&quot;</span>);</span><br><span class="line">        Blue = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Blue&quot;</span>, <span class="number">1</span>, <span class="string">&quot;blue&quot;</span>);</span><br><span class="line">        Green = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Green&quot;</span>, <span class="number">2</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> TestEnum[] &#123;</span><br><span class="line">            Red, Blue, Green</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意一：从上面可以看出，枚举会消耗更多的内存，类似于饿汉式的单例</strong></p>
+<p><strong>注意二：Proguard以及Android的R8也会对简单的枚举（即不实现接口也没有额外成员的枚举）做优化</strong></p>
+<h5 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h5><blockquote>
+<p>对于final的基本变量类型，在编译字节码的时候会被认为不会再改变，会将值直接放入调用处，所以反射对它无效</p>
+<p>如果是static final的基本变量类型，修改值会产生异常，必须要修改可以再反射修改它的<code>modifiers</code>值以达到能修改的目的，注意：目前jvm并没有对该字段有限制</p>
+</blockquote>
+<h5 id="反射效率低"><a href="#反射效率低" class="headerlink" title="反射效率低"></a>反射效率低</h5><p>java反射效率低的主要原因是：</p>
+<ol>
+<li>Method#invoke 方法会对参数做封装和解封操作</li>
+<li>需要检查方法可见性。原因：反射时每次调用都必须检查方法的可见性（在Method.invoke里）</li>
+<li>需要校验参数。反射时也必须检查每个实际参数与形式参数的类型匹配性（在NativeMethodAccessorImpl.invoke0 里或者生成的 Java 版 MethodAccessor.invoke 里）</li>
+<li>反射方法难以内联。参考：<a href="https://www.iteye.com/blog/rednaxelafx-548536">https://www.iteye.com/blog/rednaxelafx-548536</a></li>
+<li>JIT 无法优化。原因：因为涉及到动态解析的类型，所以无法优化</li>
+</ol>
+<p>提高反射性能的方式：</p>
+<ol>
+<li>将反射获取到的类，构造函数，函数，对象实例缓存起来，不用每次都全新查找</li>
+<li>可通过调用method.setAccessible(true)的方式来关闭Method.invoke可见性检查</li>
+<li>需要更极致的提高效率可以通过字节码生成的方式来实现反射机制。参考：<a href="https://github.com/EsotericSoftware/reflectasm">https://github.com/EsotericSoftware/reflectasm</a></li>
+</ol>
+<h5 id="Lambda高阶参考"><a href="#Lambda高阶参考" class="headerlink" title="Lambda高阶参考"></a>Lambda高阶参考</h5><p><a href="https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc</a></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>书籍</tag>
       </tags>
   </entry>
   <entry>
@@ -27,103 +91,85 @@
 ]]></content>
   </entry>
   <entry>
-    <title>阻塞队列</title>
-    <url>/2020/11/08/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/</url>
-    <content><![CDATA[<h1 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h1><h5 id="队列描述描述"><a href="#队列描述描述" class="headerlink" title="队列描述描述"></a>队列描述描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">LinkedBlockingQueue</td>
-<td align="left">一种容量没有上边界的阻塞队列，亦可指定最大容量</td>
-</tr>
-<tr>
-<td align="left">LinkedBlockingDeque</td>
-<td align="left">一种双端队列版本</td>
-</tr>
-<tr>
-<td align="left">ArrayBlockingQueue</td>
-<td align="left">一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性</td>
-</tr>
-<tr>
-<td align="left">PriorityBlockingQueue</td>
-<td align="left">一种带优先级的队列</td>
-</tr>
-<tr>
-<td align="left">DelayQueue</td>
-<td align="left">一种延迟阻塞队列【可实现如下单后三十分钟内没有付款就自动取消订单的操作】</td>
-</tr>
-<tr>
-<td align="left">TransferQueue</td>
-<td align="left">一种等待消费者准备就绪才可接收的阻塞队列，如果调用<code>transfer</code>那么会阻塞，直到另一个线程将其取出</td>
-</tr>
-</tbody></table>
-<h5 id="阻塞队列通用方法"><a href="#阻塞队列通用方法" class="headerlink" title="阻塞队列通用方法"></a>阻塞队列通用方法</h5><table>
-<thead>
-<tr>
-<th>方法</th>
-<th>动作</th>
-<th>特殊情况</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>add</td>
-<td>添加一个元素</td>
-<td>如果队列满， 则抛出IllegalStateException 异常</td>
-</tr>
-<tr>
-<td>element</td>
-<td>返回队列头元素</td>
-<td>如果队列空，抛出NoSuchElementException 异常</td>
-</tr>
-<tr>
-<td>offer</td>
-<td>添加一个元素并返回true</td>
-<td>如果队列满， 返回false</td>
-</tr>
-<tr>
-<td>peek</td>
-<td>返回队列头元素</td>
-<td>如果队列空， 则返回null</td>
-</tr>
-<tr>
-<td>poll</td>
-<td>移除并返回队列的头元素</td>
-<td>如果队列空， 则返回null</td>
-</tr>
-<tr>
-<td>put</td>
-<td>添加一个元素</td>
-<td>如果队列满， 则阻塞</td>
-</tr>
-<tr>
-<td>remove</td>
-<td>移出并返回头元素</td>
-<td>如果队列空， 则抛出NoSuchElementException 异常</td>
-</tr>
-<tr>
-<td>take</td>
-<td>移出并返回头元素</td>
-<td>如果队列空， 则阻塞</td>
-</tr>
-</tbody></table>
+    <title>代理</title>
+    <url>/2020/11/09/%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<h1 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h1><h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><blockquote>
+<p>主要目的是扩展原有类的功能</p>
+</blockquote>
+<h5 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">(String data)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 具体实现类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerImpl</span> <span class="keyword">implements</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(String data)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;handle: &quot;</span> + data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 代理类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerProxy</span> <span class="keyword">implements</span> <span class="title">Handler</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Handler mHandler;</span><br><span class="line">    <span class="comment">// 传入需要代理的实例对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HandlerProxy</span><span class="params">(Handler handler)</span> </span>&#123;</span><br><span class="line">        mHandler = handler;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//扩展其用法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(String data)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;start handle&quot;</span>);</span><br><span class="line">        mHandler.handle(data);</span><br><span class="line">        System.out.println(<span class="string">&quot;end handle&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">new</span> HandlerProxy(<span class="keyword">new</span> HandlerImpl()).handle(<span class="string">&quot;待处理数据&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>就这样，知道缺点是被代理的类扩展了代理类也需一并扩展。</p>
+<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><h5 id="例子：-1"><a href="#例子：-1" class="headerlink" title="例子："></a>例子：</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">(String data)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 具体实现类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerImpl</span> <span class="keyword">implements</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(String data)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;handle: &quot;</span> + data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 声明实现InvocationHandler的处理器</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 传入需要代理的实例对象</span></span><br><span class="line">    <span class="keyword">private</span> Handler mHandler;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">(Handler handler)</span> </span>&#123;</span><br><span class="line">        mHandler = handler;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;start handle&quot;</span>);</span><br><span class="line">        <span class="comment">// 利用反射机制将请求分派给委托类处理</span></span><br><span class="line">        Object invoke = method.invoke(mHandler, args);</span><br><span class="line">        System.out.println(<span class="string">&quot;end handle&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> invoke;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用</span></span><br><span class="line">Handler o = (Handler) Proxy.newProxyInstance(</span><br><span class="line">	    <span class="comment">// 类加载器</span></span><br><span class="line">        HandlerImpl.class.getClassLoader(),</span><br><span class="line">    	<span class="comment">// 需要代理的接口，也可：HandlerImpl.class.getInterfaces()</span></span><br><span class="line">    	<span class="keyword">new</span> Class[]&#123;Handler.class&#125;,</span><br><span class="line">    	<span class="comment">// 处理器</span></span><br><span class="line">        <span class="keyword">new</span> MyHandler(<span class="keyword">new</span> HandlerImpl()));</span><br><span class="line">o.handle(<span class="string">&quot;待处理数据&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，动态代理跟静态代理一样，在代理类内部保存了一个委托类的实例，实际上都是调用原来的委托实例来进行需要的操作。</p>
+<h5 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h5><ol>
+<li>动态代理跟静态代理最大的不同便是生成代理类的时期不同，静态代理是在编译期，而动态代理则是在运行时根据委托类信息动态生成</li>
+<li>动态代理实现的是<code>InvocationHandler</code>接口，而静态代理则是直接实现公共接口</li>
+<li>动态代理可以获得更多的运行时信息，使用起来也会更加灵活</li>
+</ol>
+<h5 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h5><p>由于最终调用实际逻辑采用方法反射调用的方式，效率并不是很高</p>
+<h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>最终通过<code>ProxyGenerator.generateProxyClass()</code>函数动态生成代理字节码二进制数据，然后通过native方法<code>defineClass0</code>将字节码加载进方法区，并获取参数为<code>InvocationHandler</code>的构造器，然后通过该构造器生成实例并传入我们自定义的处理器</p>
+<p><strong>注：android中直接通过<code>generateProxy</code>生成了代理类，并没有走<code>ProxyGenerator</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">participant Proxy</span><br><span class="line">participant Proxy#ProxyClassFactory</span><br><span class="line">participant WeakCache</span><br><span class="line">participant WeakCache#Factory</span><br><span class="line"></span><br><span class="line">Note left of WeakCache:Proxy类里有静态实例WeakCache成员变量\n生成该实例时传入ProxyClassFactory实例</span><br><span class="line">Proxy -&gt; WeakCache:Proxy.getProxyClass0()</span><br><span class="line">Note right of WeakCache:优先查找缓存</span><br><span class="line">WeakCache -&gt; WeakCache:proxyClassCache.get()</span><br><span class="line">WeakCache -&gt; Proxy:有缓存</span><br><span class="line">Note right of WeakCache:构建Factory工厂类</span><br><span class="line">WeakCache -&gt; WeakCache:new Factory()</span><br><span class="line">WeakCache -&gt; WeakCache#Factory:supplier.get()</span><br><span class="line">WeakCache#Factory -&gt; Proxy#ProxyClassFactory:valueFactory.apply()</span><br><span class="line">Note right of Proxy#ProxyClassFactory:1.类加载器是否解析出相同的class对象</span><br><span class="line">Note right of Proxy#ProxyClassFactory:2.class是否是一个接口</span><br><span class="line">Note right of Proxy#ProxyClassFactory:3.数组类是否重复等判断</span><br><span class="line">Note right of Proxy#ProxyClassFactory:调用defineClass0（native方法）动态生成字节码</span><br><span class="line">Proxy#ProxyClassFactory -&gt; Proxy:ProxyGenerator.generateProxyClass() \n defineClass0()</span><br><span class="line">Note right of Proxy:取参数为InvocationHandler构造器</span><br><span class="line">Note right of Proxy:通过构造器生成实例时传入处理器</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Cglib动态代理"><a href="#Cglib动态代理" class="headerlink" title="Cglib动态代理"></a>Cglib动态代理</h3><blockquote>
+<p>CGLIB是一个功能强大，高性能的代码生成包。它为没有实现接口的类提供代理，为JDK的动态代理提供了很好的补充</p>
+<p>通常可以使用Java的动态代理创建代理，但当要代理的类没有实现接口或者为了更好的性能，CGLIB是一个好的选择</p>
+<p>git地址：<a href="https://github.com/cglib/cglib">https://github.com/cglib/cglib</a></p>
+<p>cglib-nodep-xxx.jar:使用nodep包不需要关联asm的jar包,jar包内部包含asm的类.<br>cglib-xxx.jar:使用此jar包需要关联asm的jar包,否则运行时报错.</p>
+</blockquote>
+<h5 id="例子：-2"><a href="#例子：-2" class="headerlink" title="例子："></a>例子：</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 待代理类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method_1</span><span class="params">(String data)</span> </span>&#123;System.out.println(data);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method_2</span><span class="params">(String data)</span> </span>&#123;System.out.println(data);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method_3</span><span class="params">(String data)</span> </span>&#123;System.out.println(data);&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="代理："><a href="#代理：" class="headerlink" title="代理："></a>代理：</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Handler handler = (Handler) Enhancer.create(Handler.class, <span class="keyword">new</span> MethodInterceptor() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] objects, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;start handle&quot;</span>);</span><br><span class="line">        <span class="comment">// methodProxy 代理类方法代理引用，invokeSuper调用实际逻辑</span></span><br><span class="line">        Object result = methodProxy.invokeSuper(o, objects);</span><br><span class="line">        System.out.println(<span class="string">&quot;end handle&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">handler.method_1(<span class="string">&quot;待处理数据&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h6 id="过滤器："><a href="#过滤器：" class="headerlink" title="过滤器："></a>过滤器：</h6><blockquote>
+<p>作用：可以针对不同的方法调用不同的逻辑，</p>
+<p>注意：虽然可以在<code>MethodInterceptor</code>的intercept方法进行区分，但使用过滤器可以有效的减少哈希查找，提高效率</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 什么操作都不做，直接调用实际方法</span></span><br><span class="line">NoOp instance = NoOp.INSTANCE;</span><br><span class="line"><span class="comment">// 锁定方法返回值，不会触发实际方法</span></span><br><span class="line">FixedValue fixedValue = <span class="keyword">new</span> FixedValue() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">loadObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;锁定调用结果&quot;</span>);</span><br><span class="line">        Object result = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 拦截操作</span></span><br><span class="line">MethodInterceptor methodInterceptor = <span class="keyword">new</span> MethodInterceptor() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] objects, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;start handle&quot;</span>);</span><br><span class="line">        Object result = methodProxy.invokeSuper(o, objects);</span><br><span class="line">        System.out.println(<span class="string">&quot;end handle&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Handler handler = (Handler) Enhancer.create(Handler.class, <span class="keyword">null</span>, <span class="keyword">new</span> CallbackFilter() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">accept</span><span class="params">(Method method)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (method.getName().equals(<span class="string">&quot;method_1&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (method.getName().equals(<span class="string">&quot;method_2&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, <span class="keyword">new</span> Callback[]&#123;instance, fixedValue, methodInterceptor&#125;);</span><br><span class="line">handler.method_1(<span class="string">&quot;method_1&quot;</span>);</span><br><span class="line">handler.method_2(<span class="string">&quot;method_2&quot;</span>);</span><br><span class="line">handler.method_3(<span class="string">&quot;method_3&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h6 id="延迟加载："><a href="#延迟加载：" class="headerlink" title="延迟加载："></a>延迟加载：</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 延迟加载类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LazyBeam</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> name;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;<span class="keyword">this</span>.name = name;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// LazyLoader 只有在代理类调用任意方法时才会初始化数据，只会触发一次loadObject</span></span><br><span class="line">LazyBeam lazyBeam = (LazyBeam) Enhancer.create(LazyBeam.class, <span class="keyword">null</span>, <span class="keyword">new</span> LazyLoader() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">loadObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;加载数据&quot;</span>);</span><br><span class="line">        LazyBeam lazyBeam = <span class="keyword">new</span> LazyBeam();</span><br><span class="line">        lazyBeam.setName(<span class="string">&quot;lazyBeam&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> lazyBeam;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">System.out.println(lazyBeam.getName());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Dispatcher 只有在代理类调用任意方法时才会初始化数据,且每次都会触发loadObject</span></span><br><span class="line">LazyBeam lazyBeam = (LazyBeam) Enhancer.create(LazyBeam.class, <span class="keyword">null</span>, <span class="keyword">new</span> Dispatcher() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">loadObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;加载数据&quot;</span>);</span><br><span class="line">        LazyBeam lazyBeam = <span class="keyword">new</span> LazyBeam();</span><br><span class="line">        lazyBeam.setName(<span class="string">&quot;lazyBeam&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> lazyBeam;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">System.out.println(lazyBeam.getName());</span><br></pre></td></tr></table></figure>
+
+<h6 id="接口生成："><a href="#接口生成：" class="headerlink" title="接口生成："></a>接口生成：</h6><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">InterfaceMaker maker = <span class="keyword">new</span> InterfaceMaker();</span><br><span class="line">maker.add(Handler.class);</span><br><span class="line">Class&lt;?&gt; aClass = maker.create();</span><br><span class="line"><span class="keyword">for</span> (Method method : aClass.getMethods()) &#123;</span><br><span class="line">    System.out.println(method.getName());</span><br><span class="line">&#125;</span><br><span class="line">Object obj = Enhancer.create(Object.class, <span class="keyword">new</span> Class[]&#123;aClass&#125;, <span class="keyword">new</span> MethodInterceptor() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] objects, MethodProxy methodProxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (method.getName().equals(<span class="string">&quot;method_1&quot;</span>)) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;执行方法1&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;方法1&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (method.getName().equals(<span class="string">&quot;method_2&quot;</span>)) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;执行方法2&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;方法2&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">Method method_1 = aClass.getMethod(<span class="string">&quot;method_1&quot;</span>, String.class);</span><br><span class="line">method_1.invoke(obj,<span class="string">&quot;方法1&quot;</span>);</span><br><span class="line">Method method_2 = aClass.getMethod(<span class="string">&quot;method_2&quot;</span>, String.class);</span><br><span class="line">method_2.invoke(obj,<span class="string">&quot;方法2&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="原理：-1"><a href="#原理：-1" class="headerlink" title="原理："></a>原理：</h5><h6 id="表层原理："><a href="#表层原理：" class="headerlink" title="表层原理："></a>表层原理：</h6><p>动态生成代理类的子类，子类重写要代理的类的所有不是final/private的方法。在子类采用方法拦截的技术拦截所有父类方法的调用。</p>
+<h6 id="底层原理："><a href="#底层原理：" class="headerlink" title="底层原理："></a>底层原理：</h6><p>使用字节码处理框架ASM，来转换字节码并生成新的类。<strong>注：不鼓励直接使用ASM，因为它要求你必须对JVM内部结构包括class文件的格式和指令集都很熟悉。</strong></p>
+<h6 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h6><p>相较与JDK动态代理</p>
+<ol>
+<li>可以实现接口和类的代理，局限性更小【<strong>注：代理接口调用<code>invokeSuper</code>相当于直接调用未实现的接口方法，会直接报错</strong>】</li>
+<li>由于与实际编写继承代码无异，采用的是动态用生成子类方式，方法执行效率要高</li>
+<li>有丰富的操作策略以适应不同的业务</li>
+</ol>
+<h6 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h6><p>由于采用继承的关系，对私有方法和final方法无法代理</p>
+<h6 id="包说明："><a href="#包说明：" class="headerlink" title="包说明："></a>包说明：</h6><p><code>net.sf.cglib.core</code>:底层字节码处理类，他们大部分与ASM有关系。<br><code>net.sf.cglib.transform</code>:编译期或运行期类和类文件的转换<br><code>net.sf.cglib.proxy</code>:实现创建代理和方法拦截器的类<br><code>net.sf.cglib.reflect</code>:实现快速反射和C#风格代理的类<br><code>net.sf.cglib.util</code>:集合排序等工具类<br><code>net.sf.cglib.beans</code>:JavaBean相关的工具类</p>
 ]]></content>
       <categories>
         <category>Java</category>
       </categories>
       <tags>
-        <tag>集合</tag>
         <tag>Java</tag>
       </tags>
   </entry>
   <entry>
     <title>注解</title>
     <url>/2020/11/08/%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="java知识点-注解"><a href="#java知识点-注解" class="headerlink" title="java知识点-注解"></a>java知识点-注解</h1><hr>
-<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><pre><code>元注解
+    <content><![CDATA[<h1 id="java知识点-注解"><a href="#java知识点-注解" class="headerlink" title="java知识点-注解"></a>java知识点-注解</h1><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><pre><code>元注解
 public @interface 注解名称&#123;
     属性列表;
 &#125;
@@ -239,67 +285,96 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>Java核心技术卷一基础知识-笔记</title>
-    <url>/2020/09/13/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
-<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
-<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
-</ol>
-<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
-
-<p>带资源try方式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="Java日志"><a href="#Java日志" class="headerlink" title="Java日志"></a>Java日志</h5><p>全局日志记录器：<br><code>Logger.getGlobal().info(&quot;msg&quot;);</code></p>
-<p>自定义日志记录器：<br><code>private static final Logger myLogger = Logger.getLogger(&quot;com.mycompany.myapp&quot;);</code></p>
-<h5 id="内联"><a href="#内联" class="headerlink" title="内联"></a>内联</h5><blockquote>
-<p>消除函数调用,采用类变量直接访问，可以减少函数栈的调用，提高效率</p>
-<p>从【c.getName()】 变更为【c.name】的形式</p>
-</blockquote>
-<p>即时编译器可以监控经常执行哪些代码并优化这些代码以提高速度。更为复杂的优化是消除函数调用（即“ 内联”）。即时编译器知道那些类已经加载。基于当前加载的类集，如果特定的函数不会被覆盖，就可以使用内联。必要时，还可以撤销优化。</p>
-<p>是否将某个方法设置为内联方法是Java 虚拟机的任务。即时编译器会监视调用那些<strong>简洁</strong>、<strong>经常被调用</strong>、<strong>没有被重载</strong>以及<strong>可优化</strong>的方法。</p>
-<p>在早期的Java 中， 有些程序员为了避免动态绑定带来的系统开销而使用final 关键字。如果一个方法没有被覆盖并且很短， 编译器就能够对它进行优化处理， 这个过程为称为内联( inlining )。例如，内联调用e.getName( ) 将被替换为访问e.name 域。这是一项很有意义的改进， 这是由于CPU 在处理调用方法的指令时， 使用的分支转移会扰乱预取指令的策略， 所以，这被视为不受欢迎的。然而， 如果getName 在另外一个类中被覆盖， 那么编译器就无法知道覆盖的代码将会做什么操作， 因此也就不能对它进行内联处理了。</p>
-<p>幸运的是， 虚拟机中的即时编译器比传统编译器的处理能力强得多。这种编译器可以准确地知道类之间的继承关系， 并能够检测出类中是否真正地存在覆盖给定的方法。如果方法很简短、被频繁调用且没有真正地被覆盖， 那么即时编译器就会将这个方法进行内联处理。如果虚拟机加载了另外一个子类，而在这个子类中包含了对内联方法的覆盖， 那么将会发生什么情况呢？ 优化器将取消对覆盖方法的内联。这个过程很慢， 但却很少发生。</p>
-<h5 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">TestEnum</span> </span>&#123;</span><br><span class="line">    Red(<span class="string">&quot;red&quot;</span>), Blue(<span class="string">&quot;blue&quot;</span>), Green(<span class="string">&quot;green&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    TestEnum(String color) &#123;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>原理：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TestEnum</span> <span class="keyword">extends</span> <span class="title">Enum</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> TestEnum[] values()&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TestEnum <span class="title">valueOf</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum)Enum.valueOf(com/benben/TestEnum, s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TestEnum</span><span class="params">(String s, <span class="keyword">int</span> i, String s1)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        mColor = s1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Red;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Blue;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Green;</span><br><span class="line">    <span class="keyword">private</span> String mColor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum $VALUES[];</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        Red = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Red&quot;</span>, <span class="number">0</span>, <span class="string">&quot;red&quot;</span>);</span><br><span class="line">        Blue = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Blue&quot;</span>, <span class="number">1</span>, <span class="string">&quot;blue&quot;</span>);</span><br><span class="line">        Green = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Green&quot;</span>, <span class="number">2</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> TestEnum[] &#123;</span><br><span class="line">            Red, Blue, Green</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意一：从上面可以看出，枚举会消耗更多的内存，类似于饿汉式的单例</strong></p>
-<p><strong>注意二：Proguard以及Android的R8也会对简单的枚举（即不实现接口也没有额外成员的枚举）做优化</strong></p>
-<h5 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h5><blockquote>
-<p>对于final的基本变量类型，在编译字节码的时候会被认为不会再改变，会将值直接放入调用处，所以反射对它无效</p>
-<p>如果是static final的基本变量类型，修改值会产生异常，必须要修改可以再反射修改它的<code>modifiers</code>值以达到能修改的目的，注意：目前jvm并没有对该字段有限制</p>
-</blockquote>
-<h5 id="反射效率低"><a href="#反射效率低" class="headerlink" title="反射效率低"></a>反射效率低</h5><p>java反射效率低的主要原因是：</p>
-<ol>
-<li>Method#invoke 方法会对参数做封装和解封操作</li>
-<li>需要检查方法可见性。原因：反射时每次调用都必须检查方法的可见性（在Method.invoke里）</li>
-<li>需要校验参数。反射时也必须检查每个实际参数与形式参数的类型匹配性（在NativeMethodAccessorImpl.invoke0 里或者生成的 Java 版 MethodAccessor.invoke 里）</li>
-<li>反射方法难以内联。参考：<a href="https://www.iteye.com/blog/rednaxelafx-548536">https://www.iteye.com/blog/rednaxelafx-548536</a></li>
-<li>JIT 无法优化。原因：因为涉及到动态解析的类型，所以无法优化</li>
-</ol>
-<p>提高反射性能的方式：</p>
-<ol>
-<li>将反射获取到的类，构造函数，函数，对象实例缓存起来，不用每次都全新查找</li>
-<li>可通过调用method.setAccessible(true)的方式来关闭Method.invoke可见性检查</li>
-<li>需要更极致的提高效率可以通过字节码生成的方式来实现反射机制。参考：<a href="https://github.com/EsotericSoftware/reflectasm">https://github.com/EsotericSoftware/reflectasm</a></li>
-</ol>
-<h5 id="Lambda高阶参考"><a href="#Lambda高阶参考" class="headerlink" title="Lambda高阶参考"></a>Lambda高阶参考</h5><p><a href="https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc</a></p>
+    <title>阻塞队列</title>
+    <url>/2020/11/08/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h1 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h1><h5 id="队列描述描述"><a href="#队列描述描述" class="headerlink" title="队列描述描述"></a>队列描述描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">LinkedBlockingQueue</td>
+<td align="left">一种容量没有上边界的阻塞队列，亦可指定最大容量</td>
+</tr>
+<tr>
+<td align="left">LinkedBlockingDeque</td>
+<td align="left">一种双端队列版本</td>
+</tr>
+<tr>
+<td align="left">ArrayBlockingQueue</td>
+<td align="left">一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性</td>
+</tr>
+<tr>
+<td align="left">PriorityBlockingQueue</td>
+<td align="left">一种带优先级的队列</td>
+</tr>
+<tr>
+<td align="left">DelayQueue</td>
+<td align="left">一种延迟阻塞队列【可实现如下单后三十分钟内没有付款就自动取消订单的操作】</td>
+</tr>
+<tr>
+<td align="left">TransferQueue</td>
+<td align="left">一种等待消费者准备就绪才可接收的阻塞队列，如果调用<code>transfer</code>那么会阻塞，直到另一个线程将其取出</td>
+</tr>
+</tbody></table>
+<h5 id="阻塞队列通用方法"><a href="#阻塞队列通用方法" class="headerlink" title="阻塞队列通用方法"></a>阻塞队列通用方法</h5><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>动作</th>
+<th>特殊情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add</td>
+<td>添加一个元素</td>
+<td>如果队列满， 则抛出IllegalStateException 异常</td>
+</tr>
+<tr>
+<td>element</td>
+<td>返回队列头元素</td>
+<td>如果队列空，抛出NoSuchElementException 异常</td>
+</tr>
+<tr>
+<td>offer</td>
+<td>添加一个元素并返回true</td>
+<td>如果队列满， 返回false</td>
+</tr>
+<tr>
+<td>peek</td>
+<td>返回队列头元素</td>
+<td>如果队列空， 则返回null</td>
+</tr>
+<tr>
+<td>poll</td>
+<td>移除并返回队列的头元素</td>
+<td>如果队列空， 则返回null</td>
+</tr>
+<tr>
+<td>put</td>
+<td>添加一个元素</td>
+<td>如果队列满， 则阻塞</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>移出并返回头元素</td>
+<td>如果队列空， 则抛出NoSuchElementException 异常</td>
+</tr>
+<tr>
+<td>take</td>
+<td>移出并返回头元素</td>
+<td>如果队列空， 则阻塞</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>Java</category>
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>书籍</tag>
+        <tag>集合</tag>
       </tags>
   </entry>
 </search>
