@@ -20,20 +20,21 @@
     var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="java知识点-注解格式元注解 public @interface 注解名称&amp;#123;     属性列表; &amp;#125;  本质 注解本质上就是一个接口，该接口默认继承Annotation接口public interface TestAnnotation extends java.lang.annotation.Annotation {}可通过编译：javac 类全路径反编译：javap cla">
+  <meta name="description" content="BitSet Java平台上存放位序列的集合。如果需要高效的存储位序列（例如：标志）就可以使用位集。由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。  常用函数12345int length()	 		&#x2F;&#x2F; 返回最高位为1的索引boolean get(int bit)	&#x2F;&#x2F; 获得一个位，返回true则为开void set(int bit)		&#x2F;&#x2F; 设置一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="注解">
-<meta property="og:url" content="https://yefawei.github.io/2020/11/08/%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:title" content="BitSet.md">
+<meta property="og:url" content="https://yefawei.github.io/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/index.html">
 <meta property="og:site_name" content="BenBen">
-<meta property="og:description" content="java知识点-注解格式元注解 public @interface 注解名称&amp;#123;     属性列表; &amp;#125;  本质 注解本质上就是一个接口，该接口默认继承Annotation接口public interface TestAnnotation extends java.lang.annotation.Annotation {}可通过编译：javac 类全路径反编译：javap cla">
+<meta property="og:description" content="BitSet Java平台上存放位序列的集合。如果需要高效的存储位序列（例如：标志）就可以使用位集。由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。  常用函数12345int length()	 		&#x2F;&#x2F; 返回最高位为1的索引boolean get(int bit)	&#x2F;&#x2F; 获得一个位，返回true则为开void set(int bit)		&#x2F;&#x2F; 设置一">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-08T13:12:12.000Z">
-<meta property="article:modified_time" content="2021-04-11T13:21:41.404Z">
+<meta property="article:published_time" content="2020-09-14T14:33:04.000Z">
+<meta property="article:modified_time" content="2021-04-11T13:13:55.863Z">
 <meta property="article:author" content="BenBen">
 <meta property="article:tag" content="Java">
+<meta property="article:tag" content="集合">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://yefawei.github.io/2020/11/08/%E6%B3%A8%E8%A7%A3/">
+<link rel="canonical" href="https://yefawei.github.io/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>注解 | BenBen</title>
+  <title>BitSet.md | BenBen</title>
   
 
 
@@ -193,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/08/%E6%B3%A8%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -206,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          注解
+          BitSet.md
         </h1>
 
         <div class="post-meta">
@@ -216,7 +217,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-08 21:12:12" itemprop="dateCreated datePublished" datetime="2020-11-08T21:12:12+08:00">2020-11-08</time>
+              <time title="创建时间：2020-09-14 22:33:04" itemprop="dateCreated datePublished" datetime="2020-09-14T22:33:04+08:00">2020-09-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,113 +240,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="java知识点-注解"><a href="#java知识点-注解" class="headerlink" title="java知识点-注解"></a>java知识点-注解</h1><h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><pre><code>元注解
-public @interface 注解名称&#123;
-    属性列表;
-&#125;
-</code></pre>
-<h3 id="本质"><a href="#本质" class="headerlink" title="本质"></a>本质</h3><blockquote>
-<p>注解本质上就是一个接口，该接口默认继承Annotation接口<br>public interface TestAnnotation extends java.lang.annotation.Annotation {}<br>可通过<br>编译：javac 类全路径<br>反编译：javap class文件<br>得到确认</p>
+        <h1 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h1><blockquote>
+<p>Java平台上存放位序列的集合。<br>如果需要高效的存储位序列（例如：标志）就可以使用位集。<br>由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。</p>
 </blockquote>
-<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><pre><code>要求：
-    1.属性返回值类型有一下要求
-        * 基本数据类型
-        * String
-        * 枚举
-        * 注解
-        * 以上类型的数组
-        例：
-            import java.util.concurrent.TimeUnit;
-            public @interface TestAnnotation &#123;
-                int value();
-                String value2();
-                TimeUnit value3();
-                Override value4();
-                int[] value5();
-                String[] value6();
-                TimeUnit[] value7();
-                Override[] value8();
-            &#125;
+<h5 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">length</span><span class="params">()</span>	 		<span class="comment">// 返回最高位为1的索引</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> bit)</span>	<span class="comment">// 获得一个位，返回true则为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为开</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">(<span class="keyword">int</span> bit)</span>		<span class="comment">// 设置一个位为关</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span>			<span class="comment">// 将所有设置为关</span></span></span><br></pre></td></tr></table></figure>
 
-    2.定义属性，在使用时需要给属性赋值(属性名 = 返回值)
-        例：
-            public @interface TestAnnotation&#123;
-                int value();
-            &#125;
-            使用
-            @TestAnnotation(value = 1)
-            public class TestClass&#123;
-            &#125;
-
-        1.如果只有一个属性需要赋值，并且属性名称为value，则value可以省略，直接定义值即可
-            @TestAnnotation(1)
-            public class TestClass&#123;
-            &#125;
-
-        2.如果定义属性时，用default关键字给属性默认初始化值，在使用时可不赋值
-        例：
-            public @interface TestAnnotation&#123;
-                int value() default 0;
-            &#125;
-            使用
-            @TestAnnotation()
-            public class TestClass&#123;
-            &#125;
-        3.数组赋值时，使用&#123;&#125;包裹，如果数组只有一个值，则可以省略
-        例：
-            public @interface TestAnnotation&#123;
-                int[] value();
-                String[] value2();
-            &#125;
-            使用
-            @TestAnnotation(value = 1, value2=&#123;&quot;0&quot;, &quot;1&quot;&#125;)
-            public class TestClass&#123;
-            &#125;
-        4.无属性可以直接使用
-        例：
-            public @interface TestAnnotation&#123;
-            &#125;
-            使用
-            @TestAnnotation()
-            public class TestClass&#123;
-            &#125;
-</code></pre>
-<h3 id="元注解，有四种类型"><a href="#元注解，有四种类型" class="headerlink" title="元注解，有四种类型"></a>元注解，有四种类型</h3><pre><code>* @Target：描述注解能够作用的位置
-    * ElementType取值：
-        * TYPE：可以作用于类、接口、enum上
-        * METHOD：可以作用于方法上
-        * FIELD：可以作用于成员变量上
-        * CONSTRUCTOR：构造器
-        * LOCAL_VARIABLE：局部变量声明
-        * PACKAGE：包声明
-        * PARAMETER：参数声明
-
-* @Repeatable：表示注解在同一位置可以出现多次   
-
-* @Retention：描述注解被保留的阶段
-    * @Retention(RetentionPolicy.RUNTIME)：当前被描述的注解，会保留到class字节码文件中，并被JVM读取到
-    * @Retention(RetentionPolicy.CLASS)：当前被描述的注解，会保留到class字节码文件中，JVM无法读取到
-    * @Retention(RetentionPolicy.SOURCE)：当前被描述的注解，仅存在源码中
-
-* @Documented：描述注解是否被抽取到api文档中
-
-* @Inherited：描述在父类描述注解子类能否被继承，仅针对类，接口上声明并不会生效
-</code></pre>
-<h3 id="提取注解"><a href="#提取注解" class="headerlink" title="提取注解"></a>提取注解</h3><pre><code>需要实现java.lang.reflect.AnnotatedElement接口才可提取
-
-已知实现类
-Class
-Constructor
-Field
-Method
-Package
-
-获取方法
-getAnnotation:返回指定类型的注解，不存在返回null
-getAnnotations:返回存在的所有注解
-isAnnotationPresent:判断是否包含指定类型的注解
-getDeclaredAnnotations:返回直接存在于此元素上的所有注解
-</code></pre>
+<h5 id="计算素数个数"><a href="#计算素数个数" class="headerlink" title="计算素数个数"></a>计算素数个数</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算2~2000000之间的所有素数</span></span><br><span class="line"><span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">200_0000</span>;</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">BitSet bit = <span class="keyword">new</span> BitSet(n + <span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    bit.set(i);</span><br><span class="line">&#125;</span><br><span class="line">i = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> k;</span><br><span class="line"><span class="keyword">while</span> (i * i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">        k = i * <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (k &lt;= n) &#123;</span><br><span class="line">            bit.clear(k);</span><br><span class="line">            k += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (i &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bit.get(i)) &#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">System.out.println(<span class="string">&quot;count: &quot;</span> + count); <span class="comment">// count: 148933</span></span><br><span class="line">System.out.println(<span class="string">&quot;time: &quot;</span> + (end - start));</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -356,6 +256,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
           </div>
 
         
@@ -364,12 +265,12 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/08/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/" rel="prev" title="阻塞队列">
-      <i class="fa fa-chevron-left"></i> 阻塞队列
+    <a href="/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/" rel="prev" title="Java核心技术卷一基础知识-笔记">
+      <i class="fa fa-chevron-left"></i> Java核心技术卷一基础知识-笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/11/09/%E4%BB%A3%E7%90%86/" rel="next" title="代理">
-      代理 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/" rel="next" title="阻塞队列">
+      阻塞队列 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -429,7 +330,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E7%9F%A5%E8%AF%86%E7%82%B9-%E6%B3%A8%E8%A7%A3"><span class="nav-text">java知识点-注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F"><span class="nav-text">格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E8%B4%A8"><span class="nav-text">本质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-text">属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E6%B3%A8%E8%A7%A3%EF%BC%8C%E6%9C%89%E5%9B%9B%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="nav-text">元注解，有四种类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E6%B3%A8%E8%A7%A3"><span class="nav-text">提取注解</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BitSet"><span class="nav-text">BitSet</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-text">常用函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%B4%A0%E6%95%B0%E4%B8%AA%E6%95%B0"><span class="nav-text">计算素数个数</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -443,20 +344,20 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

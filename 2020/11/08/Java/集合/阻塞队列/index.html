@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://yefawei.github.io/about/index.html">
+  <meta name="description" content="阻塞队列队列描述描述   名称 描述    LinkedBlockingQueue 一种容量没有上边界的阻塞队列，亦可指定最大容量   LinkedBlockingDeque 一种双端队列版本   ArrayBlockingQueue 一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性   PriorityBlockingQueue 一种带优先级的队列   DelayQueue 一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阻塞队列">
+<meta property="og:url" content="https://yefawei.github.io/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/index.html">
 <meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="阻塞队列队列描述描述   名称 描述    LinkedBlockingQueue 一种容量没有上边界的阻塞队列，亦可指定最大容量   LinkedBlockingDeque 一种双端队列版本   ArrayBlockingQueue 一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性   PriorityBlockingQueue 一种带优先级的队列   DelayQueue 一">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-13T14:31:04.000Z">
-<meta property="article:modified_time" content="2021-04-09T15:08:03.808Z">
+<meta property="article:published_time" content="2020-11-08T11:06:12.000Z">
+<meta property="article:modified_time" content="2021-04-11T13:13:53.125Z">
 <meta property="article:author" content="BenBen">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="集合">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://yefawei.github.io/about/">
+<link rel="canonical" href="https://yefawei.github.io/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/">
 
 
 <script id="page-configurations">
@@ -38,13 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>about | BenBen
-</title>
+  <title>阻塞队列 | BenBen</title>
   
 
 
@@ -183,43 +186,175 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          阻塞队列
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              <time title="创建时间：2020-11-08 19:06:12" itemprop="dateCreated datePublished" datetime="2020-11-08T19:06:12+08:00">2020-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h1><h5 id="队列描述描述"><a href="#队列描述描述" class="headerlink" title="队列描述描述"></a>队列描述描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">LinkedBlockingQueue</td>
+<td align="left">一种容量没有上边界的阻塞队列，亦可指定最大容量</td>
+</tr>
+<tr>
+<td align="left">LinkedBlockingDeque</td>
+<td align="left">一种双端队列版本</td>
+</tr>
+<tr>
+<td align="left">ArrayBlockingQueue</td>
+<td align="left">一种在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性</td>
+</tr>
+<tr>
+<td align="left">PriorityBlockingQueue</td>
+<td align="left">一种带优先级的队列</td>
+</tr>
+<tr>
+<td align="left">DelayQueue</td>
+<td align="left">一种延迟阻塞队列【可实现如下单后三十分钟内没有付款就自动取消订单的操作】</td>
+</tr>
+<tr>
+<td align="left">TransferQueue</td>
+<td align="left">一种等待消费者准备就绪才可接收的阻塞队列，如果调用<code>transfer</code>那么会阻塞，直到另一个线程将其取出</td>
+</tr>
+</tbody></table>
+<h5 id="阻塞队列通用方法"><a href="#阻塞队列通用方法" class="headerlink" title="阻塞队列通用方法"></a>阻塞队列通用方法</h5><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>动作</th>
+<th>特殊情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add</td>
+<td>添加一个元素</td>
+<td>如果队列满， 则抛出IllegalStateException 异常</td>
+</tr>
+<tr>
+<td>element</td>
+<td>返回队列头元素</td>
+<td>如果队列空，抛出NoSuchElementException 异常</td>
+</tr>
+<tr>
+<td>offer</td>
+<td>添加一个元素并返回true</td>
+<td>如果队列满， 返回false</td>
+</tr>
+<tr>
+<td>peek</td>
+<td>返回队列头元素</td>
+<td>如果队列空， 则返回null</td>
+</tr>
+<tr>
+<td>poll</td>
+<td>移除并返回队列的头元素</td>
+<td>如果队列空， 则返回null</td>
+</tr>
+<tr>
+<td>put</td>
+<td>添加一个元素</td>
+<td>如果队列满， 则阻塞</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>移出并返回头元素</td>
+<td>如果队列空， 则抛出NoSuchElementException 异常</td>
+</tr>
+<tr>
+<td>take</td>
+<td>移出并返回头元素</td>
+<td>如果队列空， 则阻塞</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/" rel="prev" title="BitSet.md">
+      <i class="fa fa-chevron-left"></i> BitSet.md
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/08/Java/%E6%B3%A8%E8%A7%A3/%E6%B3%A8%E8%A7%A3/" rel="next" title="注解">
+      注解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -270,6 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="nav-text">阻塞队列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E6%8F%8F%E8%BF%B0%E6%8F%8F%E8%BF%B0"><span class="nav-text">队列描述描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E9%80%9A%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">阻塞队列通用方法</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
