@@ -267,7 +267,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>BitSet.md</title>
+    <title>BitSet</title>
     <url>/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/</url>
     <content><![CDATA[<h1 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h1><blockquote>
 <p>Java平台上存放位序列的集合。<br>如果需要高效的存储位序列（例如：标志）就可以使用位集。<br>由于位集将位包装在字节里，所以使用位集比使用Boolean对象的ArrayList更加高效。</p>
@@ -415,7 +415,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>BitSet.md</title>
+    <title>HashMap</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/</url>
     <content><![CDATA[<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
 <p> 参考：<a href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
@@ -466,7 +466,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>BitSet.md</title>
+    <title>线程安全的集合</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
 <thead>
@@ -510,7 +510,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>BitSet.md</title>
+    <title>通用集合</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<h1 id="通用集合"><a href="#通用集合" class="headerlink" title="通用集合"></a>通用集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
 <thead>
