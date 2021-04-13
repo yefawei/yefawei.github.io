@@ -592,6 +592,413 @@ public @interface 注解名称&#123;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/" class="post-title-link" itemprop="url">BitSet.md</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-15 22:31:01" itemprop="dateCreated datePublished" datetime="2020-09-15T22:31:01+08:00">2020-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
+<p> 参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
+</blockquote>
+<h5 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h5><ol>
+<li><p>数据结构？</p>
+<p>答：数组加链表法</p>
+</li>
+<li><p>怎么插入数据？</p>
+<p>答：链表头插法，即：链表中最新的数据插在链表头</p>
+</li>
+<li><p>哈希冲突怎么预防？</p>
+<p>答：二次哈希 or 扰动函数</p>
+</li>
+<li><p>怎么解决哈希冲突？</p>
+<p>答：链表法，其它方案：再哈希、开放寻址、公共溢出区</p>
+</li>
+<li><p>默认容量多少？</p>
+<p>答：16</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：重新计算哈希和索引</p>
+</li>
+<li><p>内部数组是什么时候创建的？</p>
+<p>答：第一次put的时候创建</p>
+</li>
+</ol>
+<h5 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h5><ol>
+<li><p>1.7 和 1.8 数据结构有什么不同？</p>
+<p>答：引入红黑树</p>
+</li>
+<li><p>1.7 和 1.8 往链表上插数据的方式有什么不同？<br>答：从头插法改为尾部插入</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：对老数组进行与运算，判断值是否等于0，等于0在低位，否则在高位</p>
+</li>
+<li><p>HashMap 什么时候会把链表转化为红黑树？</p>
+<p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
+</li>
+</ol>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/" class="post-title-link" itemprop="url">BitSet.md</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-15 21:41:33" itemprop="dateCreated datePublished" datetime="2020-09-15T21:41:33+08:00">2020-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="通用集合"><a href="#通用集合" class="headerlink" title="通用集合"></a>通用集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ArrayList</td>
+<td align="left">一种可以动态增长和缩减的索引序列</td>
+</tr>
+<tr>
+<td align="left">LinkedList</td>
+<td align="left">一种可以在任何位置进行高效地插人和删除操作的有序序列</td>
+</tr>
+<tr>
+<td align="left">ArrayDeque</td>
+<td align="left">一种用循环数组实现的双端队列</td>
+</tr>
+<tr>
+<td align="left">HashSet</td>
+<td align="left">一种没有重复元素的无序集合</td>
+</tr>
+<tr>
+<td align="left">TreeSet</td>
+<td align="left">一种有序集</td>
+</tr>
+<tr>
+<td align="left">EnumSet</td>
+<td align="left">一种包含枚举类型值的集</td>
+</tr>
+<tr>
+<td align="left">LinkedHashSet</td>
+<td align="left">一种可以记住元素插人次序的集</td>
+</tr>
+<tr>
+<td align="left">PriorityQueue</td>
+<td align="left">一种允许高效删除最小元素的集合</td>
+</tr>
+<tr>
+<td align="left">HashMap</td>
+<td align="left">一种存储键值关联的数据结构</td>
+</tr>
+<tr>
+<td align="left">TreeMap</td>
+<td align="left">一种键值有序排列的映射表</td>
+</tr>
+<tr>
+<td align="left">EnumMap</td>
+<td align="left">一种键值属于枚举类型的映射表</td>
+</tr>
+<tr>
+<td align="left">LinkedHashMap</td>
+<td align="left">一种存储键/ 值关联的数据结构—种键值有序排列的映射表</td>
+</tr>
+<tr>
+<td align="left">WeakHashMap</td>
+<td align="left">一种其值无用武之地后可以被垃圾回收器回收的映射表</td>
+</tr>
+<tr>
+<td align="left">IdentityHashMap</td>
+<td align="left">一种用==而不是用equals 比较键值的映射表</td>
+</tr>
+</tbody></table>
+<h5 id="旧集合"><a href="#旧集合" class="headerlink" title="旧集合"></a>旧集合</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Vector</td>
+<td align="left">与ArrayList相似，但所有方法都是同步的</td>
+</tr>
+<tr>
+<td align="left">HashTable</td>
+<td align="left">与HashMap相似，但所有方法都是同步的</td>
+</tr>
+<tr>
+<td align="left">Properties</td>
+<td align="left">属性映射</td>
+</tr>
+</tbody></table>
+<h5 id="集合工具类Collections"><a href="#集合工具类Collections" class="headerlink" title="集合工具类Collections"></a>集合工具类Collections</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Collections.empty…</td>
+<td align="left">生成一个不可添加数据的空集合实例</td>
+</tr>
+<tr>
+<td align="left">Collections.singleton…</td>
+<td align="left">生成一个不可修改的含单一数据的集合实例</td>
+</tr>
+<tr>
+<td align="left">Collections.unmodifiable…</td>
+<td align="left">生成一个包装集合的不可添加数据的包装集合实例</td>
+</tr>
+<tr>
+<td align="left">Collections.synchronized…</td>
+<td align="left">生成一个包装集合的同步操作包装集合实例</td>
+</tr>
+<tr>
+<td align="left">Collections.checked…</td>
+<td align="left">生成一个包装集合的受查操作的集合实例</td>
+</tr>
+</tbody></table>
+<h5 id="LinkedHashMap实现LRU算法（最近最少使用算法）"><a href="#LinkedHashMap实现LRU算法（最近最少使用算法）" class="headerlink" title="LinkedHashMap实现LRU算法（最近最少使用算法）"></a>LinkedHashMap实现LRU算法（最近最少使用算法）</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> capacity = <span class="number">4</span>;</span><br><span class="line">LinkedHashMap&lt;String, String&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;String, String&gt;(capacity, <span class="number">0.75f</span>,<span class="keyword">true</span>) &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span><span class="params">(Map.Entry&lt;String, String&gt; eldest)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size() &gt; capacity; <span class="comment">// 当返回true则删除最少使用的的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="小知识："><a href="#小知识：" class="headerlink" title="小知识："></a>小知识：</h5>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/" class="post-title-link" itemprop="url">BitSet.md</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-15 21:30:21" itemprop="dateCreated datePublished" datetime="2020-09-15T21:30:21+08:00">2020-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ConcurrentHashMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListSet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentLinkedQueue</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArrayList</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArraySet</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/14/Java/%E9%9B%86%E5%90%88/BitSet-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -988,7 +1395,7 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
