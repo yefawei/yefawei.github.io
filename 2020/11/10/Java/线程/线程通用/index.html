@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="线程通用线程中断 早期版本中线程提供stop方法来终止线程，但该方法已经被弃用 取而代之的是外部通知该线程应该结束了，但是具体什么时候结束交由线程自己控制  123456789Thread thread &#x3D; new Thread(() -&gt; &amp;#123;    while (!Thread.currentThread().isInterrupted()) &amp;#123;        &#x2F;&#x2F; d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理">
+<meta property="og:url" content="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/index.html">
+<meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="线程通用线程中断 早期版本中线程提供stop方法来终止线程，但该方法已经被弃用 取而代之的是外部通知该线程应该结束了，但是具体什么时候结束交由线程自己控制  123456789Thread thread &#x3D; new Thread(() -&gt; &amp;#123;    while (!Thread.currentThread().isInterrupted()) &amp;#123;        &#x2F;&#x2F; d">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-10T13:16:23.000Z">
+<meta property="article:modified_time" content="2021-04-14T13:52:37.384Z">
+<meta property="article:author" content="BenBen">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>代理 | BenBen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BenBen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/yefawei" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-10 21:16:23" itemprop="dateCreated datePublished" datetime="2020-11-10T21:16:23+08:00">2020-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="线程通用"><a href="#线程通用" class="headerlink" title="线程通用"></a>线程通用</h1><h5 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h5><blockquote>
+<p>早期版本中线程提供stop方法来终止线程，但该方法已经被弃用</p>
+<p>取而代之的是外部通知该线程应该结束了，但是具体什么时候结束交由线程自己控制</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Thread thread = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">while</span> (!Thread.currentThread().isInterrupted()) &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 结束线程</span></span><br><span class="line">&#125;);</span><br><span class="line">thread.start();</span><br><span class="line"><span class="comment">// 外部通知线程中断</span></span><br><span class="line">thread.interrupt();</span><br></pre></td></tr></table></figure>
+
+<p>注意一：如果在<code>Thread.sleep()</code>等会抛出<code>InterruptedException</code>受查异常等内置函数后面调用<code>Thread.currentThread().isInterrupted()</code>返回false</p>
+<p>注意二：<code>Thread.interrupted()</code>线程静态函数会将中断状态清空，与<code>Thread.currentThread().isInterrupted(true)</code>效果一致</p>
+<h5 id="锁对象"><a href="#锁对象" class="headerlink" title="锁对象"></a>锁对象</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ReentrantLock mLock = <span class="keyword">new</span> ReentrantLock();<span class="comment">// 可重入锁对象</span></span><br><span class="line">Condition mCondition = mLock.newCondition(); <span class="comment">// 锁对象创建条件对象</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mLokc.lock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="comment">//未达到条件) &#123;</span></span><br><span class="line">            mCondition.await(); <span class="comment">// 临时释放锁并进入阻塞状态</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// do somethind</span></span><br><span class="line">        mCondition.signalAll(); <span class="comment">//通知释放阻塞状态的地方允许重新获得锁</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意一：ReentrantLock 可多次调用lock()函数，但必须与unlock()函数成对出现</p>
+<p>注意二：条件对象await必须是已经获得锁后调用，不然会爆出IllegalMonitorStateException异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="comment">//未达到条件) &#123;</span></span><br><span class="line">            wait(); <span class="comment">// 临时释放锁并进入阻塞状态</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// do somethind</span></span><br><span class="line">        notifyAll(); <span class="comment">// 通知释放阻塞状态的地方允许重新获得锁</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该方式与锁对象方式一模一样</p>
+<p>值得注意的是，条件对象调用的是**await()<strong>方法，同步方法调用的是</strong>wait()**方法，别用错了</p>
+<h5 id="volatile域"><a href="#volatile域" class="headerlink" title="volatile域"></a>volatile域</h5><p>作用：内存可见性、禁止指令重排序</p>
+<p>JVM要求实现volatile必须要实现内存屏障，最终调用汇编指令为：<code>lock addl</code>，由于<code>lock</code>指令后面必须跟一条指令，但是Intel限制了<code>lock</code>指令不能跟<code>nop(空指令)</code>，所以后面添加了一个<code>addl(加0指令)</code></p>
+<blockquote>
+<p>LOCK 用于多处理器中执行指令时对共享内存的独占使用</p>
+<p>他的作用时能够将当前处理器对应缓存的内容刷新到内存，并使其他处理器缓存失效</p>
+<p><strong>另外还提供了有序的指令无法越过内存屏障的作用，即lock指令前面的指令都无法越过这条指令</strong></p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (os::<span class="built_in">is_mp</span>()) &#123;<span class="comment">// 是否是多核cpu，可见volatile在单核cpu里并没有使用lock指令</span></span><br><span class="line">	<span class="comment">// 使用lock指令</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>内存屏障（JVM层面）</strong></p>
+<p>写：<code>StoreStore</code> - <code>volatile写</code> - <code>StoreLoad</code></p>
+<p>读：<code>volatile读</code> - <code>LoadStore</code> - <code>LoadLoad</code></p>
+<h5 id="final变量"><a href="#final变量" class="headerlink" title="final变量"></a>final变量</h5><p>除了使用锁或<code>volatitle</code>修饰符，还有一种情况可以安全地访问一个共享域，即将该域声明为final：</p>
+<p><code>final Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</code></p>
+<p>其它线程会在构造函数完成构造后才看到这个map变量</p>
+<h5 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h5><p>Unsafe内部最终调用汇编语句：多核：<code>lock cmpxchg</code> 单核：<code>cmpxchg</code></p>
+<p><code>cmpxchg</code>：比较并交换操作数</p>
+<h5 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h5><blockquote>
+<p><code>java.util.concurrent.atomic</code>包中有很多类使用高效的机器级指令来保证操作的原子性。</p>
+<p>如：<code>AtomicInteger</code>的<code>getAndIncrement</code>和<code>incrementAndGet</code>方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">AtomicInteger integer = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">integer.set(Math.max(integer.get(), number));<span class="comment">//该操作不具有原子性，无法保证值的正常更新</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    oldValue = integer.get();</span><br><span class="line">    newValue = Math.max(oldValue, number)</span><br><span class="line">&#125; <span class="keyword">while</span>(!integer.compareAndSet(oldValue, newValue)); <span class="comment">// 需要通过比对再设值的方式保证原子性，CAS</span></span><br><span class="line"><span class="comment">// java8 可以通过内置函数免写以上循环操作，如updateAndGet、accumulateAndGet等函数</span></span><br></pre></td></tr></table></figure>
+
+<p>注意一：如果大量线程要访问相同的类名开头为Atomic的原子值，性能会大幅下降，因为采用CAS乐观更新需要太多的循环重试操作。可通过类<code>LongAddr</code>、<code>LongAccumulator</code>、<code>DoubleAdder</code>和<code>DoubleAccumulator</code>来解决。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原理：采用多个变量（加数），其总和为当前值。可以有多个线程同时更新不同的加数，线程增加会自动提供新的加数。</span></span><br><span class="line"><span class="comment">// 只有当所有工作都完成之后才需要总和的值，这个情况下该类操作会相当高效</span></span><br><span class="line">LongAdder adder</span><br><span class="line"><span class="keyword">while</span>(...) &#123;</span><br><span class="line">    adder.increment();<span class="comment">// 不会返回值，这样做回消除求和分解到多个加数所带来的性能提升</span></span><br><span class="line">	<span class="comment">// long total = adder.sum();// 不推荐这么操作，会失去性能的提升，如必须该操作，则使用Atomic会更好</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> total = adder.sum();</span><br></pre></td></tr></table></figure>
+
+<p>注意二：上述提到CAS操作更新会存在ABA的异常，可通过<code>AtomicStampedReference</code>带版本号的原子类进行修复</p>
+<p>让自己的类具有原子性：<code>AtomicReference</code>和<code>AtomicReferenceFieldUpdater</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AtomicReference</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyAtomicClass</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 使用AtomicReference对字符串进行封装</span></span><br><span class="line">    AtomicReference&lt;String&gt; atomicValue = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="string">&quot;HelloAtomic&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyAtomicClass holder = <span class="keyword">new</span> MyAtomicClass();</span><br><span class="line">    holder.atomicValue.compareAndSet(<span class="string">&quot;HelloAtomic&quot;</span>, <span class="string">&quot;World&quot;</span>);</span><br><span class="line">	System.out.println(holder.atomicValue.get());</span><br><span class="line">	String value = holder.atomicValue.updateAndGet(<span class="keyword">new</span> UnaryOperator&lt;String&gt;() &#123;</span><br><span class="line">    	<span class="meta">@Override</span></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> String <span class="title">apply</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">      	<span class="keyword">return</span> <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">  	&#125;);</span><br><span class="line">  	System.out.println(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AtomicReferenceFieldUpdater</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyAtomicClass</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 为value字段添加原子操作</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> AtomicReferenceFieldUpdater&lt;SimpleValueHolder, String&gt; valueUpdater</span><br><span class="line">        =  AtomicReferenceFieldUpdater.newUpdater(SimpleValueHolder.class, String.class, <span class="string">&quot;value&quot;</span>);</span><br><span class="line">    <span class="comment">// 使用volatile声明</span></span><br><span class="line">	<span class="keyword">volatile</span> String value = <span class="string">&quot;HelloAtomic&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyAtomicClass holder = <span class="keyword">new</span> MyAtomicClass();</span><br><span class="line">    holder.valueUpdater.compareAndSet(holder, <span class="string">&quot;HelloAtomic&quot;</span>, <span class="string">&quot;World&quot;</span>);</span><br><span class="line">    System.out.println(holder.valueUpdater.get(holder));</span><br><span class="line">    String value = holder.valueUpdater.updateAndGet(holder, <span class="keyword">new</span> UnaryOperator&lt;String&gt;() &#123;</span><br><span class="line">    	<span class="meta">@Override</span></span><br><span class="line">    	<span class="function"><span class="keyword">public</span> String <span class="title">apply</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">      	<span class="keyword">return</span> <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">  	&#125;);</span><br><span class="line">  	System.out.println(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>AtomicReference</strong>与<strong>AtomicReferenceFieldUpdater</strong>的区别：</p>
+<blockquote>
+<p>两者的作用差不多，<code>AtomicReference</code>对字段进行包裹，<code>AtomicReferenceFieldUpdater</code>则为静态扩展字段功能</p>
+<p><code>AtomicReference</code>和<code>AtomicReferenceFIeldUpdater</code>比起来，要多创建一个对象<br>对于 32 位的机器，这个对象的头占 12 个字节，它的成员占 4 个字节，也就是多出来 16 个字节<br>对于 64 位的机器，如果启动了指针压缩，那这个对象占用的也是 16 个字节<br>对于 64 位的机器，如果没启动指针压缩，那么这个对象就会占 24 个字节，其中对象头占 16 个字节，成员占 8 个字节</p>
+<p>当要使用<code>AtomicReference</code>创建成千上万个对象时，这个开销就会变得很大</p>
+<p>因为开销的原因，一般在实例较少的情况下如单例才会选择<code>AtomicReference</code>，不然推荐使用<code>AtomicReferenceFieldUpdater</code></p>
+</blockquote>
+<h5 id="线程局部变量"><a href="#线程局部变量" class="headerlink" title="线程局部变量"></a>线程局部变量</h5><p>线程间共享变量存在不同步异常问题，有些情况并不推荐使用共享变量，如：<code>SimpleDateFormat</code>类不是线程安全的。</p>
+<p>假设有静态变量：</p>
+<p><code>public static final SimpleDateFormat dateFormat = new SimpleDateForniat(&quot;yyyy-MM-dd&quot;)；</code></p>
+<p>如果有两个线程同时执行以下操作</p>
+<p><code>String dateStamp = dateFormat.format(new DateO);</code></p>
+<p>结果可能会混乱，因为<code>dateFormat</code>内部数据可能会被并发的访问所破会。当然可以在该函数使用同步锁，但开销会很大，或者再使用时构造一个局部<code>SimpleDateForniat</code>对象，不过会有点浪费。</p>
+<p>推荐为每个线程构造实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;SimpleDateFormat&gt; initial = ThreadLocal.withInitial(() -&gt; <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd&quot;</span>));<span class="comment">// 在使用时才会初始化SimpleDateFormat</span></span><br><span class="line">SimpleDateFormat simpleDateFormat = initial.get();</span><br></pre></td></tr></table></figure>
+
+<p>在多个线程中生成随机数也存在类似的问题。Random类是线程安全的，但是如果多个线程需要等待一个共享的随机数生成器会很低效。</p>
+<p>可以通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocalRandom.current().nextInt()</span><br></pre></td></tr></table></figure>
+
+<p>来解决此问题</p>
+<h5 id="锁超时"><a href="#锁超时" class="headerlink" title="锁超时"></a>锁超时</h5><p>如果得不到锁可以执行其它逻辑，可以通过<strong>tryLock</strong>的方式获取锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mlock.tryLock()) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mlock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// do something else</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可为<strong>tryLock</strong>添加超时逻辑,<code>mlock.tryLock(100,TimeUnit.MILLISECONDS)</code></p>
+<p><code>lockInterruptibly</code>相当于无限时长的<code>tryLock</code></p>
+<p>同样锁条件也可在等待时添加超时，<code>condition.await(100,TimeUnit.MILLISECONDS)</code></p>
+<p><code>awaitUninterruptibly</code>相当于无限时长的<code>await</code>，但是不会抛出异常</p>
+<h5 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h5><p>在频繁读取少变更的情况下，可以使用读写锁来提高性能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ReentrantReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">ReentrantReadWriteLock.ReadLock readLock = lock.readLock();</span><br><span class="line">ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    readLock.lock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        readLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(<span class="keyword">double</span> data)</span> </span>&#123;</span><br><span class="line">    writeLock.lock();</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        writeLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h5><ol>
+<li><p>通过<code>Executors</code>生成线程池</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>newCachedThreadPool</td>
+<td>必要时创建新线程，空闲线程会被保留60 秒</td>
+</tr>
+<tr>
+<td>newFixedThreadPool</td>
+<td>该池包含固定数量的线程，空闲线程会一直被保留</td>
+</tr>
+<tr>
+<td>newSingleThreadExecutor</td>
+<td>只有一个线程的“ 池”， 该线程顺序执行每一个提交的任务</td>
+</tr>
+<tr>
+<td>newScheduledThreadPool</td>
+<td>用于预定执行而构建的固定线程池</td>
+</tr>
+<tr>
+<td>newSingleThreadScheduledExecutor</td>
+<td>用于预定执行而构建的单线程“ 池”</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<ol start="2">
+<li><p>相关<code>Scheduled</code>线程池的用法:<br> <code>schedule</code>：预定在指定的时间之后执行任务<br> <code>scheduleAtFixedRate</code>：预定在初始的延迟结束后， 周期性地运行给定的任务， 周期长度是period<br> <code>scheduleWithFixedDelay</code>：预定在初始的延迟结束后周期性地运行给定的任务， 在一次调用完成和下一次调用开<br> 始之间有长度为delay 的延迟</p>
+</li>
+<li><p>控制任务组</p>
+<p>  并行处理任务</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Callable&lt;T&gt;&gt; tasks = ....;</span><br><span class="line">List&lt;Future&lt;T&gt;&gt; futures = executor.invokeAll(tasks);</span><br><span class="line"><span class="keyword">for</span>(Future&lt;T&gt; result:results) &#123;</span><br><span class="line">	result.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  以上方法有个缺点，必要要所有任务执行完毕了，<code>get</code>才会开始真正执行</p>
+<p>  可通过<code>ExecutorCompletionService</code>类解决,使先完成的先返回</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ExecutorCompletionService&lt;T&gt; service = <span class="keyword">new</span> ExecutorCompletionService(executor);</span><br><span class="line"><span class="keyword">for</span> (Callable&lt;T&gt; task : tasks)</span><br><span class="line">    service,submit(task);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tasks.sizeO；i ++)</span><br><span class="line">	processFurther(service.take().get())；</span><br></pre></td></tr></table></figure></li>
+<li><p>Fork-Join框架</p>
+<p>  在未满足最小计算单位时拆分成更多小的任务进行并行操作，以提高效率</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Task&lt;T&gt; extends RecursiveTask&lt;T&gt; &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> from;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> to;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(<span class="keyword">int</span> from, <span class="keyword">int</span> to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.from = from;</span><br><span class="line">        <span class="keyword">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> T <span class="title">compute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (to - from &lt; THRESHOLD) &#123;</span><br><span class="line">            <span class="comment">// do something</span></span><br><span class="line">            <span class="keyword">return</span> T;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (from + to)/<span class="number">2</span>;</span><br><span class="line">            Task first = <span class="keyword">new</span> Task(from, mid);</span><br><span class="line">            Task second = <span class="keyword">new</span> Task(mid,to);</span><br><span class="line">            invokeAll(first, second);</span><br><span class="line">            <span class="keyword">return</span> first.join() + second.join();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Task task = <span class="keyword">new</span> Task(<span class="number">0</span>,<span class="number">100</span>);</span><br><span class="line">ForkJoinPool pool = <span class="keyword">new</span> ForkJoinPool();</span><br><span class="line">pool.invoke(task)</span><br><span class="line">task.join();</span><br></pre></td></tr></table></figure></li>
+<li><p>可完成Future【CompletableFuture】</p>
+<p>  由于单纯使用Future会造成线程阻塞，java8引用了<code>CompletableFuture</code>来对<code>Future</code>进行改进，实现异步调用的逻辑</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// 创建异步执行任务:</span></span><br><span class="line">    CompletableFuture&lt;Double&gt; cf = CompletableFuture.supplyAsync(Main::fetchPrice);</span><br><span class="line">    <span class="comment">// 如果执行成功:</span></span><br><span class="line">    cf.thenAccept((result) -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;price: &quot;</span> + result);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 如果执行异常:</span></span><br><span class="line">    cf.exceptionally((e) -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;error: &quot;</span> + e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 主线程不要立刻结束，否则CompletableFuture默认使用的线程池会立刻关闭:</span></span><br><span class="line">    Thread.sleep(<span class="number">200</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Double <span class="title">fetchPrice</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> (Math.random() &lt; <span class="number">0.3</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;fetch price failed!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">5</span> + Math.random() * <span class="number">20</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>同步器</p>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>能做什么</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CyclicBarrier</td>
+<td>允许线程集等待直至其中预定数目的线程到达一个公共障栅（ barrier)，然后可以选择执行一个处理障栅的动作</td>
+<td>当大量的线程需要在它们的结果可用之前完成时</td>
+</tr>
+<tr>
+<td>Phaser</td>
+<td>类似于循环障栅， 不过有一个可变的计数</td>
+<td>Java SE 7 中引人</td>
+</tr>
+<tr>
+<td>CountDownLatch</td>
+<td>允许线程集等待直到计数器减为0</td>
+<td>当一个或多个线程需要等待直到指定数目的事件发生</td>
+</tr>
+<tr>
+<td>Exchanger</td>
+<td>允许两个线程在要交换的对象准备好时交换对象</td>
+<td>当两个线程工作在同一数据结构的两个实例上的时候， 一个向实例添加数据而另一个从实例清除数据</td>
+</tr>
+<tr>
+<td>Samaphore</td>
+<td>允许线程集等待直到被允许继续运行为止</td>
+<td>限制访问资源的线程总数。如果许可数是1，常常阻塞线程直到另一个线程给出许可为止</td>
+</tr>
+<tr>
+<td>SynchronousQueue</td>
+<td>允许一个线程把对象交给另一个线程</td>
+<td>在没有显式同步的情况下， 当两个线程准备好将一个对象从一个线程传递到另一个时</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"># 线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/09/Java/%E4%BB%A3%E7%90%86/" rel="prev" title="代理">
+      <i class="fa fa-chevron-left"></i> 代理
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8"><span class="nav-text">线程通用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%96%AD"><span class="nav-text">线程中断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%94%81%E5%AF%B9%E8%B1%A1"><span class="nav-text">锁对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile%E5%9F%9F"><span class="nav-text">volatile域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#final%E5%8F%98%E9%87%8F"><span class="nav-text">final变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CAS"><span class="nav-text">CAS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-text">线程局部变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%94%81%E8%B6%85%E6%97%B6"><span class="nav-text">锁超时</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E9%94%81"><span class="nav-text">读写锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-text">线程池</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BenBen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yefawei" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yefawei" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备18051432号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BenBen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
