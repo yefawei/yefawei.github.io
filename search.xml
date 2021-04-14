@@ -644,7 +644,7 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>代理</title>
+    <title>线程通用</title>
     <url>/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/</url>
     <content><![CDATA[<h1 id="线程通用"><a href="#线程通用" class="headerlink" title="线程通用"></a>线程通用</h1><h5 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h5><blockquote>
 <p>早期版本中线程提供stop方法来终止线程，但该方法已经被弃用</p>
@@ -815,6 +815,43 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 </tbody></table>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ThreadLocal</title>
+    <url>/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/</url>
+    <content><![CDATA[<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><blockquote>
+<p>每个线程单独存储自己的数据，具有线程隔离的效果</p>
+</blockquote>
+<h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>每一个Thread维护一个<code>ThreadLocalMap</code>，通过<code>ThreadLocal</code>这个载体，在使用时变量为空则先创建<code>ThreadLocalMap</code>并赋值给线程再使用；<code>ThreadLocalMap</code>内部维护<code>table</code>数组，所有的数据都存在这里。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalMap</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">    Object value;</span><br><span class="line">    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;<span class="comment">// 这里有内存泄漏的风险</span></span><br><span class="line">        <span class="keyword">super</span>(k);</span><br><span class="line">        value = v;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">private</span> Entry[] table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>所以对应的关系如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">线程与ThreadLocal:一对多</span><br><span class="line">线程与ThreadLocalMap：一对一</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，每次<code>new ThreadLocal</code>时，都会对散列code自增一个固定值，来使算出的结果更为分布</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocal</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> threadLocalHashCode = nextHashCode();<span class="comment">// 每new一个都会自增一个固定值</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> AtomicInteger nextHashCode = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HASH_INCREMENT = <span class="number">0x61c88647</span>;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">nextHashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">return</span> nextHashCode.getAndAdd(HASH_INCREMENT);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="解决哈希冲突的方式"><a href="#解决哈希冲突的方式" class="headerlink" title="解决哈希冲突的方式"></a>解决哈希冲突的方式</h5><p>使用<strong>开放地址法</strong>解决哈希冲突</p>
+<p><strong>哈希冲突解决方式：</strong></p>
+<ol>
+<li><strong>开放地址法：</strong>即假设索引15已经存在值且key不同，则会查看索引16为空则设置进去，否则继续下一个索引</li>
+<li><strong>链表法：</strong>在冲突的地方以链表的形式存储：<code>HashMap</code></li>
+<li><strong>再哈希法：</strong>使用不同的哈希函数再次哈希直到不再冲突为止，缺点是增加了计算哈希的时间</li>
+<li><strong>建立公共溢出区：</strong>当发生冲突时，将冲突的数据统一放到溢出区</li>
+</ol>
+<h5 id="内存泄漏的原因"><a href="#内存泄漏的原因" class="headerlink" title="内存泄漏的原因"></a>内存泄漏的原因</h5><p>如果一个<code>ThreadLocal</code>不存在外部<strong>强引用</strong>，则key会被GC回收，这样会导致<code>ThreadLocalMap</code>中的<code>tables</code>数组里key为null，而value为强引用；除非线程退出或者调用<code>get()/set()/remove()</code>等方法触发清除，才会断开对value的强引用。</p>
+<p>总结就是因为<code>ThreadLocalMap</code>的生命周期跟<code>Thread</code>一样长，没有手动删除数据造成的内存泄漏</p>
+<p><strong>解决方式：</strong>每次用完<code>ThreadLocal</code>时都调用<code>remove()</code>方法清除数据集</p>
 ]]></content>
       <categories>
         <category>Java</category>
