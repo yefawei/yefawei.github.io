@@ -187,6 +187,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">内部类说明</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-11 23:55:12" itemprop="dateCreated datePublished" datetime="2020-11-11T23:55:12+08:00">2020-11-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="内部类说明"><a href="#内部类说明" class="headerlink" title="内部类说明"></a>内部类说明</h1><blockquote>
+<p>jdk版本：</p>
+<p>java version “1.8.0_261”<br>Java(TM) SE Runtime Environment (build 1.8.0_261-b12)<br>Java HotSpot(TM) 64-Bit Server VM (build 25.261-b12, mixed mode)</p>
+</blockquote>
+<p>编译文件说明</p>
+<ol>
+<li>内部类实际会被编译成【外部类名$内部类名.class】的字节码文件，并自动在内部类中生成一个持有外部类的【final 外部类名 this$0】的变量，由构造函数进行赋值</li>
+<li>内部接口生成的字节码文件与第一点同理，并对接口函数进行【public abstract】声明</li>
+<li>匿名内部类则会将类名赋予数字的形式处理，如【外部类名$1.class】，构造函数与第一点相同，如果有调用外部函数变量，则还会在构造函数增加该函数变量参数，并复制给【final 类型 val$别名】的变量上</li>
+<li>如果内部类有调用外部类变量，则会在外部类生成一个静态函数【static 该外部类变量 access$000(外部类实例)】供内部类在调用外部类的地方使用</li>
+</ol>
+<p>注：以上提到的美元符号的名命【this$0 access$000 val$name】在不同的编译器和调用情况会有所不同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file name:Handler.java</span></span><br><span class="line"><span class="comment">// 源文件</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String mName;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(String name)</span> </span>&#123;<span class="comment">// 匿名内部类有调用该参数，编译时会被声明为final</span></span><br><span class="line">        mName = name;</span><br><span class="line">        <span class="keyword">new</span> RealHandler().handle();</span><br><span class="line">        <span class="comment">// 匿名内部类</span></span><br><span class="line">        <span class="keyword">new</span> IntHandler()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(name); <span class="comment">// 匿名内部类调用外部函数变量</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 内部类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealHandler</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(mName); <span class="comment">// 内部类调用外部变量</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 内部接口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IntHandler</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>外部类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file name:Handler.class</span></span><br><span class="line"><span class="comment">// 反编译文件</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String mName;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Handler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(<span class="keyword">final</span> String var1)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mName = var1;</span><br><span class="line">        (<span class="keyword">new</span> Handler.RealHandler()).handle();</span><br><span class="line">        Handler.IntHandler var10001 = <span class="keyword">new</span> Handler.IntHandler() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(var1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IntHandler</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealHandler</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">RealHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(Handler.<span class="keyword">this</span>.mName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// javap 命令文件</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Handler</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(java.lang.String)</span></span>;</span><br><span class="line">  <span class="keyword">static</span> java.lang.String access$<span class="number">000</span>(Handler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>匿名内部类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file name:Handler$1.class</span></span><br><span class="line"><span class="comment">// 反编译文件</span></span><br><span class="line"><span class="keyword">import</span> Handler.IntHandler;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handler</span>$1 <span class="keyword">implements</span> <span class="title">IntHandler</span> </span>&#123;</span><br><span class="line">    Handler$<span class="number">1</span>(Handler var1, String var2) &#123;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">this</span>$<span class="number">0</span> = var1;</span><br><span class="line">        <span class="keyword">this</span>.val$name = var2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.val$name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// javap 命令文件</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handler</span>$1 <span class="keyword">implements</span> <span class="title">Handler</span>$<span class="title">IntHandler</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> java.lang.String val$name;</span><br><span class="line">  <span class="keyword">final</span> Handler <span class="keyword">this</span>$<span class="number">0</span>;</span><br><span class="line">  Handler$<span class="number">1</span>(Handler, java.lang.String);</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1248,92 +1340,6 @@ public @interface 注解名称&#123;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Java核心技术卷一基础知识-笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-13 21:16:32" itemprop="dateCreated datePublished" datetime="2020-09-13T21:16:32+08:00">2020-09-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
-<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
-<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
-</ol>
-<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
-
-<p>带资源try方式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1403,7 +1409,7 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1416,7 +1422,7 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
