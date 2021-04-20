@@ -949,6 +949,108 @@ public @interface 注解名称&#123;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">Ubuntu环境变量</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-16 22:18:01" itemprop="dateCreated datePublished" datetime="2020-09-16T22:18:01+08:00">2020-09-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
+<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
+</li>
+<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
+</li>
+<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
+</li>
+<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
+</li>
+<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
+</li>
+</ul>
+<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
+<li><p>临时设置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>当前用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
+<li><p>所有用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1246,112 +1348,6 @@ public @interface 注解名称&#123;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/" class="post-title-link" itemprop="url">线程安全的集合</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-15 21:30:21" itemprop="dateCreated datePublished" datetime="2020-09-15T21:30:21+08:00">2020-09-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ConcurrentHashMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListSet</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentLinkedQueue</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArrayList</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArraySet</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1421,20 +1417,20 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
