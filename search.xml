@@ -951,4 +951,50 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <tag>Python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Java核心技术卷二高级特性-笔记</title>
+    <url>/2020/09/18/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%BA%8C%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="Java-SE-8-流库"><a href="#Java-SE-8-流库" class="headerlink" title="Java SE 8 流库"></a>Java SE 8 流库</h5><blockquote>
+<p>参考：<a href="https://blog.csdn.net/Al_assad/article/details/82356845">https://blog.csdn.net/Al_assad/article/details/82356845</a></p>
+</blockquote>
+<h5 id="IO-流"><a href="#IO-流" class="headerlink" title="IO 流"></a>IO 流</h5><ul>
+<li>重点关注内存映射：<code>FileChannel</code></li>
+</ul>
+<h5 id="时间类"><a href="#时间类" class="headerlink" title="时间类"></a>时间类</h5><ul>
+<li><code>Date</code></li>
+<li><code>SimpleDateFormat</code> 和 <code>Calendar</code></li>
+<li><code>LocalDateTime</code> 和 <code>DateTimeFormatter</code></li>
+</ul>
+<h5 id="Shocket-通讯"><a href="#Shocket-通讯" class="headerlink" title="Shocket 通讯"></a>Shocket 通讯</h5><ul>
+<li><code>Socket</code> 和 <code>ServerSocket</code></li>
+<li><code>URL</code> 和 <code>HttpURLConnection</code></li>
+<li>重点关注可中断套接字：<code>SocketChannel</code>、<code>Channels.newInputStream</code> 、 <code>Channels.newOutputStream</code>、<code>DatagramChannel</code>、<code>MulticastChannel</code></li>
+<li>UDP通讯：<code>DatagramSocket</code>和<code>DatagramPacket</code>【只允许发送到指定目标地址】</li>
+<li>UDP 多点通讯：<code>MulticastSocket</code>【组播】</li>
+</ul>
+<h5 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h5><p>每个Java程序至少拥有三个类加载器，除引导类加载器外，每个类加载器都有父类加载器【注：双亲委派机制】</p>
+<ul>
+<li><p>引导类加载器【通常由C语言实现】</p>
+</li>
+<li><p>扩展类加载器【用于加载<code>jre/lib/ext</code>类文件】</p>
+</li>
+<li><p>系统类加载器（又名应用类加载器）【用于加载应用类文件】</p>
+</li>
+<li><p>自定义类加载器</p>
+<p>需要重写<code>findClass</code>函数，在超类的<code>loadClass</code>委托其父类加载器加载失败时会调用<code>findClass</code>方法</p>
+<p>在<code>findClass</code>函数内加载到类数据时需要调用超类<code>defineClass</code>方法，向虚拟机提供字节码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] classData = ...;<span class="comment">// 加载类字节码数据</span></span><br><span class="line">        <span class="keyword">return</span> defineClass(name,classData,off,len);<span class="comment">// 加载字节码并返回</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="消息摘要"><a href="#消息摘要" class="headerlink" title="消息摘要"></a>消息摘要</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// MD5 SHA-1 SHA-256 SHA-384 SHA-512....M</span></span><br><span class="line">MessageDigest digest = MessageDigest.getInstance(<span class="string">&quot;MD5&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(;;) &#123;</span><br><span class="line">    digest.update(<span class="keyword">byte</span>[]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">byte</span>[] result = digest.digest();</span><br></pre></td></tr></table></figure>
+
+<h5 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h5><p><code>KeyGenerator</code>、<code>SecureRandom</code>、<code>Cipher</code>、<code>KeyPairGenerator</code></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>书籍</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
 </search>
