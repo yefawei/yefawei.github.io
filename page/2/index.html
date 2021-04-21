@@ -187,6 +187,119 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/" class="post-title-link" itemprop="url">HashMap</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-15 22:31:01" itemprop="dateCreated datePublished" datetime="2020-09-15T22:31:01+08:00">2020-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
+<p> 参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
+</blockquote>
+<h5 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h5><ol>
+<li><p>数据结构？</p>
+<p>答：数组加链表法</p>
+</li>
+<li><p>怎么插入数据？</p>
+<p>答：链表头插法，即：链表中最新的数据插在链表头</p>
+</li>
+<li><p>哈希冲突怎么预防？</p>
+<p>答：二次哈希 or 扰动函数</p>
+</li>
+<li><p>怎么解决哈希冲突？</p>
+<p>答：链表法，其它方案：再哈希、开放寻址、公共溢出区</p>
+</li>
+<li><p>默认容量多少？</p>
+<p>答：16</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：重新计算哈希和索引</p>
+</li>
+<li><p>内部数组是什么时候创建的？</p>
+<p>答：第一次put的时候创建</p>
+</li>
+</ol>
+<h5 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h5><ol>
+<li><p>1.7 和 1.8 数据结构有什么不同？</p>
+<p>答：引入红黑树</p>
+</li>
+<li><p>1.7 和 1.8 往链表上插数据的方式有什么不同？<br>答：从头插法改为尾部插入</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：对老数组进行与运算，判断值是否等于0，等于0在低位，否则在高位</p>
+</li>
+<li><p>HashMap 什么时候会把链表转化为红黑树？</p>
+<p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
+</li>
+</ol>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -967,7 +1080,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -980,7 +1093,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

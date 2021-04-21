@@ -949,6 +949,128 @@ public @interface 注解名称&#123;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Linux 学习笔记-解压缩命令详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-17 22:09:43" itemprop="dateCreated datePublished" datetime="2020-09-17T22:09:43+08:00">2020-09-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linux-学习笔记-解压缩命令详解"><a href="#Linux-学习笔记-解压缩命令详解" class="headerlink" title="Linux 学习笔记-解压缩命令详解"></a>Linux 学习笔记-解压缩命令详解</h1><h2 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h2><pre><code>独立命令：
+    -c: 建立压缩档案
+    -x：解压
+    -t：查看内容
+    -r：向压缩归档文件末尾追加文件
+    -u：更新原压缩包中的文件
+    注意：这五个是独立的命令，压缩解压都要用到其中一个，可以和别的命令连用但只能用其中一个。
+
+下面的参数是根据需要在压缩或解压档案时可选的。
+    -z：有gzip属性的
+    -j：有bz2属性的
+    -Z：有compress属性的
+    -v：显示所有过程
+    -O：将文件解开到标准输出
+
+下面的参数-f是必须的
+    -f: 使用档案名字，切记，这个参数是最后一个参数，后面只能接档案名。
+
+tar -cf all.tar *.jpg     // 这条命令是将所有.jpg的文件打成一个名为all.tar的包。-c是表示产生新的包，-f指定包的文件名。
+tar -rf all.tar *.gif     // 这条命令是将所有.gif的文件增加到all.tar的包里面去。-r是表示增加文件的意思。
+tar -uf all.tar logo.gif  // 这条命令是更新原来tar包all.tar中logo.gif文件，-u是表示更新文件的意思。
+tar -tf all.tar           // 这条命令是列出all.tar包中所有文件，-t是列出文件的意思
+tar -xf all.tar           // 这条命令是解出all.tar包中所有文件，-x是解开的意思
+</code></pre>
+<h2 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h2><pre><code>tar –cvf jpg.tar *.jpg //将目录里所有jpg文件打包成tar.jpg
+tar –czf jpg.tar.gz *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一  个gzip压缩过的包，命名为jpg.tar.gz
+tar –cjf jpg.tar.bz2 *.jpg //将目录里所有jpg文件打包成jpg.tar后，并且将其用bzip2压缩，生成一个bzip2压缩过的包，命名为jpg.tar.bz2
+tar –cZf jpg.tar.Z *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用compress压缩，生成一个umcompress压缩过的包，命名为jpg.tar.Z
+rar a jpg.rar *.jpg //rar格式的压缩，需要先下载rar for linux
+zip jpg.zip *.jpg //zip格式的压缩，需要先下载zip for linux
+</code></pre>
+<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><pre><code>tar –xvf file.tar //解压 tar包
+tar -xzvf file.tar.gz //解压tar.gz
+tar -xjvf file.tar.bz2   //解压 tar.bz2
+tar –xZvf file.tar.Z   //解压tar.Z
+unrar e file.rar //解压rar
+unzip file.zip //解压zip
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre><code>(1) *.tar 用 tar –xvf 解压
+(2) *.gz 用 gzip -d或者gunzip 解压
+(3) *.tar.gz和*.tgz 用 tar –xzf 解压
+(4) *.bz2 用 bzip2 -d或者用bunzip2 解压
+(5) *.tar.bz2用tar –xjf 解压
+(6) *.Z 用 uncompress 解压
+(7) *.tar.Z 用tar –xZf 解压
+(8) *.rar 用 unrar e解压
+(9) *.zip 用 unzip 解压
+</code></pre>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1140,119 +1262,6 @@ public @interface 注解名称&#123;
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/" class="post-title-link" itemprop="url">HashMap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-15 22:31:01" itemprop="dateCreated datePublished" datetime="2020-09-15T22:31:01+08:00">2020-09-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
-<p> 参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
-</blockquote>
-<h5 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h5><ol>
-<li><p>数据结构？</p>
-<p>答：数组加链表法</p>
-</li>
-<li><p>怎么插入数据？</p>
-<p>答：链表头插法，即：链表中最新的数据插在链表头</p>
-</li>
-<li><p>哈希冲突怎么预防？</p>
-<p>答：二次哈希 or 扰动函数</p>
-</li>
-<li><p>怎么解决哈希冲突？</p>
-<p>答：链表法，其它方案：再哈希、开放寻址、公共溢出区</p>
-</li>
-<li><p>默认容量多少？</p>
-<p>答：16</p>
-</li>
-<li><p>扩容后存储位置的计算方式？</p>
-<p>答：重新计算哈希和索引</p>
-</li>
-<li><p>内部数组是什么时候创建的？</p>
-<p>答：第一次put的时候创建</p>
-</li>
-</ol>
-<h5 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h5><ol>
-<li><p>1.7 和 1.8 数据结构有什么不同？</p>
-<p>答：引入红黑树</p>
-</li>
-<li><p>1.7 和 1.8 往链表上插数据的方式有什么不同？<br>答：从头插法改为尾部插入</p>
-</li>
-<li><p>扩容后存储位置的计算方式？</p>
-<p>答：对老数组进行与运算，判断值是否等于0，等于0在低位，否则在高位</p>
-</li>
-<li><p>HashMap 什么时候会把链表转化为红黑树？</p>
-<p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
-</li>
-</ol>
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1322,7 +1331,7 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1335,7 +1344,7 @@ public @interface 注解名称&#123;
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
