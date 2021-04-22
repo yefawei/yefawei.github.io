@@ -1220,4 +1220,94 @@ unzip file.zip //解压zip
         <tag>解压缩命令</tag>
       </tags>
   </entry>
+  <entry>
+    <title>正则</title>
+    <url>/2020/09/19/%E6%AD%A3%E5%88%99/</url>
+    <content><![CDATA[<h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>匹配除“\n”和”\r”之外的任何单个字符。要匹配包括“\n”和”\r”在内的任何字符，请使用像“[\s\S]”的模式。</td>
+<td></td>
+</tr>
+<tr>
+<td>^</td>
+<td>匹配输入字行首。如果设置了RegExp对象的Multiline属性，^也匹配“\n”或“\r”之后的位置。</td>
+<td></td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配输入行尾。如果设置了RegExp对象的Multiline属性，$也匹配“\n”或“\r”之前的位置。</td>
+<td></td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配前面的子表达式任意次。例如，zo<em>能匹配“z”，也能匹配“zo”以及“zoo”。</em>等价于{0,}。</td>
+<td></td>
+</tr>
+<tr>
+<td>+</td>
+<td>匹配前面的子表达式一次或多次(大于等于1次）。例如，“zo+”能匹配“zo”以及“zoo”，但不能匹配“z”。+等价于{1,}。</td>
+<td></td>
+</tr>
+<tr>
+<td>?</td>
+<td>匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。</td>
+<td></td>
+</tr>
+<tr>
+<td>?</td>
+<td>当该字符紧跟在任何一个其他限制符（*,+,?，{n}，{n,}，{n,m}）后面时，匹配模式是非贪婪的。</td>
+<td></td>
+</tr>
+<tr>
+<td>{n} {n,}{n,m}</td>
+<td>匹配确定的<em>n</em>次 / 至少匹配<em>n</em>次 / 最少匹配<em>n</em>次且最多匹配<em>m</em>次</td>
+<td></td>
+</tr>
+<tr>
+<td>[]</td>
+<td>字符集合</td>
+<td></td>
+</tr>
+<tr>
+<td>|</td>
+<td>将两个匹配条件进行逻辑“或”（or）运算</td>
+<td></td>
+</tr>
+<tr>
+<td>\d \D</td>
+<td>匹配一个数字字符。等价于[0-9] / 匹配一个非数字字符。等价于[^0-9]</td>
+<td></td>
+</tr>
+<tr>
+<td>\s \S</td>
+<td>匹配任何不可见字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。/ 匹配任何可见字符。等价于[^\f\n\r\t\v]。</td>
+<td></td>
+</tr>
+<tr>
+<td>\w \W</td>
+<td>匹配字母、数字、下划线。等价于 [A-Za-z0-9_] / 匹配任何非单词字符,等价于“[^A-Za-z0-9]”</td>
+<td></td>
+</tr>
+<tr>
+<td>()</td>
+<td>组</td>
+<td></td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>正则</category>
+      </categories>
+      <tags>
+        <tag>正则</tag>
+      </tags>
+  </entry>
 </search>
