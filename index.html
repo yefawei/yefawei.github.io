@@ -857,6 +857,251 @@ public @interface 注解名称&#123;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Kotlin-语法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-20 15:23:51" itemprop="dateCreated datePublished" datetime="2020-09-20T15:23:51+08:00">2020-09-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><ol>
+<li><p>中缀表达式</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明</span></span><br><span class="line"><span class="keyword">infix</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;A, B&gt;</span> A.<span class="title">to</span><span class="params">(that : <span class="type">B</span>)</span></span>: Pair&lt;A, B&gt;</span><br><span class="line"><span class="comment">// 使用： A 中缀方法 B</span></span><br><span class="line"><span class="number">1</span> to <span class="number">2</span></span><br></pre></td></tr></table></figure></li>
+<li><p>可变参数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// varargs，类似于java的 ... ，但是位置没有限制</span></span><br><span class="line"><span class="comment">// 可以使用 * 来传入外部的变量作为可变参数的变量</span></span><br><span class="line"><span class="keyword">val</span> letters = arrayof(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>)</span><br><span class="line">printLetters(*letters)</span><br></pre></td></tr></table></figure></li>
+<li><p>原生字符串</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> str = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    123</span></span><br><span class="line"><span class="string">    abc</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>判断</p>
+<ul>
+<li>结构相等：== ，判断内容是否相等</li>
+<li>引用相等：=== ， 判断引用是否一样</li>
+</ul>
+</li>
+<li><p>区间</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 区间[IntRange]</span></span><br><span class="line"><span class="number">1</span> .. <span class="number">10</span> <span class="comment">// [1,...,10]</span></span><br><span class="line"><span class="number">1</span> until <span class="number">10</span> <span class="comment">// [1,...,9)</span></span><br><span class="line"><span class="number">10</span> downTo <span class="number">1</span> <span class="comment">// [10,9...1]</span></span><br><span class="line"><span class="number">1</span> .. <span class="number">10</span> step <span class="number">2</span> <span class="comment">// [1,3,5...]</span></span><br></pre></td></tr></table></figure></li>
+<li><p>遍历</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 遍历</span></span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> array) &#123;&#125;</span><br><span class="line"><span class="comment">// 获取索引</span></span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> array.indices) &#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>延迟初始化：<code>by lazy</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认线程安全</span></span><br><span class="line"><span class="keyword">val</span> str <span class="keyword">by</span> lazy &#123; <span class="string">&quot;str&quot;</span> &#125;</span><br><span class="line"><span class="comment">// 并行模式</span></span><br><span class="line"><span class="keyword">val</span> str <span class="keyword">by</span> lazy(LazyThreadSafetyMode.PUBLICATION) &#123; <span class="string">&quot;str&quot;</span> &#125;</span><br><span class="line"><span class="comment">// 不做任何线程安全保证，也不会有任何线程开销</span></span><br><span class="line"><span class="keyword">val</span> str <span class="keyword">by</span> lazy(LazyThreadSafetyMode.NONE) &#123; <span class="string">&quot;str&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>变量必须是不可以变的：<code>val</code></li>
+<li>在首次调用时才会初始化</li>
+<li><code>lazy</code>属性会默认加入同步锁，在同一时刻只允许一个线程堆lazy属性进行初始化</li>
+</ul>
+</li>
+<li><p>函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lambda 表达式</span></span><br><span class="line"><span class="keyword">val</span> foo = &#123;x: <span class="built_in">Int</span>, y: <span class="built_in">Int</span> -&gt; x + y&#125; <span class="comment">// foo.invoke(1, 2) 或 foo(1, 2)</span></span><br><span class="line"><span class="comment">// lambda 表达式函数体</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">foo</span><span class="params">(x: <span class="type">Int</span>)</span></span> = &#123;y: <span class="built_in">Int</span> -&gt; x + y&#125; <span class="comment">// foo(1).invoke(2) 或 foo(1)(2)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>匿名内部类</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lambda 表达式</span></span><br><span class="line"><span class="keyword">val</span> runnable = Runnable&#123;&#125;</span><br><span class="line"><span class="comment">// 匿名实现类</span></span><br><span class="line"><span class="keyword">val</span> runnable = <span class="keyword">object</span> : Runnable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 或匿名内部类</span></span><br><span class="line">executor.submit(<span class="keyword">object</span>:Runnable&#123;...&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ol start="10">
+<li><p>密封类：<code>sealed</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sealed</span> <span class="class"><span class="keyword">class</span> <span class="title">State</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuccessStatus</span>:<span class="type">Status</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErrorStatus</span>:<span class="type">Status</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>要继承必须将子类定义在同一个文件中</li>
+</ul>
+</li>
+<li><p>内联类</p>
+<blockquote>
+<p>类似于包装类型，在编译时会把实际值替换到调用处<br>由于 <code>Kotlin</code> 不能使用<code>IntDef</code>模拟枚举的调用，可以考虑内联类来模拟枚举</p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="class"><span class="keyword">class</span> <span class="title">State</span></span>(<span class="keyword">val</span> ordinal:<span class="built_in">Int</span>)</span><br><span class="line">	<span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">		<span class="comment">// 模拟枚举</span></span><br><span class="line">		<span class="keyword">val</span> Idle = State(<span class="number">0</span>)</span><br><span class="line">		<span class="keyword">val</span> Busy = State(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>可见性修饰符</p>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">含义</th>
+<th align="center">与Java比较</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">public</td>
+<td align="center"><code>Kotlin</code>中默认修饰符，全局可见</td>
+<td align="center">与Java中public效果相同</td>
+</tr>
+<tr>
+<td align="center">protected</td>
+<td align="center">受保护修饰符，类及子类可见</td>
+<td align="center">含义一致，作用域除了类和子类，包内也可见</td>
+</tr>
+<tr>
+<td align="center">private</td>
+<td align="center">私有修饰符，类内修饰只有本类可见，类外修饰文件内可见</td>
+<td align="center">私有修饰符，只有类内可见</td>
+</tr>
+<tr>
+<td align="center">internal</td>
+<td align="center">模块内可见</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>内部类和静态内部类</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OutClass</span></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">StaticClass</span></span>&#123;&#125; <span class="comment">// 静态内部类</span></span><br><span class="line">	<span class="keyword">inner</span> <span class="class"><span class="keyword">class</span> <span class="title">InnerClass</span></span>&#123;&#125; <span class="comment">// 内部类</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>委托代替接口实现</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">CanFly</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">fly</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Flyer</span> : <span class="type">CanFly &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">fly</span><span class="params">()</span></span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span></span>(flyer: Flyer) : CanFly <span class="keyword">by</span> flyer</span><br></pre></td></tr></table></figure></li>
+<li><p>解构</p>
+<blockquote>
+<p>普通类想要使用结构方式可以手动写component1 component2一一对应的结构函数</p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数据类最多支持五个参数的解构</span></span><br><span class="line"><span class="keyword">val</span> pair = Pair(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">val</span> triple = Triple(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">val</span> (n1, n2) = pair</span><br><span class="line"><span class="keyword">val</span> (a, b, c) = triple</span><br></pre></td></tr></table></figure></li>
+<li><p>伴生类</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OutClass</span></span>&#123;</span><br><span class="line">	<span class="keyword">companion</span> <span class="keyword">object</span> &#123; <span class="comment">//相对于饿汉式静态内部类，全局只有一个实例</span></span><br><span class="line">		<span class="function"><span class="keyword">fun</span> <span class="title">testFun</span><span class="params">()</span></span> &#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>object</code> 单例</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> Child</span><br></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">   <span class="meta">@NotNull</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Child INSTANCE;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">Child</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">   <span class="keyword">static</span> &#123;</span><br><span class="line">      INSTANCE = <span class="keyword">new</span> Child();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>操作符</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj:TestData? = <span class="literal">null</span></span><br><span class="line"><span class="keyword">val</span> result = obj?.value ?: -<span class="number">1</span> <span class="comment">// 如果 obj 为空，则返回 1</span></span><br><span class="line"><span class="keyword">val</span> result = obj!!.value <span class="comment">// 明确知道obj不为空</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> stu: Student? = getStu() <span class="keyword">as</span> Student <span class="comment">// 强制转换，如果为空会报错</span></span><br><span class="line"><span class="keyword">val</span> stu: Student? = getStu() <span class="keyword">as</span>? Student <span class="comment">// 强制转换，如果 getStu 返回空，则转换为空</span></span><br></pre></td></tr></table></figure></li>
+<li><p>泛型内联特化</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;<span class="keyword">reified</span> T&gt;</span> <span class="title">method</span><span class="params">(t:<span class="type">T</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">val</span> ts = Array&lt;T&gt;(<span class="number">3</span>)&#123;&#125;</span><br><span class="line">	<span class="keyword">val</span> jclass = T::<span class="keyword">class</span>.java</span><br><span class="line">	<span class="keyword">val</span> list = ArrayList&lt;T&gt;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>数组</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> a1 = arrayOf(o1, o2, o3) <span class="comment">// 普通数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> a2 = intArrayOf(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">// 基本数据类型数组：longArrayOf、floatArrayOf、doubleArrayOf....</span></span><br></pre></td></tr></table></figure></li>
+<li><p>泛型多继承</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Ground</span></span></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">Fruit</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Water</span>: <span class="type">Fruit</span></span>(),Ground</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">cut</span><span class="params">(t: <span class="type">T</span>)</span></span> <span class="keyword">where</span> T : Fruit, T : Ground &#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>作用域操作符</p>
+<ul>
+<li>如果需要返回自身的：apply{this} 或 also{it}</li>
+<li>不需要返回自身的：run{this}或let{it}</li>
+<li>满足条件才执行：<code>data.takeIf &#123; it.age &gt;= 18 &#125;.let &#123;...&#125;</code></li>
+<li>不满足条件才执行：<code>data.takeUnless &#123; it.age &gt;= 18 &#125;.let &#123;...&#125;</code></li>
+</ul>
+</li>
+<li><p><code>with</code> 和 <code>apply</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, R&gt;</span> <span class="title">with</span><span class="params">(receiver: <span class="type">T</span>, block: <span class="type">T</span>.() -&gt; <span class="type">R</span>)</span></span>: R</span><br><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> T.<span class="title">apply</span><span class="params">(block: <span class="type">T</span>.() -&gt; <span class="type">Unit</span>)</span></span>: T</span><br></pre></td></tr></table></figure></li>
+<li><p>惰性求值：序列</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> list = listOf(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 该操作会产生两个临时集合来记录元素，如果元素非常多时，就会有效率问题</span></span><br><span class="line">list.filter &#123;it &gt; <span class="number">2</span>&#125;.map &#123;it * <span class="number">2</span>&#125;                                                                                             </span><br><span class="line"><span class="comment">// 通过惰性求值减少临时集合的情况</span></span><br><span class="line">list.asSequence().filter &#123;it &gt; <span class="number">2</span>&#125;.map &#123;it * <span class="number">2</span>&#125;.toList()</span><br></pre></td></tr></table></figure></li>
+<li><p>无限序列</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> naturalNumList = generateSequence(<span class="number">0</span>) &#123;it + <span class="number">1</span>&#125;</span><br><span class="line">naturalNumList.takeWhile &#123;it &lt;= <span class="number">9</span>&#125;.toList()</span><br></pre></td></tr></table></figure></li>
+<li><p>内联函数</p>
+<blockquote>
+<p>内联函数能将函数内容编译到调用处，减少函数调用</p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="title">cost</span><span class="params">(block:() -&gt; <span class="type">Unit</span>)</span></span></span><br><span class="line"><span class="comment">// crossinline 禁止传递的block函数调用 r eturn 方法</span></span><br><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="title">cost</span><span class="params">(<span class="keyword">crossinline</span> block:() -&gt; <span class="type">Unit</span>)</span></span></span><br><span class="line"><span class="comment">// noinline 该函数参数不做内联</span></span><br><span class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="title">cost</span><span class="params">(<span class="keyword">noinline</span> block:() -&gt; <span class="type">Unit</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>内联函数注意事项</p>
+<ul>
+<li>由于JVM对普通函数有内联优化，所以普通函数比一定要采用内联函数，这样只会增加复杂性</li>
+<li>尽量避免有大量函数体的函数进行内联，这样会增加字节码数量</li>
+<li>内联函数无法使用闭包成员【闭包：内部函数持有外部函数变量】</li>
+</ul>
+</li>
+<li><p>运算符重载</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://kotlinlang.org/docs/reference/operator-overloading.html">https://kotlinlang.org/docs/reference/operator-overloading.html</a><br>operator fun 类名.重载符号(一个参数):返回值 {}</p>
+</li>
+<li><p>扩展函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;...&#125;</span><br><span class="line"><span class="comment">// 为Person类增加名为ext的扩展方法</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> Person.<span class="title">ext</span><span class="params">(s:<span class="type">Any</span>)</span></span> &#123;</span><br><span class="line">    println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>扩展属性</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> Data.extValue:boolean</span><br><span class="line">	<span class="keyword">get</span>() = <span class="keyword">this</span>.otherValue % <span class="number">2</span> == <span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>静态扩展函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> </span>&#123;</span><br><span class="line">	<span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">		<span class="keyword">val</span> age = <span class="number">10</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">fun</span> Son.Companion.<span class="title">foo</span><span class="params">()</span></span> &#123;</span><br><span class="line">    println(<span class="string">&quot;age = <span class="variable">$age</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这样就可以不创建类的情况下直接调用</span></span><br><span class="line">Son.foo()</span><br></pre></td></tr></table></figure></li>
+<li><p>代理观察者</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Data</span></span>() &#123;</span><br><span class="line">    <span class="keyword">var</span> price: <span class="built_in">Int</span> <span class="keyword">by</span> Delegates.observable(<span class="number">0</span>, &#123; property, oldValue, newValue -&gt;</span><br><span class="line">		<span class="comment">// 当price的值变更时触发该函数</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">val</span> <span class="keyword">data</span> = Data()</span><br><span class="line"><span class="keyword">data</span>.price = <span class="number">100</span></span><br></pre></td></tr></table></figure></li>
+<li><p>代理限制</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Data</span></span>() &#123;</span><br><span class="line">    <span class="keyword">var</span> price: <span class="built_in">Int</span> <span class="keyword">by</span> Delegates.vetoable(<span class="number">0</span>, &#123; property, oldValue, newValue -&gt;</span><br><span class="line">        newValue &gt; <span class="number">0</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">val</span> <span class="keyword">data</span> = Data()</span><br><span class="line"><span class="keyword">data</span>.price = <span class="number">100</span></span><br><span class="line"><span class="keyword">data</span>.price = -<span class="number">100</span> <span class="comment">// 该值不会设置成功</span></span><br></pre></td></tr></table></figure></li>
+<li><p>原始方式创建协程</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">suspend</span> &#123;</span><br><span class="line">    <span class="comment">// coroutine heandle!</span></span><br><span class="line">&#125;.createCoroutine(<span class="keyword">object</span> : Continuation&lt;<span class="built_in">Unit</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> context: CoroutineContext</span><br><span class="line">        <span class="keyword">get</span>() = Dispatchers.Default</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">resumeWith</span><span class="params">(result: <span class="type">Result</span>&lt;<span class="type">Unit</span>&gt;)</span></span> &#123;</span><br><span class="line">        <span class="comment">// Coroutine end!</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;).resume(<span class="built_in">Unit</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>顶层协程</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> job = GlobalScope.launch &#123;&#125;</span><br><span class="line">job.cancel()</span><br></pre></td></tr></table></figure></li>
+<li><p>会阻塞当前线程直到协程作用域内的代码全部执行完</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runBlocking &#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>创建子协程，必须在协程作用域内使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> job = launch&#123;&#125;</span><br><span class="line">job.cancel()</span><br></pre></td></tr></table></figure></li>
+<li><p>挂起函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 没法使用launch函数</span></span><br><span class="line"><span class="keyword">suspend</span> <span class="function"><span class="keyword">fun</span> <span class="title">name</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过coroutineScope生成带协程作用域的挂起函数</span></span><br><span class="line"><span class="keyword">suspend</span> <span class="function"><span class="keyword">fun</span> <span class="title">name</span><span class="params">()</span></span>=coroutineScope&#123;</span><br><span class="line">	launch&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意：coroutineScope也会阻塞当前协程，必须得里面的子协程执行完了才行</span></span><br><span class="line">runBlocking &#123;</span><br><span class="line">	coroutineScope &#123;</span><br><span class="line">		launch &#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 得等coroutineScope执行完了才会走到这</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 得等runBlocking执行完了才会走到这</span></span><br></pre></td></tr></table></figure></li>
+<li><p>协程统一取消</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> job = Job()</span><br><span class="line"><span class="keyword">val</span> scope = CoroutineScope(job)</span><br><span class="line">scope.launch&#123;</span><br><span class="line">	<span class="comment">// 协程域</span></span><br><span class="line">&#125;</span><br><span class="line">job.cancel()</span><br></pre></td></tr></table></figure></li>
+<li><p>超时协程</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">withTimeout(<span class="number">100</span>)&#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>返回结果的协程域</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> r1 = async&#123;</span><br><span class="line">	<span class="comment">// 返回deferred时协程就已经开始跑了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">val</span> r2 = async&#123;</span><br><span class="line">	<span class="comment">// 返回deferred时协程就已经开始跑了</span></span><br><span class="line">&#125;</span><br><span class="line">println(<span class="string">&quot;<span class="subst">$&#123;r1.await()&#125;</span> - <span class="subst">$&#123;r2.await()&#125;</span>&quot;</span>)<span class="comment">// 阻塞返回结果</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// async简化版</span></span><br><span class="line"><span class="keyword">val</span> result = withContext(Dispatchers.Dafault) &#123;&#125; <span class="comment">// 阻塞返回结果，其中Dispatchers.Dafault为低并发策略</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>suspendCoroutine</code>结合回调函数，需要在协程域和挂起函数中使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">suspend</span> <span class="function"><span class="keyword">fun</span> <span class="title">request</span><span class="params">(address:<span class="type">String</span>)</span></span>:String &#123;</span><br><span class="line">	<span class="keyword">return</span> suspendCoroutine &#123;continuation -&gt;    </span><br><span class="line">		new Thread(&#123;</span><br><span class="line">				continuation.resume(结果)<span class="comment">// 成功</span></span><br><span class="line">				continuation.resumeWithException(结果)<span class="comment">// 失败</span></span><br><span class="line">		&#125;).start()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>同步代码块和同步代码函数</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">method2</span><span class="params">()</span></span> &#123;</span><br><span class="line">    synchronized(<span class="keyword">this</span>) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Synchronized</span> <span class="function"><span class="keyword">fun</span> <span class="title">method1</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>volatile</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Volatile</span> <span class="keyword">private</span> <span class="keyword">var</span> count = <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>ReentrantLock</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> lock = ReentrantLock()</span><br><span class="line">lock.withLock &#123; method() &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>反射</p>
+<blockquote>
+<p>首次使用会比java的慢</p>
+</blockquote>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Kotlin <span class="class"><span class="keyword">class</span>：<span class="title">String</span>:<span class="type">:class 	String::class.java.kotlin</span></span></span><br><span class="line">Java <span class="class"><span class="keyword">class</span>: <span class="type">String::class.java</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>注解变更java调用命名</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@file:JvmName</span>(<span class="string">&quot;name&quot;</span>)<span class="comment">//作用于文件名</span></span><br><span class="line"><span class="meta">@get:JvmName</span>(<span class="string">&quot;name&quot;</span>)<span class="comment">//作用于变量get函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 带默认参数函数适配java调用</span></span><br><span class="line"><span class="meta">@JvmOverloads</span><span class="comment">//这样就会生成重载方法来适配默认参数</span></span><br><span class="line"></span><br><span class="line">inernal <span class="comment">// 声明的对象不想被java访问到，可以使用@JvmName(&quot;%abc&quot;)等特殊字符声明，这样java就被限制了</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/19/%E6%AD%A3%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1220,99 +1465,6 @@ unzip file.zip //解压zip
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">Ubuntu 程序后台运行的几种方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-17 21:08:03" itemprop="dateCreated datePublished" datetime="2020-09-17T21:08:03+08:00">2020-09-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Ubuntu-程序后台运行的几种方法"><a href="#Ubuntu-程序后台运行的几种方法" class="headerlink" title="Ubuntu 程序后台运行的几种方法"></a>Ubuntu 程序后台运行的几种方法</h1><blockquote>
-<p>我们经常会碰到这样的问题，用 <code>telnet/ssh</code> 登录了远程的 Linux 服务器，运行了一些耗时较长的任务， 结果却由于网络的不稳定导致任务中途失败。如何让命令提交后不受本地关闭终端窗口/网络断开连接的干扰呢？下面举了一些例子， 您可以针对不同的场景选择不同的方式来处理这个问题。</p>
-</blockquote>
-<h2 id="nohup-setsid-amp"><a href="#nohup-setsid-amp" class="headerlink" title="nohup/setsid/&amp;"></a><code>nohup/setsid/&amp;</code></h2><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a><strong>场景</strong></h3><p>如果只是临时有一个命令需要长时间运行，什么方法能最简便的保证它在后台稳定运行呢？</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a><strong>解决方法</strong></h3><p>我们知道，当用户注销 <code>(logout)</code> 或者网络断开时，终端会收到 <code>HUP(hangup)</code> 信号从而关闭其所有子进程。因此，我们的解决办法就有两种途径：要么让进程忽略 <code>HUP</code> 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。</p>
-<ol>
-<li><p><code>nohup</code><br> <code>nohup</code> 无疑是我们首先想到的办法。顾名思义，<code>nohup</code> 的用途就是让提交的命令忽略 <code>hangup</code> 信号。让我们先来看一下 <code>nohup</code> 的帮助信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NOHUP(1)                        User Commands                        NOHUP(1)</span><br><span class="line">NAME</span><br><span class="line">       nohup - run a command immune to hangups, with output to a non-tty</span><br><span class="line">SYNOPSIS</span><br><span class="line">       nohup COMMAND [ARG]...</span><br><span class="line">       nohup OPTION</span><br><span class="line">DESCRIPTION</span><br><span class="line">        Run COMMAND, ignoring hangup signals.</span><br><span class="line">       --help display this help and exit</span><br><span class="line">       --version</span><br><span class="line">              output version information and exit</span><br></pre></td></tr></table></figure>
-<p> <code>nohup</code> 的使用是十分方便的，只需在要处理的命令前加上 <code>nohup</code> 即可，标准输出和标准错误缺省会被重定向到 <code>nohup.out</code> 文件中。一般我们可在结尾加上”&amp;”来将命令同时放入后台运行，也可用 <code>&gt;filename 2&gt;&amp;1</code> 来更改缺省的重定向文件名。<br> <code>nohup</code> 示例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# nohup ping www.ibm.com &amp;</span><br><span class="line">[1] 3059</span><br><span class="line">nohup: appending output to &#39;nohup.out&#39;</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep 3059</span><br><span class="line">root      3059   984  0 21:06 pts&#x2F;3    00:00:00 ping www.ibm.com</span><br><span class="line">root      3067   984  0 21:06 pts&#x2F;3    00:00:00 grep 3059</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure></li>
-<li><p><code>setsid</code><br> <code>nohup</code> 无疑能通过忽略 HUP 信号来使我们的进程避免中途被中断，但如果我们换个角度思考，如果我们的进程不属于接受 <code>HUP</code> 信号的终端的子进程，那么自然也就不会受到 HUP 信号的影响了。<code>setsid</code> 就能帮助我们做到这一点。让我们先来看一下 <code>setsid</code> 的帮助信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SETSID(8)                 Linux Programmer’s Manual                 SETSID(8)</span><br><span class="line">NAME</span><br><span class="line">       setsid - run a program in a new session</span><br><span class="line">SYNOPSIS</span><br><span class="line">       setsid program [ arg ... ]</span><br><span class="line">DESCRIPTION</span><br><span class="line">       setsid runs a program in a new session.</span><br></pre></td></tr></table></figure>
-<p> 可见 <code>setsid</code> 的使用也是非常方便的，也只需在要处理的命令前加上 <code>setsid</code> 即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# setsid ping www.ibm.com</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep www.ibm.com</span><br><span class="line">root     31094     1  0 07:28 ?        00:00:00 ping www.ibm.com</span><br><span class="line">root     31102 29217  0 07:29 pts&#x2F;4    00:00:00 grep www.ibm.com</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure>
-<p> 值得注意的是，上例中我们的进程 <code>ID(PID)</code> 为 31094，而它的父 <code>ID(PPID)</code> 为1（即为 <code>init</code> 进程 <code>ID</code>），并不是当前终端的进程 <code>ID</code>。请将此例与 <code>nohup</code> 例中的父 <code>ID</code> 做比较。</p>
-</li>
-<li><p>&amp;<br>这里还有一个关于 <code>subshell</code> 的小技巧。我们知道，将一个或多个命名包含在“()”中就能让这些命令在子 <code>shell</code> 中运行中，从而扩展出很多有趣的功能，我们现在要讨论的就是其中之一。<br><br><br>当我们将”&amp;”也放入“()”内之后，我们就会发现所提交的作业并不在作业列表中，也就是说，是无法通过 <code>jobs</code> 来查看的。让我们来看看为什么这样就能躲过 <code>HUP</code> 信号的影响吧。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# (ping www.ibm.com &amp;)</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep www.ibm.com</span><br><span class="line">root     16270     1  0 14:13 pts&#x2F;4    00:00:00 ping www.ibm.com</span><br><span class="line">root     16278 15362  0 14:13 pts&#x2F;4    00:00:00 grep www.ibm.com</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="disown"><a href="#disown" class="headerlink" title="disown"></a>disown</h2><h3 id="场景-1"><a href="#场景-1" class="headerlink" title="场景"></a><strong>场景</strong></h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1382,20 +1534,20 @@ unzip file.zip //解压zip
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
