@@ -20,15 +20,21 @@
     var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BenBen">
-<meta property="og:url" content="https://yefawei.github.io/tags/%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4/index.html">
+  <meta name="description" content="Android 中的线程模型前置知识线程调度原理 任一时刻，一个 CPU 核心只有一个线程处于运行状态 多线程并发，轮流获取 CPU 使用权  线程调度模型 分时调度模型：轮流获取、均分 CPU 抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高  Android 线程调度采用抢占式调度模型  nice 值，【注意】nice值不是优先级 Process 中定义，值越小优先级越高，默认时 T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 中的线程模型">
+<meta property="og:url" content="https://yefawei.github.io/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="Android 中的线程模型前置知识线程调度原理 任一时刻，一个 CPU 核心只有一个线程处于运行状态 多线程并发，轮流获取 CPU 使用权  线程调度模型 分时调度模型：轮流获取、均分 CPU 抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高  Android 线程调度采用抢占式调度模型  nice 值，【注意】nice值不是优先级 Process 中定义，值越小优先级越高，默认时 T">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-10T15:45:22.000Z">
+<meta property="article:modified_time" content="2021-04-26T14:31:00.249Z">
 <meta property="article:author" content="BenBen">
+<meta property="article:tag" content="线程">
+<meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://yefawei.github.io/tags/%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="https://yefawei.github.io/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -36,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 解压缩命令 | BenBen</title>
+  <title>Android 中的线程模型 | BenBen</title>
   
 
 
@@ -181,51 +187,118 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">解压缩命令
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 中的线程模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-10 23:45:22" itemprop="dateCreated datePublished" datetime="2020-11-10T23:45:22+08:00">2020-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
+<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
+<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
+</ul>
+<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
+<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
+<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
+</ul>
+<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
+<ol>
+<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
+<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>priority</code>优先级</p>
+<p>线程优先级，值越大优先级越高</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>cgroup</code></p>
+<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
+</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
+<li>优先级具有继承性</li>
+<li>正确认识任务重要性决定优先级</li>
+<li>线程必须命名，以定位归属</li>
+<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
+</ul>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-09-17T22:09:43+08:00"
-              content="2020-09-17">
-          09-17
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag"># 线程</a>
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" itemprop="url">
-            <span itemprop="name">Linux 学习笔记-解压缩命令详解</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/" rel="prev" title="ThreadLocal">
+      <i class="fa fa-chevron-left"></i> ThreadLocal
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/" rel="next" title="内部类说明">
+      内部类说明 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -278,6 +351,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">Android 中的线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86"><span class="nav-text">线程调度原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="nav-text">线程调度模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="nav-text">Android 线程调度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">注意事项</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

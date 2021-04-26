@@ -1626,4 +1626,43 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <tag>Python</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Android 中的线程模型</title>
+    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
+<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
+<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
+</ul>
+<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
+<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
+<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
+</ul>
+<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
+<ol>
+<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
+<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>priority</code>优先级</p>
+<p>线程优先级，值越大优先级越高</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>cgroup</code></p>
+<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
+</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
+<li>优先级具有继承性</li>
+<li>正确认识任务重要性决定优先级</li>
+<li>线程必须命名，以定位归属</li>
+<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>线程</tag>
+        <tag>Android</tag>
+      </tags>
+  </entry>
 </search>
