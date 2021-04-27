@@ -1665,4 +1665,156 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <tag>Android</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Git</title>
+    <url>/2020/11/14/Git/Git/</url>
+    <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h5 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h5><p><strong>分支：</strong>一个指向特定提交记录的<strong>引用</strong></p>
+<p><strong>指针：</strong>当前操作位置的<strong>引用</strong></p>
+<p><strong>本地指针：</strong>我们能操作位置的引用</p>
+<img src="/2020/11/14/Git/Git/仓库说明.png">
+
+
+
+<h5 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h5><ol>
+<li><p>拉取分支</p>
+<p><code>git clone [url] &lt;目录名&gt;</code></p>
+</li>
+<li><p>推送变更到远程仓库</p>
+<p><code>git push</code></p>
+<p><img src="/2020/11/14/Git/Git/push.png"></p>
+<p>注意：如上图所示，将 4 推送到仓库需要 <code>remote</code> 仓库的 <code>HEAD</code> 指向非 <code>master</code> 分支或指向 <code>hash</code></p>
+</li>
+<li><p>将远端镜像更新到本地【注：本地head指向并没有发生改变】</p>
+<p><code>git fetch</code></p>
+<p><img src="/2020/11/14/Git/Git/fetch.png"></p>
+<p>需要手动合并分支：<code>git merge origin/[分支名]</code></p>
+</li>
+<li><p>获取变更并合并【注：本地head会指向最新变更】</p>
+<p><code>git pull</code></p>
+<p>相当于：<code>git fetch</code>和<code>git merge origin/[分支名]</code></p>
+</li>
+<li><p>分支</p>
+<p>创建分支：<code>git branch [分支名]</code></p>
+<p>切换分支：<code>git checkout [分支名]</code></p>
+<p><code>HEAD</code>指向提交记录：<code>git checkout [hash]/--detach</code>，该操作会直接让<code>HEAD</code>直接指向<code>hash</code></p>
+<p>创建分支并切换：<code>git checkout &lt;远程分支名&gt; -b [分支名]</code></p>
+<p>删除分支：<code>git branch -d [分支名]</code></p>
+<p>切换远程分支：<code>git checkout [远程分支名]</code>，注意该切换会直接将<code>HEAD指针</code>指向<code>hash</code>，如下图</p>
+<p><img src="/2020/11/14/Git/Git/checkout.png"></p>
+</li>
+<li><p>暂存区</p>
+<p>添加到暂存区：<code>git add [文件路径]/[.]</code></p>
+<p>交互式add，允许提交文件内容的一部分：<code>git add -i</code></p>
+<p>移除暂存区：<code>git restore --staged [文件路径]/[.]</code></p>
+<p>还原文件：<code>git restore [文件路径]</code> 或 <code>git checkout [文件路径]</code></p>
+</li>
+<li><p>提交变更</p>
+<p><code>git commit -m &quot;描述&quot;</code></p>
+<p>替换最新变更：<code>git commit --amend</code></p>
+<p><img src="/2020/11/14/Git/Git/amend.png"></p>
+<p>通过 <code>--amend</code> 命令将 <code>master</code> 引用指向新的提交，上图为 <code>4</code> 变更为 <code>4&#39;</code></p>
+<p>当 <code>--amend</code> 命令触发 <code>COMMIT_EDITMSG</code> 编辑时，可通过 <code>ESC</code> 推出编辑模式，然后按两次大写 <code>Z</code>退出</p>
+</li>
+<li><p>合并分支</p>
+<p><code>git merge [分支名]</code></p>
+<p>当merge发生冲突并解决时：<code>git add .</code> 然后 <code>git merge --continue</code></p>
+<p>非<code>Fast-forward</code>合并：<code>git merge [分支名] --no-ff</code></p>
+<p><img src="/2020/11/14/Git/Git/merge.png"></p>
+</li>
+<li><p>reset 引用回退</p>
+<p><code>git reset &lt;mode&gt; [hash]</code></p>
+<p>mode 类型有：</p>
+<ul>
+<li>–soft：使分支和<code>HEAD</code>回退到指定<code>commit</code>并保留所有变更在<strong>非暂存区</strong></li>
+<li>–mixed 默认模式：使分支和<code>HEAD</code>回退到指定<code>commit</code>并保留所有变更在<strong>暂存区</strong></li>
+<li>–hard：使分支和<code>HEAD</code>回退到指定<code>commit</code>并移除所有变更</li>
+</ul>
+<p>注意：可以通过<code>reset</code>回退到<code>git reflog</code>里的任意记录</p>
+</li>
+<li><p>rebase 调整提交过程</p>
+<p><code>git rebase [分支名]/[hash]</code></p>
+<p><img src="/2020/11/14/Git/Git/rebase.png"></p>
+<p>如果想将branch的提交记录变更为：<code>1 - 2 - 3 - a - 4 - 5</code> 的形式</p>
+<p>通过 <code>git rebase master</code> 进行调整</p>
+<p>当 <code>rebase</code> 发生冲突并解决时【注：再次冲突重复冲突操作即可】</p>
+<p><code>git add .</code></p>
+<p><code>git rebase --continue</code></p>
+<p>修改提交历史，即代码有没有冲突，都要求一步一步编辑历史，如：<code>3 - 4 - 5</code></p>
+<p><code>git rebase -i [分支名]/[hash]</code></p>
+<p>会要求对每一步都进行类冲突处理</p>
+</li>
+<li><p>revert 反向操作，会全部还原成指定hash的前一个提交的状态</p>
+<p><code>git revert [分支名]/[hash]</code></p>
+</li>
+<li><p>获取其它分支的提交内容</p>
+<p><code>git cherry-pick [hash1、hash2、hash3]</code></p>
+</li>
+<li><p>查看差异</p>
+<p><code>git diff</code>：查看未缓存的改动</p>
+<p><code>git diff --staged</code>：查看缓存区与 <code>HEAD</code> 的改动</p>
+<p><code>git dif [hash1] [hash2]</code>：对比两次提交的差异</p>
+</li>
+<li><p>查看日志</p>
+<p><code>git log &lt;--oneline&gt; &lt;--pretty=oneline&gt; &lt;--graph&gt; &lt;--all&gt;</code></p>
+</li>
+<li><p>查看状态</p>
+<p><code>git status</code></p>
+</li>
+<li><p>查看提交的内容</p>
+<p><code>git show [hash]</code></p>
+</li>
+<li><p>创建 tag</p>
+<p><code>git tag [tag名称] &lt;-a&gt;</code></p>
+<p>-a 选项为增加描述</p>
+</li>
+<li><p>查看引用历史</p>
+<p><code>git reflog</code></p>
+</li>
+</ol>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><ol>
+<li><p>查看配置</p>
+<p><code>git config --list</code></p>
+</li>
+<li><p>查看用户名</p>
+<p><code>git config user.name</code></p>
+</li>
+<li><p>查看邮箱</p>
+<p><code>git config user.email</code></p>
+</li>
+<li><p>全局配置用户名</p>
+<p><code>git config --global user.name &quot;name&quot;</code></p>
+</li>
+<li><p>全局配置邮箱</p>
+<p><code>git config --global user.email &quot;eamil@gmail.com&quot;</code></p>
+</li>
+</ol>
+<h5 id="扩展-得练习并验证"><a href="#扩展-得练习并验证" class="headerlink" title="扩展(得练习并验证)"></a>扩展(得练习并验证)</h5><ol>
+<li><p>给本地仓库添加远程仓库【注：该远程仓库可以是其它本地仓库或其它电脑的仓库】</p>
+<p><code>git remote add &lt;给个远端仓库名&gt; &lt;名称&gt;@&lt;ip&gt;:&lt;远端仓库目录&gt;</code></p>
+<p><code>git push &lt;远端仓库名&gt; &lt;分支&gt;:&lt;分支&gt;</code>：得验证分支到底那个是创建，那个是本地</p>
+</li>
+</ol>
+<h5 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h5><p>提交完发现写错了？</p>
+<ol>
+<li>第一种：刚提交完，发现有错<ul>
+<li><code>git commit --amend</code></li>
+</ul>
+</li>
+<li>第二种：非最新提交，发现有错<ul>
+<li><code>git rebase [hash]</code></li>
+</ul>
+</li>
+<li>第三种：已经push到远程仓库，发现有错<ul>
+<li><code>git revert [hash]</code></li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
 </search>
