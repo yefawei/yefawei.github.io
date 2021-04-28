@@ -1835,4 +1835,17 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <tag>小技巧</tag>
       </tags>
   </entry>
+  <entry>
+    <title>java技巧-获取当前系统的换行符</title>
+    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8D%A2%E8%A1%8C%E7%AC%A6/</url>
+    <content><![CDATA[<h1 id="java技巧-获取当前系统的换行符"><a href="#java技巧-获取当前系统的换行符" class="headerlink" title="java技巧-获取当前系统的换行符"></a>java技巧-获取当前系统的换行符</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 换行符</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String NEW_LINE = System.getProperty(<span class="string">&quot;line.separator&quot;</span>);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>小技巧</tag>
+      </tags>
+  </entry>
 </search>
