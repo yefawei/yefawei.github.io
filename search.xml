@@ -1817,4 +1817,22 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <tag>Git</tag>
       </tags>
   </entry>
+  <entry>
+    <title>java技巧-获取支持的算法和算法支持的模式</title>
+    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E6%94%AF%E6%8C%81%E7%9A%84%E7%AE%97%E6%B3%95%E5%92%8C%E7%AE%97%E6%B3%95%E6%94%AF%E6%8C%81%E7%9A%84%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="java技巧-获取支持的算法和算法支持的模式"><a href="#java技巧-获取支持的算法和算法支持的模式" class="headerlink" title="java技巧-获取支持的算法和算法支持的模式"></a>java技巧-获取支持的算法和算法支持的模式</h1><ol>
+<li><p>获得所有支持的算法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders())&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices())&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm: &quot;</span> + service.getAlgorithm());</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>获得算法支持的模式</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders()) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices()) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm  Pattern: &quot;</span> + service);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>小技巧</tag>
+      </tags>
+  </entry>
 </search>

@@ -187,6 +187,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Java核心技术卷一基础知识-笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-13 21:16:32" itemprop="dateCreated datePublished" datetime="2020-09-13T21:16:32+08:00">2020-09-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
+<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
+<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
+</ol>
+<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
+
+<p>带资源try方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/13/Docker/Docker%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -507,7 +593,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -520,7 +606,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
