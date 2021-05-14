@@ -461,58 +461,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Linux-学习笔记-解压缩命令详解"><a href="#Linux-学习笔记-解压缩命令详解" class="headerlink" title="Linux 学习笔记-解压缩命令详解"></a>Linux 学习笔记-解压缩命令详解</h1><h2 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h2><pre><code>独立命令：
-    -c: 建立压缩档案
-    -x：解压
-    -t：查看内容
-    -r：向压缩归档文件末尾追加文件
-    -u：更新原压缩包中的文件
-    注意：这五个是独立的命令，压缩解压都要用到其中一个，可以和别的命令连用但只能用其中一个。
-
-下面的参数是根据需要在压缩或解压档案时可选的。
-    -z：有gzip属性的
-    -j：有bz2属性的
-    -Z：有compress属性的
-    -v：显示所有过程
-    -O：将文件解开到标准输出
-
-下面的参数-f是必须的
-    -f: 使用档案名字，切记，这个参数是最后一个参数，后面只能接档案名。
-
-tar -cf all.tar *.jpg     // 这条命令是将所有.jpg的文件打成一个名为all.tar的包。-c是表示产生新的包，-f指定包的文件名。
-tar -rf all.tar *.gif     // 这条命令是将所有.gif的文件增加到all.tar的包里面去。-r是表示增加文件的意思。
-tar -uf all.tar logo.gif  // 这条命令是更新原来tar包all.tar中logo.gif文件，-u是表示更新文件的意思。
-tar -tf all.tar           // 这条命令是列出all.tar包中所有文件，-t是列出文件的意思
-tar -xf all.tar           // 这条命令是解出all.tar包中所有文件，-x是解开的意思
-</code></pre>
-<h2 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h2><pre><code>tar –cvf jpg.tar *.jpg //将目录里所有jpg文件打包成tar.jpg
-tar –czf jpg.tar.gz *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一  个gzip压缩过的包，命名为jpg.tar.gz
-tar –cjf jpg.tar.bz2 *.jpg //将目录里所有jpg文件打包成jpg.tar后，并且将其用bzip2压缩，生成一个bzip2压缩过的包，命名为jpg.tar.bz2
-tar –cZf jpg.tar.Z *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用compress压缩，生成一个umcompress压缩过的包，命名为jpg.tar.Z
-rar a jpg.rar *.jpg //rar格式的压缩，需要先下载rar for linux
-zip jpg.zip *.jpg //zip格式的压缩，需要先下载zip for linux
-</code></pre>
-<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><pre><code>tar –xvf file.tar //解压 tar包
-tar -xzvf file.tar.gz //解压tar.gz
-tar -xjvf file.tar.bz2   //解压 tar.bz2
-tar –xZvf file.tar.Z   //解压tar.Z
-unrar e file.rar //解压rar
-unzip file.zip //解压zip
-</code></pre>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre><code>(1) *.tar 用 tar –xvf 解压
-(2) *.gz 用 gzip -d或者gunzip 解压
-(3) *.tar.gz和*.tgz 用 tar –xzf 解压
-(4) *.bz2 用 bzip2 -d或者用bunzip2 解压
-(5) *.tar.bz2用tar –xjf 解压
-(6) *.Z 用 uncompress 解压
-(7) *.tar.Z 用tar –xZf 解压
-(8) *.rar 用 unrar e解压
-(9) *.zip 用 unzip 解压
-</code></pre>
-
+          <p>Linux 学习笔记-解压缩命令详解 命令详解 独立命令： -c: 建立压缩档案 -x：解压 -t：查看内容 -r：向压缩归档文件末尾追加文件 -u：更新原压缩包中的文件 注意：这五个是独立的命令，压缩解压都要用到其中一个，可以和....</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/#more" rel="contents">
+              <a class="btn" href="/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -583,29 +535,10 @@ unzip file.zip //解压zip
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Ubuntu-程序后台运行的几种方法"><a href="#Ubuntu-程序后台运行的几种方法" class="headerlink" title="Ubuntu 程序后台运行的几种方法"></a>Ubuntu 程序后台运行的几种方法</h1><blockquote>
-<p>我们经常会碰到这样的问题，用 <code>telnet/ssh</code> 登录了远程的 Linux 服务器，运行了一些耗时较长的任务， 结果却由于网络的不稳定导致任务中途失败。如何让命令提交后不受本地关闭终端窗口/网络断开连接的干扰呢？下面举了一些例子， 您可以针对不同的场景选择不同的方式来处理这个问题。</p>
-</blockquote>
-<h2 id="nohup-setsid-amp"><a href="#nohup-setsid-amp" class="headerlink" title="nohup/setsid/&amp;"></a><code>nohup/setsid/&amp;</code></h2><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a><strong>场景</strong></h3><p>如果只是临时有一个命令需要长时间运行，什么方法能最简便的保证它在后台稳定运行呢？</p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a><strong>解决方法</strong></h3><p>我们知道，当用户注销 <code>(logout)</code> 或者网络断开时，终端会收到 <code>HUP(hangup)</code> 信号从而关闭其所有子进程。因此，我们的解决办法就有两种途径：要么让进程忽略 <code>HUP</code> 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。</p>
-<ol>
-<li><p><code>nohup</code><br> <code>nohup</code> 无疑是我们首先想到的办法。顾名思义，<code>nohup</code> 的用途就是让提交的命令忽略 <code>hangup</code> 信号。让我们先来看一下 <code>nohup</code> 的帮助信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NOHUP(1)                        User Commands                        NOHUP(1)</span><br><span class="line">NAME</span><br><span class="line">       nohup - run a command immune to hangups, with output to a non-tty</span><br><span class="line">SYNOPSIS</span><br><span class="line">       nohup COMMAND [ARG]...</span><br><span class="line">       nohup OPTION</span><br><span class="line">DESCRIPTION</span><br><span class="line">        Run COMMAND, ignoring hangup signals.</span><br><span class="line">       --help display this help and exit</span><br><span class="line">       --version</span><br><span class="line">              output version information and exit</span><br></pre></td></tr></table></figure>
-<p> <code>nohup</code> 的使用是十分方便的，只需在要处理的命令前加上 <code>nohup</code> 即可，标准输出和标准错误缺省会被重定向到 <code>nohup.out</code> 文件中。一般我们可在结尾加上”&amp;”来将命令同时放入后台运行，也可用 <code>&gt;filename 2&gt;&amp;1</code> 来更改缺省的重定向文件名。<br> <code>nohup</code> 示例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# nohup ping www.ibm.com &amp;</span><br><span class="line">[1] 3059</span><br><span class="line">nohup: appending output to &#39;nohup.out&#39;</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep 3059</span><br><span class="line">root      3059   984  0 21:06 pts&#x2F;3    00:00:00 ping www.ibm.com</span><br><span class="line">root      3067   984  0 21:06 pts&#x2F;3    00:00:00 grep 3059</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure></li>
-<li><p><code>setsid</code><br> <code>nohup</code> 无疑能通过忽略 HUP 信号来使我们的进程避免中途被中断，但如果我们换个角度思考，如果我们的进程不属于接受 <code>HUP</code> 信号的终端的子进程，那么自然也就不会受到 HUP 信号的影响了。<code>setsid</code> 就能帮助我们做到这一点。让我们先来看一下 <code>setsid</code> 的帮助信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SETSID(8)                 Linux Programmer’s Manual                 SETSID(8)</span><br><span class="line">NAME</span><br><span class="line">       setsid - run a program in a new session</span><br><span class="line">SYNOPSIS</span><br><span class="line">       setsid program [ arg ... ]</span><br><span class="line">DESCRIPTION</span><br><span class="line">       setsid runs a program in a new session.</span><br></pre></td></tr></table></figure>
-<p> 可见 <code>setsid</code> 的使用也是非常方便的，也只需在要处理的命令前加上 <code>setsid</code> 即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# setsid ping www.ibm.com</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep www.ibm.com</span><br><span class="line">root     31094     1  0 07:28 ?        00:00:00 ping www.ibm.com</span><br><span class="line">root     31102 29217  0 07:29 pts&#x2F;4    00:00:00 grep www.ibm.com</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure>
-<p> 值得注意的是，上例中我们的进程 <code>ID(PID)</code> 为 31094，而它的父 <code>ID(PPID)</code> 为1（即为 <code>init</code> 进程 <code>ID</code>），并不是当前终端的进程 <code>ID</code>。请将此例与 <code>nohup</code> 例中的父 <code>ID</code> 做比较。</p>
-</li>
-<li><p>&amp;<br>这里还有一个关于 <code>subshell</code> 的小技巧。我们知道，将一个或多个命名包含在“()”中就能让这些命令在子 <code>shell</code> 中运行中，从而扩展出很多有趣的功能，我们现在要讨论的就是其中之一。<br><br><br>当我们将”&amp;”也放入“()”内之后，我们就会发现所提交的作业并不在作业列表中，也就是说，是无法通过 <code>jobs</code> 来查看的。让我们来看看为什么这样就能躲过 <code>HUP</code> 信号的影响吧。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pvcent107 ~]# (ping www.ibm.com &amp;)</span><br><span class="line">[root@pvcent107 ~]# ps -ef |grep www.ibm.com</span><br><span class="line">root     16270     1  0 14:13 pts&#x2F;4    00:00:00 ping www.ibm.com</span><br><span class="line">root     16278 15362  0 14:13 pts&#x2F;4    00:00:00 grep www.ibm.com</span><br><span class="line">[root@pvcent107 ~]#</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="disown"><a href="#disown" class="headerlink" title="disown"></a>disown</h2><h3 id="场景-1"><a href="#场景-1" class="headerlink" title="场景"></a><strong>场景</strong></h3>
+          <p>Ubuntu 程序后台运行的几种方法 我们经常会碰到这样的问题，用 `telnet/ssh` 登录了远程的 Linux 服务器，运行了一些耗时较长的任务， 结果却由于网络的不稳定导致任务中途失败。如何让命令提交后不受本地关闭终端窗口/网络断开连接的干扰呢？下面举了一些例子， 您可以针对不同的场景...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2020/09/17/Linux/ubuntu%20%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -676,38 +609,10 @@ unzip file.zip //解压zip
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
-<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
-</li>
-<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
-</li>
-<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
-</li>
-<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
-</li>
-<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
-</li>
-</ul>
-<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
-<li><p>临时设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>当前用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
-<li><p>所有用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5>
+          <p>Ubuntu环境变量 在Ubuntu中有如下几个文件可以设置环境变量： `/etc/profile`：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/#more" rel="contents">
+              <a class="btn" href="/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
                 阅读全文 &raquo;
               </a>
             </div>
