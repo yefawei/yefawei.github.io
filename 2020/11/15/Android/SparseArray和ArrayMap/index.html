@@ -20,15 +20,24 @@
     var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BenBen">
-<meta property="og:url" content="https://yefawei.github.io/categories/Android/index.html">
+  <meta name="description" content="SparseArray和ArrayMap SparseArray 1. 以双数组键值分开的形式存储，基于二分查找获取数据； 2. 采用int作为Key，避免了HashMap的装箱拆箱操作，同时它的数据结构不需要额外的Entry对象 3. 采用了延迟删除的机制（针对数组删除位移问题的优化），在remove时把目标值标记为delete，在下次有符合的值直接放到该位置，就没有位移了...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparseArray和ArrayMap">
+<meta property="og:url" content="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/index.html">
 <meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="SparseArray和ArrayMap SparseArray 1. 以双数组键值分开的形式存储，基于二分查找获取数据； 2. 采用int作为Key，避免了HashMap的装箱拆箱操作，同时它的数据结构不需要额外的Entry对象 3. 采用了延迟删除的机制（针对数组删除位移问题的优化），在remove时把目标值标记为delete，在下次有符合的值直接放到该位置，就没有位移了...">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/ArrayMap.jpg">
+<meta property="article:published_time" content="2020-11-14T17:03:17.000Z">
+<meta property="article:modified_time" content="2021-07-06T15:53:08.004Z">
 <meta property="article:author" content="BenBen">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="原理">
+<meta property="article:tag" content="集合">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/ArrayMap.jpg">
 
-<link rel="canonical" href="https://yefawei.github.io/categories/Android/">
+<link rel="canonical" href="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/">
 
 
 <script id="page-configurations">
@@ -36,12 +45,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: Android | BenBen</title>
+  <title>SparseArray和ArrayMap | BenBen</title>
   
 
 
@@ -181,91 +190,112 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Android
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SparseArray和ArrayMap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-15 01:03:17" itemprop="dateCreated datePublished" datetime="2020-11-15T01:03:17+08:00">2020-11-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">SparseArray和ArrayMap SparseArray 1. 以双数组键值分开的形式存储，基于二分查找获取数据； 2. 采用int作为Key，避免了HashMap的装箱拆箱操作，同时它的数据结构不需要额外的Entry对象 3. 采用了延迟删除的机制（针对数组删除位移问题的优化），在remove时把目标值标记为delete，在下次有符合的值直接放到该位置，就没有位移了...</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-15T01:03:17+08:00"
-              content="2020-11-15">
-          11-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/" itemprop="url">
-            <span itemprop="name">SparseArray和ArrayMap</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-14T19:44:08+08:00"
-              content="2020-11-14">
-          11-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11/14/Android/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86/" itemprop="url">
-            <span itemprop="name">View 的绘制流程及原理</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-11-10T23:45:22+08:00"
-              content="2020-11-10">
-          11-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">Android 中的线程模型</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        <h1 id="SparseArray和ArrayMap"><a href="#SparseArray和ArrayMap" class="headerlink" title="SparseArray和ArrayMap"></a>SparseArray和ArrayMap</h1><h5 id="SparseArray"><a href="#SparseArray" class="headerlink" title="SparseArray"></a>SparseArray</h5><ol>
+<li>以双数组键值分开的形式存储，基于二分查找获取数据；</li>
+<li>采用int作为Key，避免了HashMap的装箱拆箱操作，同时它的数据结构不需要额外的Entry对象</li>
+<li>采用了延迟删除的机制（针对数组删除位移问题的优化），在remove时把目标值标记为delete，在下次有符合的值直接放到该位置，就没有位移了</li>
+</ol>
+<h5 id="SparseArray与HashMap比较"><a href="#SparseArray与HashMap比较" class="headerlink" title="SparseArray与HashMap比较"></a>SparseArray与HashMap比较</h5><ol>
+<li>查询效率：在少量数据上区别不大，但在数量以万为单位时，HashMap更优一点</li>
+<li>正序插入：效率比HashMap更快且更省内存</li>
+<li>倒序插入：为保证有序，需要对数组里的数据后移，效率最差，HashMap无论正序还是倒序都只需要处理哈希冲突，效率更高</li>
+</ol>
+<p><strong>总结</strong></p>
+<p>SparseArray是以时间换空间的一种存储方式，在key为整形、元素相对较少的情况下建议使用</p>
+<h5 id="ArrayMap"><a href="#ArrayMap" class="headerlink" title="ArrayMap"></a>ArrayMap</h5><blockquote>
+<p>为了节省内存有更加保守的内存扩张以及内存收缩策略</p>
+</blockquote>
+<p><img src="/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/ArrayMap.jpg"></p>
+<ol>
+<li>同样采用双数组的形式存储，mHashes记录所有key的hashcode组成的数组，从小到大排序，采用二分查找</li>
+<li>mArray记录着key-value键值组成的数组，为mHashes大小的2倍；</li>
+<li>以追加的形式解决追加的方式，后面的数据全部后移一位</li>
+<li>有两个缓存数组：mBaseCache（大小为4）、mTwiceBaseCacheSize（大小为8），都是分别超过10个不再缓存</li>
+</ol>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/%E5%8E%9F%E7%90%86/" rel="tag"># 原理</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/14/Android/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86/" rel="prev" title="View 的绘制流程及原理">
+      <i class="fa fa-chevron-left"></i> View 的绘制流程及原理
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -318,6 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SparseArray%E5%92%8CArrayMap"><span class="nav-text">SparseArray和ArrayMap</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SparseArray"><span class="nav-text">SparseArray</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SparseArray%E4%B8%8EHashMap%E6%AF%94%E8%BE%83"><span class="nav-text">SparseArray与HashMap比较</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ArrayMap"><span class="nav-text">ArrayMap</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
