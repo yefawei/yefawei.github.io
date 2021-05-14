@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="泛型  继承关系如上，其中Container为泛型容器  泛型参数命名约定类型参数一般使用一个大写的字母表示，经常使用的类型参数的名称有  E: Element（广泛的用于Java Collection中） K: Key V: Value N: Number T: Type S,U,V: 第2, 3, 4个类型参数  泛型擦除的具体事实 虚拟机没有泛型，只有普通的类和方法 所有类型参数都用他们的限">
+  <meta name="description" content="泛型在字节码中的具体实现，协变和逆变的区别，在Kotlin上的区别 ...">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java泛型">
 <meta property="og:url" content="https://yefawei.github.io/2020/11/12/Java/%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B/index.html">
 <meta property="og:site_name" content="BenBen">
-<meta property="og:description" content="泛型  继承关系如上，其中Container为泛型容器  泛型参数命名约定类型参数一般使用一个大写的字母表示，经常使用的类型参数的名称有  E: Element（广泛的用于Java Collection中） K: Key V: Value N: Number T: Type S,U,V: 第2, 3, 4个类型参数  泛型擦除的具体事实 虚拟机没有泛型，只有普通的类和方法 所有类型参数都用他们的限">
+<meta property="og:description" content="泛型在字节码中的具体实现，协变和逆变的区别，在Kotlin上的区别 ...">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yefawei.github.io/2020/11/12/Java/%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B/extend.png">
 <meta property="og:image" content="https://yefawei.github.io/2020/11/12/Java/%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B/%E6%B3%9B%E5%9E%8B%E4%BF%9D%E7%95%99%E4%BF%A1%E6%81%AF.png">
 <meta property="article:published_time" content="2020-11-12T14:15:11.000Z">
-<meta property="article:modified_time" content="2021-04-25T14:32:16.394Z">
+<meta property="article:modified_time" content="2021-07-06T14:19:55.615Z">
 <meta property="article:author" content="BenBen">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="泛型">
@@ -233,6 +233,7 @@
             </span>
 
           
+            <div class="post-description">泛型在字节码中的具体实现，协变和逆变的区别，在Kotlin上的区别 ...</div>
 
         </div>
       </header>

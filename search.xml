@@ -290,6 +290,70 @@
       </tags>
   </entry>
   <entry>
+    <title>Java核心技术卷一基础知识-笔记</title>
+    <url>/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
+<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
+<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
+</ol>
+<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
+
+<p>带资源try方式：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Java日志"><a href="#Java日志" class="headerlink" title="Java日志"></a>Java日志</h5><p>全局日志记录器：<br><code>Logger.getGlobal().info(&quot;msg&quot;);</code></p>
+<p>自定义日志记录器：<br><code>private static final Logger myLogger = Logger.getLogger(&quot;com.mycompany.myapp&quot;);</code></p>
+<h5 id="内联"><a href="#内联" class="headerlink" title="内联"></a>内联</h5><blockquote>
+<p>消除函数调用,采用类变量直接访问，可以减少函数栈的调用，提高效率</p>
+<p>从【c.getName()】 变更为【c.name】的形式</p>
+</blockquote>
+<p>即时编译器可以监控经常执行哪些代码并优化这些代码以提高速度。更为复杂的优化是消除函数调用（即“ 内联”）。即时编译器知道那些类已经加载。基于当前加载的类集，如果特定的函数不会被覆盖，就可以使用内联。必要时，还可以撤销优化。</p>
+<p>是否将某个方法设置为内联方法是Java 虚拟机的任务。即时编译器会监视调用那些<strong>简洁</strong>、<strong>经常被调用</strong>、<strong>没有被重载</strong>以及<strong>可优化</strong>的方法。</p>
+<p>在早期的Java 中， 有些程序员为了避免动态绑定带来的系统开销而使用final 关键字。如果一个方法没有被覆盖并且很短， 编译器就能够对它进行优化处理， 这个过程为称为内联( inlining )。例如，内联调用e.getName( ) 将被替换为访问e.name 域。这是一项很有意义的改进， 这是由于CPU 在处理调用方法的指令时， 使用的分支转移会扰乱预取指令的策略， 所以，这被视为不受欢迎的。然而， 如果getName 在另外一个类中被覆盖， 那么编译器就无法知道覆盖的代码将会做什么操作， 因此也就不能对它进行内联处理了。</p>
+<p>幸运的是， 虚拟机中的即时编译器比传统编译器的处理能力强得多。这种编译器可以准确地知道类之间的继承关系， 并能够检测出类中是否真正地存在覆盖给定的方法。如果方法很简短、被频繁调用且没有真正地被覆盖， 那么即时编译器就会将这个方法进行内联处理。如果虚拟机加载了另外一个子类，而在这个子类中包含了对内联方法的覆盖， 那么将会发生什么情况呢？ 优化器将取消对覆盖方法的内联。这个过程很慢， 但却很少发生。</p>
+<h5 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">TestEnum</span> </span>&#123;</span><br><span class="line">    Red(<span class="string">&quot;red&quot;</span>), Blue(<span class="string">&quot;blue&quot;</span>), Green(<span class="string">&quot;green&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    TestEnum(String color) &#123;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TestEnum</span> <span class="keyword">extends</span> <span class="title">Enum</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> TestEnum[] values()&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TestEnum <span class="title">valueOf</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum)Enum.valueOf(com/benben/TestEnum, s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TestEnum</span><span class="params">(String s, <span class="keyword">int</span> i, String s1)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        mColor = s1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Red;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Blue;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Green;</span><br><span class="line">    <span class="keyword">private</span> String mColor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum $VALUES[];</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        Red = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Red&quot;</span>, <span class="number">0</span>, <span class="string">&quot;red&quot;</span>);</span><br><span class="line">        Blue = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Blue&quot;</span>, <span class="number">1</span>, <span class="string">&quot;blue&quot;</span>);</span><br><span class="line">        Green = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Green&quot;</span>, <span class="number">2</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> TestEnum[] &#123;</span><br><span class="line">            Red, Blue, Green</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意一：从上面可以看出，枚举会消耗更多的内存，类似于饿汉式的单例</strong></p>
+<p><strong>注意二：Proguard以及Android的R8也会对简单的枚举（即不实现接口也没有额外成员的枚举）做优化</strong></p>
+<h5 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h5><blockquote>
+<p>对于final的基本变量类型，在编译字节码的时候会被认为不会再改变，会将值直接放入调用处，所以反射对它无效</p>
+<p>如果是static final的基本变量类型，修改值会产生异常，必须要修改可以再反射修改它的<code>modifiers</code>值以达到能修改的目的，注意：目前jvm并没有对该字段有限制</p>
+</blockquote>
+<h5 id="反射效率低"><a href="#反射效率低" class="headerlink" title="反射效率低"></a>反射效率低</h5><p>java反射效率低的主要原因是：</p>
+<ol>
+<li>Method#invoke 方法会对参数做封装和解封操作</li>
+<li>需要检查方法可见性。原因：反射时每次调用都必须检查方法的可见性（在Method.invoke里）</li>
+<li>需要校验参数。反射时也必须检查每个实际参数与形式参数的类型匹配性（在NativeMethodAccessorImpl.invoke0 里或者生成的 Java 版 MethodAccessor.invoke 里）</li>
+<li>反射方法难以内联。参考：<a href="https://www.iteye.com/blog/rednaxelafx-548536">https://www.iteye.com/blog/rednaxelafx-548536</a></li>
+<li>JIT 无法优化。原因：因为涉及到动态解析的类型，所以无法优化</li>
+</ol>
+<p>提高反射性能的方式：</p>
+<ol>
+<li>将反射获取到的类，构造函数，函数，对象实例缓存起来，不用每次都全新查找</li>
+<li>可通过调用method.setAccessible(true)的方式来关闭Method.invoke可见性检查</li>
+<li>需要更极致的提高效率可以通过字节码生成的方式来实现反射机制。参考：<a href="https://github.com/EsotericSoftware/reflectasm">https://github.com/EsotericSoftware/reflectasm</a></li>
+</ol>
+<h5 id="Lambda高阶参考"><a href="#Lambda高阶参考" class="headerlink" title="Lambda高阶参考"></a>Lambda高阶参考</h5><p><a href="https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc</a></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>书籍</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java核心技术卷二高级特性-笔记</title>
     <url>/2020/09/18/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%BA%8C%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="Java-SE-8-流库"><a href="#Java-SE-8-流库" class="headerlink" title="Java SE 8 流库"></a>Java SE 8 流库</h5><blockquote>
@@ -446,70 +510,6 @@
       <tags>
         <tag>Java</tag>
         <tag>内部类</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java核心技术卷一基础知识-笔记</title>
-    <url>/2020/09/13/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%B8%80%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h1><h5 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h5><ol>
-<li>已经清楚或能够估计出元素容量，可以在添加元素前调用【ensureCapacity(100)】函数，或在构造函数中传入【new ArrayList&lt;&gt;(100)】</li>
-<li>添加完元素后明确不再添加任何元素时，可调用【trimToSize()】，以释放多余空间</li>
-</ol>
-<h5 id="带资源try语句"><a href="#带资源try语句" class="headerlink" title="带资源try语句"></a>带资源try语句</h5><p>普通try-catch方式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//open a resource</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//close the resource</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 缺点：</span></span><br><span class="line"><span class="comment">//     当try块发生非catch能处理的异常，如果此时finally块也发生异常，那么会丢失原始异常，转而抛出finally产生的异常</span></span><br><span class="line"><span class="comment">//     这样会有一个问题，如果需要将try块的异常向外抛出，需要对try块异常通过变量存起来，并在finally中判断是否需要向外抛出</span></span><br></pre></td></tr></table></figure>
-
-<p>带资源try方式：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     资源需要属于AutoCloseable的子接口的子类才能使用这种方式，其中Closeable接口为AutoCloseable的子接口</span></span><br><span class="line"><span class="comment">//     try块正常退出或者存在一个异常时，都会自动调用res.close()方法，同时还可以指定多个资源</span></span><br><span class="line"><span class="keyword">try</span>(InputStream in = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    OutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     上面提到，原始try-catch方式当try抛出异常，finally块也抛出异常，会产生一个难题</span></span><br><span class="line"><span class="comment">//     带资源的try方式能很好的处理这种情况，原来的异常会重新抛出，close产生的异常会被try异常通过addSuppressed添加进去，该过程称为“抑制”</span></span><br><span class="line"><span class="comment">//     如果对close产生的异常感兴趣，可以调用getSuppressed获取</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>(Recource res = ...) &#123;</span><br><span class="line">    <span class="comment">//do something</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    <span class="comment">// catch error</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// do finally block</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明：</span></span><br><span class="line"><span class="comment">//     带资源的try语句同样也可以添加catch子句和finally子句</span></span><br><span class="line"><span class="comment">//     执行顺序为 try块 -&gt; close -&gt; catch块(如果有异常的话) -&gt; finally块</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="分析堆栈轨迹元素"><a href="#分析堆栈轨迹元素" class="headerlink" title="分析堆栈轨迹元素"></a>分析堆栈轨迹元素</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可以获取所有线程的堆栈轨迹</span></span><br><span class="line">Thread.getAllStackTraces();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印堆栈轨迹：内部实际是new Exception(&quot;Stack trace&quot;).printStackTrace();</span></span><br><span class="line">Thread.dumpStack();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 异常捕获处理顺序：线程 -&gt; 线程对象 -&gt; 未捕获异常Handler</span></span><br><span class="line"><span class="comment">// 设置未捕获异常处理器，用于捕获线程未捕获的异常</span></span><br><span class="line">Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> Thread.UncaughtExceptionHandler() &#123;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;  </span><br><span class="line"> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一个“抑制”异常，如在带资源try中会出现</span></span><br><span class="line">addSuppressed(Throwable t)</span><br><span class="line"><span class="comment">// 将该异常对象设置为“原因”</span></span><br><span class="line">initCause(Throwable t)</span><br><span class="line"><span class="comment">// 例：</span></span><br><span class="line"><span class="keyword">try</span>&#123;&#125;<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    Exception r = <span class="keyword">new</span> RuntimeException();</span><br><span class="line">    r.initCause(e);</span><br><span class="line">    <span class="keyword">throw</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="Java日志"><a href="#Java日志" class="headerlink" title="Java日志"></a>Java日志</h5><p>全局日志记录器：<br><code>Logger.getGlobal().info(&quot;msg&quot;);</code></p>
-<p>自定义日志记录器：<br><code>private static final Logger myLogger = Logger.getLogger(&quot;com.mycompany.myapp&quot;);</code></p>
-<h5 id="内联"><a href="#内联" class="headerlink" title="内联"></a>内联</h5><blockquote>
-<p>消除函数调用,采用类变量直接访问，可以减少函数栈的调用，提高效率</p>
-<p>从【c.getName()】 变更为【c.name】的形式</p>
-</blockquote>
-<p>即时编译器可以监控经常执行哪些代码并优化这些代码以提高速度。更为复杂的优化是消除函数调用（即“ 内联”）。即时编译器知道那些类已经加载。基于当前加载的类集，如果特定的函数不会被覆盖，就可以使用内联。必要时，还可以撤销优化。</p>
-<p>是否将某个方法设置为内联方法是Java 虚拟机的任务。即时编译器会监视调用那些<strong>简洁</strong>、<strong>经常被调用</strong>、<strong>没有被重载</strong>以及<strong>可优化</strong>的方法。</p>
-<p>在早期的Java 中， 有些程序员为了避免动态绑定带来的系统开销而使用final 关键字。如果一个方法没有被覆盖并且很短， 编译器就能够对它进行优化处理， 这个过程为称为内联( inlining )。例如，内联调用e.getName( ) 将被替换为访问e.name 域。这是一项很有意义的改进， 这是由于CPU 在处理调用方法的指令时， 使用的分支转移会扰乱预取指令的策略， 所以，这被视为不受欢迎的。然而， 如果getName 在另外一个类中被覆盖， 那么编译器就无法知道覆盖的代码将会做什么操作， 因此也就不能对它进行内联处理了。</p>
-<p>幸运的是， 虚拟机中的即时编译器比传统编译器的处理能力强得多。这种编译器可以准确地知道类之间的继承关系， 并能够检测出类中是否真正地存在覆盖给定的方法。如果方法很简短、被频繁调用且没有真正地被覆盖， 那么即时编译器就会将这个方法进行内联处理。如果虚拟机加载了另外一个子类，而在这个子类中包含了对内联方法的覆盖， 那么将会发生什么情况呢？ 优化器将取消对覆盖方法的内联。这个过程很慢， 但却很少发生。</p>
-<h5 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">TestEnum</span> </span>&#123;</span><br><span class="line">    Red(<span class="string">&quot;red&quot;</span>), Blue(<span class="string">&quot;blue&quot;</span>), Green(<span class="string">&quot;green&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">    TestEnum(String color) &#123;</span><br><span class="line">        <span class="keyword">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>原理：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TestEnum</span> <span class="keyword">extends</span> <span class="title">Enum</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> TestEnum[] values()&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TestEnum <span class="title">valueOf</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (TestEnum)Enum.valueOf(com/benben/TestEnum, s);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TestEnum</span><span class="params">(String s, <span class="keyword">int</span> i, String s1)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        mColor = s1;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Red;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Blue;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum Green;</span><br><span class="line">    <span class="keyword">private</span> String mColor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TestEnum $VALUES[];</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        Red = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Red&quot;</span>, <span class="number">0</span>, <span class="string">&quot;red&quot;</span>);</span><br><span class="line">        Blue = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Blue&quot;</span>, <span class="number">1</span>, <span class="string">&quot;blue&quot;</span>);</span><br><span class="line">        Green = <span class="keyword">new</span> TestEnum(<span class="string">&quot;Green&quot;</span>, <span class="number">2</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> TestEnum[] &#123;</span><br><span class="line">            Red, Blue, Green</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意一：从上面可以看出，枚举会消耗更多的内存，类似于饿汉式的单例</strong></p>
-<p><strong>注意二：Proguard以及Android的R8也会对简单的枚举（即不实现接口也没有额外成员的枚举）做优化</strong></p>
-<h5 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h5><blockquote>
-<p>对于final的基本变量类型，在编译字节码的时候会被认为不会再改变，会将值直接放入调用处，所以反射对它无效</p>
-<p>如果是static final的基本变量类型，修改值会产生异常，必须要修改可以再反射修改它的<code>modifiers</code>值以达到能修改的目的，注意：目前jvm并没有对该字段有限制</p>
-</blockquote>
-<h5 id="反射效率低"><a href="#反射效率低" class="headerlink" title="反射效率低"></a>反射效率低</h5><p>java反射效率低的主要原因是：</p>
-<ol>
-<li>Method#invoke 方法会对参数做封装和解封操作</li>
-<li>需要检查方法可见性。原因：反射时每次调用都必须检查方法的可见性（在Method.invoke里）</li>
-<li>需要校验参数。反射时也必须检查每个实际参数与形式参数的类型匹配性（在NativeMethodAccessorImpl.invoke0 里或者生成的 Java 版 MethodAccessor.invoke 里）</li>
-<li>反射方法难以内联。参考：<a href="https://www.iteye.com/blog/rednaxelafx-548536">https://www.iteye.com/blog/rednaxelafx-548536</a></li>
-<li>JIT 无法优化。原因：因为涉及到动态解析的类型，所以无法优化</li>
-</ol>
-<p>提高反射性能的方式：</p>
-<ol>
-<li>将反射获取到的类，构造函数，函数，对象实例缓存起来，不用每次都全新查找</li>
-<li>可通过调用method.setAccessible(true)的方式来关闭Method.invoke可见性检查</li>
-<li>需要更极致的提高效率可以通过字节码生成的方式来实现反射机制。参考：<a href="https://github.com/EsotericSoftware/reflectasm">https://github.com/EsotericSoftware/reflectasm</a></li>
-</ol>
-<h5 id="Lambda高阶参考"><a href="#Lambda高阶参考" class="headerlink" title="Lambda高阶参考"></a>Lambda高阶参考</h5><p><a href="https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1606476168883238803&amp;wfr=spider&amp;for=pc</a></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>书籍</tag>
-        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -918,14 +918,9 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
-    <title>java技巧-获取支持的算法和算法支持的模式</title>
-    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E6%94%AF%E6%8C%81%E7%9A%84%E7%AE%97%E6%B3%95%E5%92%8C%E7%AE%97%E6%B3%95%E6%94%AF%E6%8C%81%E7%9A%84%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="java技巧-获取支持的算法和算法支持的模式"><a href="#java技巧-获取支持的算法和算法支持的模式" class="headerlink" title="java技巧-获取支持的算法和算法支持的模式"></a>java技巧-获取支持的算法和算法支持的模式</h1><ol>
-<li><p>获得所有支持的算法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders())&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices())&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm: &quot;</span> + service.getAlgorithm());</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>获得算法支持的模式</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders()) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices()) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm  Pattern: &quot;</span> + service);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
+    <title>java技巧-获取当前系统的换行符</title>
+    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8D%A2%E8%A1%8C%E7%AC%A6/</url>
+    <content><![CDATA[<h1 id="java技巧-获取当前系统的换行符"><a href="#java技巧-获取当前系统的换行符" class="headerlink" title="java技巧-获取当前系统的换行符"></a>java技巧-获取当前系统的换行符</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 换行符</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String NEW_LINE = System.getProperty(<span class="string">&quot;line.separator&quot;</span>);</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -936,9 +931,14 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
-    <title>java技巧-获取当前系统的换行符</title>
-    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8D%A2%E8%A1%8C%E7%AC%A6/</url>
-    <content><![CDATA[<h1 id="java技巧-获取当前系统的换行符"><a href="#java技巧-获取当前系统的换行符" class="headerlink" title="java技巧-获取当前系统的换行符"></a>java技巧-获取当前系统的换行符</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 换行符</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String NEW_LINE = System.getProperty(<span class="string">&quot;line.separator&quot;</span>);</span><br></pre></td></tr></table></figure>
+    <title>java技巧-获取支持的算法和算法支持的模式</title>
+    <url>/2020/09/14/Java/%E5%B0%8F%E6%8A%80%E5%B7%A7/java%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96%E6%94%AF%E6%8C%81%E7%9A%84%E7%AE%97%E6%B3%95%E5%92%8C%E7%AE%97%E6%B3%95%E6%94%AF%E6%8C%81%E7%9A%84%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="java技巧-获取支持的算法和算法支持的模式"><a href="#java技巧-获取支持的算法和算法支持的模式" class="headerlink" title="java技巧-获取支持的算法和算法支持的模式"></a>java技巧-获取支持的算法和算法支持的模式</h1><ol>
+<li><p>获得所有支持的算法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders())&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices())&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm: &quot;</span> + service.getAlgorithm());</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>获得算法支持的模式</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (Provider provider : Security.getProviders()) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Provider: &quot;</span> + provider.getName());</span><br><span class="line">    <span class="keyword">for</span> (Provider.Service service : provider.getServices()) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;  Algorithm  Pattern: &quot;</span> + service);</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -1437,6 +1437,57 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
+    <title>HashMap</title>
+    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/</url>
+    <content><![CDATA[<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
+<p> 参考：<a href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
+</blockquote>
+<h5 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h5><ol>
+<li><p>数据结构？</p>
+<p>答：数组加链表法</p>
+</li>
+<li><p>怎么插入数据？</p>
+<p>答：链表头插法，即：链表中最新的数据插在链表头</p>
+</li>
+<li><p>哈希冲突怎么预防？</p>
+<p>答：二次哈希 or 扰动函数</p>
+</li>
+<li><p>怎么解决哈希冲突？</p>
+<p>答：链表法，其它方案：再哈希、开放寻址、公共溢出区</p>
+</li>
+<li><p>默认容量多少？</p>
+<p>答：16</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：重新计算哈希和索引</p>
+</li>
+<li><p>内部数组是什么时候创建的？</p>
+<p>答：第一次put的时候创建</p>
+</li>
+</ol>
+<h5 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h5><ol>
+<li><p>1.7 和 1.8 数据结构有什么不同？</p>
+<p>答：引入红黑树</p>
+</li>
+<li><p>1.7 和 1.8 往链表上插数据的方式有什么不同？<br>答：从头插法改为尾部插入</p>
+</li>
+<li><p>扩容后存储位置的计算方式？</p>
+<p>答：对老数组进行与运算，判断值是否等于0，等于0在低位，否则在高位</p>
+</li>
+<li><p>HashMap 什么时候会把链表转化为红黑树？</p>
+<p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>集合</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>线程安全的集合</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
@@ -1604,57 +1655,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <li>Collection集合类内部维护了一个计数器modCount，负责跟踪列表的<strong>结构性修改</strong>，如添加元素、删除元素等。在新建迭代器的同时会缓存此时的计数器，在改写操作时判断缓存的计数器值与集合类的计数器值是否一致，不一致则抛出<strong>ConcurrentModificastionException</strong>异常。注意：集合的set方法不被<strong>视为结构性修改</strong>，这会造成多个迭代器遍历出的结果不一定一致</li>
 <li>以<strong>链表</strong>为模型的集合，多次使用get获取某个位置的元素效率极低，可以使用<strong>列表迭代器ListIterator</strong>的nextIndex、next、previousIndex、previous等方法优化该操作，<strong>备注：</strong>ListIterator的add和set方法也是插入操作的一个优化点</li>
 <li>原本**for(Map.Entry&lt;&gt; entry : map.entrySet())**的map遍历操作最高效，在Java 1.8后直接通过map.forEach方法直接操作node更加高效</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>集合</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HashMap</title>
-    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/</url>
-    <content><![CDATA[<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
-<p> 参考：<a href="https://blog.csdn.net/wildwolf_001/article/details/107186226">https://blog.csdn.net/wildwolf_001/article/details/107186226</a></p>
-</blockquote>
-<h5 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h5><ol>
-<li><p>数据结构？</p>
-<p>答：数组加链表法</p>
-</li>
-<li><p>怎么插入数据？</p>
-<p>答：链表头插法，即：链表中最新的数据插在链表头</p>
-</li>
-<li><p>哈希冲突怎么预防？</p>
-<p>答：二次哈希 or 扰动函数</p>
-</li>
-<li><p>怎么解决哈希冲突？</p>
-<p>答：链表法，其它方案：再哈希、开放寻址、公共溢出区</p>
-</li>
-<li><p>默认容量多少？</p>
-<p>答：16</p>
-</li>
-<li><p>扩容后存储位置的计算方式？</p>
-<p>答：重新计算哈希和索引</p>
-</li>
-<li><p>内部数组是什么时候创建的？</p>
-<p>答：第一次put的时候创建</p>
-</li>
-</ol>
-<h5 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h5><ol>
-<li><p>1.7 和 1.8 数据结构有什么不同？</p>
-<p>答：引入红黑树</p>
-</li>
-<li><p>1.7 和 1.8 往链表上插数据的方式有什么不同？<br>答：从头插法改为尾部插入</p>
-</li>
-<li><p>扩容后存储位置的计算方式？</p>
-<p>答：对老数组进行与运算，判断值是否等于0，等于0在低位，否则在高位</p>
-</li>
-<li><p>HashMap 什么时候会把链表转化为红黑树？</p>
-<p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
-</li>
 </ol>
 ]]></content>
       <categories>
