@@ -138,6 +138,127 @@
       </tags>
   </entry>
   <entry>
+    <title>Handler 原理</title>
+    <url>/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Handler-原理"><a href="#Handler-原理" class="headerlink" title="Handler 原理"></a>Handler 原理</h1><ol>
+<li><p><strong><code>Handler</code> 被设计出来的原因？有什么用？</strong></p>
+<p>提供一种方便线程间通信的解决方案</p>
+</li>
+<li><p><strong><code>Handler</code> 的基本原理</strong></p>
+<p>外部通过 <code>Handler</code> 往 <code>MessageQueue</code> 里插入任务<br><code>Looper</code> 在做死循环，一直从 <code>MessageQueue</code> 中获取任务<br>如果此时任务为空或当前没有需要执行的任务，则先判断 <code>IdleHandler</code>，<code>IdleHandler</code>为空则阻塞</p>
+</li>
+<li><p><strong>子线程中怎么使用 <code>Handler</code>，为什么我们在主线程不用做准备操作</strong></p>
+<p><code>Looper.prepare()</code> 创建 <code>Looper</code> 并添加到 <code>ThreadLocal</code> 中<br><code>Looper.loop()</code> 开始死循环从 <code>MessageQueue</code> 获取消息<br>程序起来时在 <code>ActivityThread.main()</code> 方法以经初始化过，所以直接使用就行</p>
+</li>
+<li><p><strong>为什么建议使用 <code>Message.obtain()</code> 来创建 <code>Message</code> 实例</strong></p>
+<p>对 <code>Message</code> 有效复用，可以有效的解决频繁创建 <code>Message</code> 实例问题</p>
+</li>
+<li><p><strong><code>MessageQueue</code> 获取消息是怎么等待</strong></p>
+<p>通过 <code>epoll</code> 进行等待和唤醒<br>在 <code>next</code> 方法汇中，如果当前没有需要执行的任务，则调用 <code>nativePollOnce</code> 进行阻塞</p>
+<p><strong><code>nextPollTimeoutMillis</code> 三种情况：</strong></p>
+<ul>
+<li><p>等于0，不阻塞立即返回</p>
+</li>
+<li><p>大于0，阻塞等待的时间</p>
+</li>
+<li><p>等于-1，无消息时会一直阻塞</p>
+</li>
+</ul>
+<p><code>epoll</code> 机制是一种IO多路复用机制，具体逻辑是一个进程可以监视多个描述符，当某个描述符就绪（一般是读就绪或写就绪），能够通知程序进行相应的读写操作，这个读写操作是阻塞的，在 <code>Android</code> 中，会创建一个 <code>Linux</code>  管道来处理阻塞和唤醒</p>
+<ul>
+<li>当消息队列为空，管道的读端等待管道中有新内容可读，就会通过 <code>epoll</code> 机制进入阻塞状态</li>
+<li>当有消息要处理，就会通过管道的写端写入内容，唤醒主线程</li>
+</ul>
+</li>
+<li><p><strong>为什么不用 <code>wait</code> 而用 <code>epoll</code></strong></p>
+<p>在 Android 2.2 及以前，使用的就是 wait/notify 进行等待，之后为了同时处理 <code>native</code> 侧的消息，改用了 <code>pipe/epoll</code> 机制</p>
+<p>关于 select 、poll 、epoll，参考：<a href="https://mp.weixin.qq.com/s/YdIdoZ_yusVWza1PU7lWaw">https://mp.weixin.qq.com/s/YdIdoZ_yusVWza1PU7lWaw</a></p>
+<p>【备注】在兼容 <code>native</code> 侧消息时，早期使用的是 <code>select</code>，后面才改成 <code>epoll</code>，参考commit：<a href="https://android.googlesource.com/platform/frameworks/base/+/46b9ac0ae2162309774a7478cd9d4e578747bfc2%5E%21/#F16">https://android.googlesource.com/platform/frameworks/base/+/46b9ac0ae2162309774a7478cd9d4e578747bfc2%5E%21/#F16</a></p>
+</li>
+<li><p><strong>线程和 <code>Handler</code> <code>Looper</code> <code>MessageQueue</code> 的关系</strong></p>
+<p>一个线程对应一个 <code>MessageQueue</code> 、一个 <code>Looper</code> 、多个 <code>Handler</code></p>
+</li>
+<li><p><strong>多个线程给 <code>MessageQueue</code> 发消息，如何保证线程安全</strong></p>
+<p>在 <code>enqueueMessage</code> 里进行了加锁</p>
+</li>
+<li><p><strong><code>Handler</code> 消息延迟是怎么处理的</strong></p>
+<p>在插入任务时会将时间转换成距离开机时间的毫秒数，然后在 <code>MessageQueue</code> 中按时间顺序插入</p>
+<p>在调用 <code>MessageQueue.next()</code> 中获取任务，如果还没有到达执行时间，先处理 <code>IdleHandler</code>，处理完后再 <code>nativePollOnce</code> 阻塞</p>
+</li>
+<li><p><strong><code>View.post</code> 和 <code>Handler.post</code> 的区别</strong></p>
+<p><code>View.post</code> 时会判断有没有 <code>AttachInfo</code>，如果有则直接调用里面的 <code>Handler</code> 处理<br>如果没有则等待 <code>dispatchAttachedToWindow</code>，然后在通过 <code>Handler</code> 进行处理<br><code>dispatchAttachedToWindow</code> 函数是在 <code>ViewRootImpl</code> 的 <code>performTraversals</code> 中调用，<br>这也是为什么 <code>View.Post</code> 能够获取到 <code>View</code> 的宽高的原因，因为已经执行过 <code>performTraversals</code> 了</p>
+</li>
+<li><p><strong><code>Handler</code> 导致的内存泄漏</strong></p>
+<p>匿名内部类持有外部类，Handler有延迟消息造成无法回收，这样就造成了外部类无法回收<br>方法一：静态内部类 + 弱引用<br>方法二：将该Handler的消息全部移除</p>
+</li>
+<li><p><strong>非 <code>UI</code> 线程真的不能操作 <code>View</code> 吗</strong></p>
+<p>大部分情况是不可以的，因为在 <code>ViewRootImpl</code> 中的 <code>requestLayout</code> 会判断线程是否为创建线程，该创建线程默认就是 <code>UI</code> 线程<br>其它情况如：<code>ViewRootImpl</code> 未创建修改View，子线程创建 <code>ViewRootImpl</code>，或者修改 <code>View</code> 不会触发 <code>requestLayout</code> 的场景</p>
+</li>
+<li><p><strong><code>Looper</code> 在主线程死循环，为什么不会 <code>ANR</code></strong></p>
+<p><code>ANR</code> 的原因是有任务在进行耗时操作，让本该执行的任务无法在合适的时间内执行<br>在于任务本身，而非死循环</p>
+</li>
+<li><p><strong>同步屏障和异步消息是怎么实现的</strong></p>
+<ul>
+<li><strong>同步消息</strong>：就是普通消息</li>
+<li><strong>异步消息</strong>：通过 <code>setAsynchronous(true)</code> 设置的消息</li>
+<li><strong>同步屏障消息</strong>：通过 <code>postSyncBarrier</code> 方法添加的消息，特点是 <code>target</code> 为空，即没有对应的 <code>handler</code></li>
+</ul>
+<p>三者关系</p>
+<ul>
+<li>正常情况下，同步消息和异步消息都是根据 <code>when</code> 来取消息，处理消息</li>
+<li>当遇到同步屏障消息时，就开始从消息队列里找异步消息，找到了再根据时间决定阻塞还是返回消息</li>
+</ul>
+<p>同步屏障和异步消息存在的意义就是用于处理 “加急消息”</p>
+<p>在 <code>ViewRootImpl.scheduleTraversals()</code> 中有具体应用</p>
+</li>
+<li><p><strong><code>Looper</code> 安全退出和非安全退出有什么区别</strong></p>
+<ul>
+<li>非安全退出：<code>removeAllMessagesLocked</code>，会直接清空所有未执行的消息</li>
+<li>安全退出：<code>removeAllFutureMessagesLocked</code>，只清空延迟消息，非延迟消息继续处理</li>
+</ul>
+</li>
+<li><p><strong><code>Message</code> 如何实现插队</strong></p>
+<ul>
+<li><code>sendMessageAtTime(msg, 0)</code> ，时间传0即可</li>
+<li>如果不一定要插入队头，可以通过异步消息，也能实现一定的插队效果 <code>msg.setAsynchronous(true)</code></li>
+</ul>
+</li>
+<li><p><strong>利用 <code>HanIder</code> 机制设计一个不崩溃的 <code>App</code></strong></p>
+<ul>
+<li><p>第一步：设置自己的异常捕捉处理者</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">Thread.setDefaultUncaughtExceptionHandler()</span><br></pre></td></tr></table></figure>
+
+<p>此时子线程出现异常已经不会崩溃了</p>
+<p>但是 <code>UI</code> 线程触发异常会让 <code>Looper.loop</code> 死循环退出，接下来的消息无法处理同样会让app卡死</p>
+</li>
+<li><p>第二步：对主线程异常进行捕获</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">Handler(Looper.getMainLooper()).post &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Looper.loop()</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e: Throwable) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>UI</code> 线程触发异常会被捕捉并重新 <code>Looper.loop()</code>，这样后续的消息又能继续处理，从而解决app崩溃异常</p>
+</li>
+<li><p>【注意：】经过上面两步确认解决了app崩溃的问题，但是如果在Activity的生命周期内触发异常，如 <code>onCreate</code> 中，则会出现黑屏白屏的情况，原因是生命周期内抛出异常，会导致界面无法完成， <code>Activity</code> 无法正确启动，就会出现黑屏白屏的情况。由于 <code>Activity</code> 的生命周期都是通过主线程的 <code>Handler</code> 进行处理的，可以通过反射 <code>ActivityThread</code> 中的 <code>Handler</code> 进行 <code>Activity</code> 生命周期异常捕获，然后进行 <code>finishActivity</code> 或者杀死进程的操作</p>
+</li>
+<li><p>【说明】第二步中可以理解为外部 <code>loop</code> 一直在等待 <code>post</code> 里的 <code>loop</code> 结束</p>
+</li>
+<li><p>【参考一：】<a href="https://juejin.cn/post/6904283635856179214">https://juejin.cn/post/6904283635856179214</a></p>
+</li>
+<li><p>【参考二：】<a href="https://github.com/android-notes/Cockroach/blob/master/%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.md">https://github.com/android-notes/Cockroach/blob/master/%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.md</a></p>
+</li>
+<li><p>【相关库：】<a href="https://github.com/android-notes/Cockroach">https://github.com/android-notes/Cockroach</a></p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RecycleView</title>
     <url>/2020/11/15/Android/RecycleView/</url>
     <content><![CDATA[<h1 id="RecycleView"><a href="#RecycleView" class="headerlink" title="RecycleView"></a>RecycleView</h1><blockquote>
@@ -1644,6 +1765,50 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
+    <title>线程安全的集合</title>
+    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ConcurrentHashMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListSet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentLinkedQueue</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArrayList</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArraySet</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HashMap</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/</url>
     <content><![CDATA[<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
@@ -1819,50 +1984,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <li>以<strong>链表</strong>为模型的集合，多次使用get获取某个位置的元素效率极低，可以使用<strong>列表迭代器ListIterator</strong>的nextIndex、next、previousIndex、previous等方法优化该操作，<strong>备注：</strong>ListIterator的add和set方法也是插入操作的一个优化点</li>
 <li>原本**for(Map.Entry&lt;&gt; entry : map.entrySet())**的map遍历操作最高效，在Java 1.8后直接通过map.forEach方法直接操作node更加高效</li>
 </ol>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>线程安全的集合</title>
-    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ConcurrentHashMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListSet</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentLinkedQueue</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArrayList</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArraySet</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
 ]]></content>
       <categories>
         <category>Java</category>
