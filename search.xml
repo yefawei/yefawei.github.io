@@ -138,6 +138,107 @@
       </tags>
   </entry>
   <entry>
+    <title>Gradle Plugin</title>
+    <url>/2020/11/21/Android/Gradle%20Plugin/</url>
+    <content><![CDATA[<h1 id="Gradle-Plugin"><a href="#Gradle-Plugin" class="headerlink" title="Gradle Plugin"></a>Gradle Plugin</h1><blockquote>
+<p>能够允许我们在编译出的 jar 或 class 文件之后打包成 apk 之前修改文件</p>
+<p>插件可以拿 java 、kotlin 或 groovy语言编写</p>
+</blockquote>
+<h5 id="自定义插件、扩展和配置"><a href="#自定义插件、扩展和配置" class="headerlink" title="自定义插件、扩展和配置"></a>自定义插件、扩展和配置</h5><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实现Plugin接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenBenPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">        <span class="keyword">def</span> extension = target.extensions.create(<span class="string">&quot;benben&quot;</span>, BenBenExtension) <span class="comment">// 引入扩展并重命名</span></span><br><span class="line">        println <span class="string">&quot;1: $&#123;extension.name&#125;&quot;</span> <span class="comment">// 会在 apply 后调用，输出：1: benben extension</span></span><br><span class="line">        target.afterEvaluate &#123;</span><br><span class="line">            println <span class="string">&quot;2: $&#123;extension.name&#125;&quot;</span> <span class="comment">// 会在配置完扩展后调用，输出：2: benben config</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 自定义扩展</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenBenExtension</span> &#123;</span></span><br><span class="line">    <span class="keyword">def</span> name = <span class="string">&quot;benben extension&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">apply <span class="attr">plugin:</span> BenBenPlugin <span class="comment">// 引入插件</span></span><br><span class="line">benben &#123;</span><br><span class="line">    name <span class="string">&quot;benben config&quot;</span> <span class="comment">// 配置扩展</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="构建Gradle-Plugin库"><a href="#构建Gradle-Plugin库" class="headerlink" title="构建Gradle Plugin库"></a>构建Gradle Plugin库</h5><ol>
+<li>在项目新建 <code>buildSrc/src/main/groovy/&lt;包名&gt;/&lt;插件文件&gt;.groovy</code> 文件</li>
+<li>在 main 目录内添加插件声明 <code>resources/META-INF/gradle-plugins/&lt;插件声明&gt;.properties</code></li>
+<li>在需要使用插件的库中引用：apply plugin: ‘&lt;插件声明&gt;’，参考原生插件</li>
+</ol>
+<p>注意：</p>
+<p>如果在实现<code>Plugin</code>时没有对应的包，则需要参考上图 <code>build.gradle</code> 配置 <code>gradle</code> 依赖</p>
+<p>不要在<code>settings.gradle</code>中声明 <code>buildSrc</code> 库，该库为默认引用</p>
+<h5 id="Transform"><a href="#Transform" class="headerlink" title="Transform"></a>Transform</h5><ol>
+<li><p>声明 <code>Transform</code></p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.benben.plugin</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.android.build.api.transform.Format</span><br><span class="line"><span class="keyword">import</span> com.android.build.api.transform.QualifiedContent</span><br><span class="line"><span class="keyword">import</span> com.android.build.api.transform.Transform</span><br><span class="line"><span class="keyword">import</span> com.android.build.api.transform.TransformException</span><br><span class="line"><span class="keyword">import</span> com.android.build.api.transform.TransformInvocation</span><br><span class="line"><span class="keyword">import</span> com.android.build.gradle.internal.pipeline.TransformManager</span><br><span class="line"><span class="keyword">import</span> com.android.utils.FileUtils</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenBenTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    String getName() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;benben&#x27;</span> <span class="comment">// 任务名称：可以在gradle的 app/Tasks/other 中找到 transformClassesWith&lt;任务名&gt;For&lt;构建类型&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    Set&lt;QualifiedContent.ContentType&gt; getInputTypes() &#123;</span><br><span class="line">        <span class="keyword">return</span> TransformManager.CONTENT_CLASS <span class="comment">// 要处理的输入类型</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    Set&lt;? super QualifiedContent.Scope&gt; getScopes() &#123;</span><br><span class="line">        return TransformManager.SCOPE_FULL_PROJECT <span class="comment">// 要处理的项目范围</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    boolean isIncremental() &#123;</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这里只是简单的进行中转，并没有对文件做任何操作</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    @Override</span><br><span class="line">    void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException &#123;</span><br><span class="line">        def inputs = transformInvocation.inputs <span class="comment">// 输入文件</span></span><br><span class="line">        def outputProvider = transformInvocation.outputProvider <span class="comment">// 输出目的地</span></span><br><span class="line">        inputs.each &#123;</span><br><span class="line">            it.jarInputs.each &#123;</span><br><span class="line">                File dest = outputProvider.getContentLocation(it.name, it.contentTypes, it.scopes, Format.JAR)<span class="comment">// 获取jar文件目标地址</span></span><br><span class="line">                println <span class="string">&quot;Jar：$&#123;it.file&#125;，Dest：$&#123;dest&#125;&quot;</span></span><br><span class="line">                FileUtils.copyFile(it.file, dest) <span class="comment">// 将输入的文件拷贝到目标目录</span></span><br><span class="line">            &#125;</span><br><span class="line">            it.directoryInputs.each &#123;</span><br><span class="line">                File dest = outputProvider.getContentLocation(it.name, it.contentTypes, it.scopes, Format.DIRECTORY)<span class="comment">// 获取目录目标地址</span></span><br><span class="line">                println <span class="string">&quot;Dir：$&#123;it.file&#125;，Dest：$&#123;dest&#125;&quot;</span></span><br><span class="line">                FileUtils.copyDirectory(it.file, dest) <span class="comment">// 将输入的目录拷贝到目标目录</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>注册</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BenBenPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">void</span> apply(Project target) &#123;</span><br><span class="line">        <span class="keyword">def</span> transfrom = <span class="keyword">new</span> BenBenTransform()</span><br><span class="line">        <span class="keyword">def</span> baseExtension = target.extensions.getByType(BaseExtension)</span><br><span class="line">        baseExtension.registerTransform(transfrom)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>注意：</p>
+<p>如果已经注册了<code>Transfrom</code>，就必须实现<code>transform</code>方法来实现文件输出</p>
+<p>正常情况下会通过 <code>javassist</code> 或 <code>ASM</code>等字节码处理库对中间文件进行修改</p>
+]]></content>
+      <categories>
+        <category>Gradle</category>
+      </categories>
+      <tags>
+        <tag>Gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Gradle 基本语法结构</title>
+    <url>/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h1 id="Gradle-基本语法结构"><a href="#Gradle-基本语法结构" class="headerlink" title="Gradle 基本语法结构"></a>Gradle 基本语法结构</h1><h5 id="语法一"><a href="#语法一" class="headerlink" title="语法一"></a>语法一</h5><blockquote>
+<p><code>Closure</code>：闭包，一个可以被传递的方法</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> test(<span class="keyword">int</span> i , Closure data) &#123;</span><br><span class="line">    println(<span class="string">&quot;test run!&quot;</span>)</span><br><span class="line">    data.run()<span class="comment">// 触发 closure 函数</span></span><br><span class="line">&#125;</span><br><span class="line">test <span class="number">1</span>, &#123;</span><br><span class="line">    println(<span class="string">&quot;test closure!&quot;</span>)</span><br><span class="line">&#125;<span class="comment">// 这里调用 test 函数省略了括号</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="语法二"><a href="#语法二" class="headerlink" title="语法二"></a>语法二</h5><blockquote>
+<p><code>methodMissing</code>：默认方法，当调用不存在的方法时会触发该函数</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line">	<span class="keyword">public</span> Object methodMissing(String name, Object args) &#123;</span><br><span class="line">		<span class="comment">// ... do something</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">def</span> a = <span class="keyword">new</span> A()</span><br><span class="line">a.gogo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">// 当A类没有该函数时回触发a的 methodMissing 方法</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="buildTypes"><a href="#buildTypes" class="headerlink" title="buildTypes"></a>buildTypes</h5><blockquote>
+<p>构建类型</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line">    internal &#123;	<span class="comment">// 自建类型</span></span><br><span class="line">        initWith debug <span class="comment">// 继承至debug</span></span><br><span class="line">    &#125;</span><br><span class="line">    release &#123;</span><br><span class="line">        minifyEnabled <span class="literal">false</span></span><br><span class="line">        proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可通过 <code>BuildVariants</code> 选项选取要编译的类型</p>
+<p><img src="/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/%E6%9E%84%E5%BB%BA%E7%B1%BB%E5%9E%8B(BuildVariants).png"></p>
+<p>也可通过配置对应文件夹进行代码配置，以执行不同的逻辑</p>
+<p><img src="/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/%E6%96%B9%E6%A1%88%E9%85%8D%E7%BD%AE.png"></p>
+<h5 id="productFlavors"><a href="#productFlavors" class="headerlink" title="productFlavors"></a>productFlavors</h5><blockquote>
+<p>多版本打包</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">flavorDimensions <span class="string">&#x27;paying&#x27;</span>,<span class="string">&#x27;nation&#x27;</span>	<span class="comment">// 分组</span></span><br><span class="line">productFlavors &#123; <span class="comment">// 构建版本</span></span><br><span class="line">    free &#123; <span class="comment">// 免费</span></span><br><span class="line">        dimension <span class="string">&#x27;paying&#x27;</span>	<span class="comment">// 所属组</span></span><br><span class="line">    &#125;</span><br><span class="line">    paid &#123; <span class="comment">// 付费</span></span><br><span class="line">        dimension <span class="string">&#x27;paying&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    china &#123; <span class="comment">// 中国版</span></span><br><span class="line">        dimension <span class="string">&#x27;nation&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    global &#123; <span class="comment">// 国际版</span></span><br><span class="line">        dimension <span class="string">&#x27;nation&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可通过 <code>BuildVariants</code> 选项选取要编译的类型</p>
+<p>此时构建类型会有以下组合：<code>buildTypes</code>数量 *  <code>productFlavors</code>组1数量 * <code>productFlavors</code>组2数量</p>
+<p><code>freeChinaDebug</code>、<code>freeChinaRelease</code>、<code>freeGlobalDebug</code> ……</p>
+<p>跟<code>buildTypes</code>一样，同样可以通过配置对应文件夹进行代码配置，以执行不同的逻辑，文件夹名称以构建类型自由组合，如：<code>free</code>、<code>freeDebug</code>、<code>china</code>、<code>chinaDebug</code>、<code>freeChinaDebug</code>等等</p>
+<p>这样就可以非常精细的配置类型</p>
+<h5 id="task"><a href="#task" class="headerlink" title="task"></a>task</h5><blockquote>
+<p>groovy 任务，被 task 声明的函数内部都属于配置项</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 无论是执行 gradlew 还是执行 gradlew clean，都会打印 1、2 和 7</span></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    println <span class="number">1</span></span><br><span class="line">    delete rootProject.buildDir <span class="comment">// 这一行需要 gradlew clean 才回进行真正的delete，否则只是单纯的配置</span></span><br><span class="line">    println <span class="number">2</span></span><br><span class="line">    doFirst &#123;&#125; <span class="comment">// 需要 gradlew clean 才会执行</span></span><br><span class="line">    doLast &#123;&#125; <span class="comment">// 需要 gradlew clean 才会执行</span></span><br><span class="line">&#125;</span><br><span class="line">task test() &#123;</span><br><span class="line">    println <span class="number">7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先行任务<code>doFirst</code>：如果<code>task</code>有多个<code>doFirst</code>，第二个会插在第一个的前面，第三个插在第二个前面，以此类推</p>
+<p>后续任务<code>doLast</code>：如果<code>task</code>有多个<code>doLast</code>，会在<code>doFirst</code>后面进行按顺序插入</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 执行 gradlew clean，会以1、2、7 和 5、3、4、6的形式打印</span></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    println <span class="number">1</span></span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">    println <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="number">4</span></span><br><span class="line">    &#125;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="number">6</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">task test() &#123;</span><br><span class="line">    println <span class="number">7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="task依赖"><a href="#task依赖" class="headerlink" title="task依赖"></a>task依赖</h5><blockquote>
+<p>通过 dependsOn: task 的方式来依赖另一个任务，会先执行依赖任务再执行自身任务</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 会先 打印 1、2 再打印 3、4</span></span><br><span class="line">task task1() &#123;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task task2(<span class="attr">dependsOn:</span> task1) &#123;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">        println <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="number">4</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Gradle生命周期"><a href="#Gradle生命周期" class="headerlink" title="Gradle生命周期"></a>Gradle生命周期</h5><blockquote>
+<p>三个阶段：初始化阶段（setting.gradle） -&gt; 定义阶段/配置阶段（build.gradle） -&gt; 执行阶段</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Gradle</category>
+      </categories>
+      <tags>
+        <tag>Gradle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Handler 原理</title>
     <url>/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h1 id="Handler-原理"><a href="#Handler-原理" class="headerlink" title="Handler 原理"></a>Handler 原理</h1><ol>
@@ -1765,50 +1866,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>线程安全的集合</title>
-    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ConcurrentHashMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListSet</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentLinkedQueue</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArrayList</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArraySet</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HashMap</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/HashMap/</url>
     <content><![CDATA[<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><blockquote>
@@ -1850,6 +1907,50 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <p>答：在链表大于等于8时会转换为红黑树，如果数组大小小于64会优先扩容</p>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线程安全的集合</title>
+    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ConcurrentHashMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListSet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentLinkedQueue</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArrayList</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArraySet</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>Java</category>
