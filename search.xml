@@ -138,6 +138,98 @@
       </tags>
   </entry>
   <entry>
+    <title>RecycleView</title>
+    <url>/2020/11/15/Android/RecycleView/</url>
+    <content><![CDATA[<h1 id="RecycleView"><a href="#RecycleView" class="headerlink" title="RecycleView"></a>RecycleView</h1><blockquote>
+<p>参考：<a href="https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA">https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA</a></p>
+</blockquote>
+<h5 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h5><p>在 <code>RecycleView</code> 的 <code>onMeasure</code> 阶段，默认采用自动测量模式，如果自身宽高不确定，<strong>会尝试通过 <code>LayoutManager</code> 测量子 <code>Item</code> 来确定自己的宽高</strong>，所以尽可能的使用 <code>match_parent</code> 或固定宽高来布局 <code>RecycleView</code>，<strong>减少性能的损耗</strong></p>
+<p><strong>在 <code>RecycleView</code> 的 <code>onLayout</code> 阶段，才会真正调用调用 <code>LayoutManager.onLayoutChildren()</code> 来对 <code>Item</code> 进行测量和布局</strong></p>
+<p>在 <code>LayoutManager.onLayoutChildren()</code> 方法中，会先通过 <code>detachAndScrapAttachedViews()</code> 函数回收布局，然后再通过 <code>file()</code> 函数进行布局，具体流程如下：</p>
+<p><code>file() -&gt; layoutChunk() -&gt; LayoutState.next() -&gt; addView() -&gt; measureChildWithMargins() -&gt; layoutDecoratedWithMargins() </code></p>
+<p>可以看到 <code>LayoutState.next()</code> 函数里最终调用 <code>tryGetViewHolderForPositionByDeadline()</code> 函数，然后通过 <code>Recyler</code> 四级缓存或创建来获取 <code>ViewHolder</code></p>
+<p>从上面可以得出，会先回收布局，然后再从缓存中取出来，这里是不是没事找事做了？这里应该是一种职责分离吧，<code>layout</code> 的事归 <code>LayoutManager</code> 管，缓存的事归 <code>Recycler</code> 管。<code>LayoutManager</code> 不应该知道哪个 <code>viewHolder</code> 是否有效</p>
+<p>可以看到 <code>RecycleView</code>为了提高效率，部分交互是通过 <code>attachViewToParent</code> 和 <code>detachViewFromParent</code> 来对 <code>View</code> 进行轻量级的添加和移除，<strong>其中 <code>attachViewToParent</code> 可以调整 <code>View</code> 的布局顺序，注意与 <code>getChildDrawingOrder</code> 的区别</strong></p>
+<p>【备注一】<code>detach</code> 在 <code>ViewGroup</code> 中的实现很简单，只是将当前 <code>View</code> 从 <code>ParentView</code> 的 <code>ChildView</code> 数组中移除，将当前 <code>View</code> 的 <code>mParent</code> 设置为null, 可以理解为轻量级的临时 <code>remove</code>。</p>
+<p>【备注二】<code>remove</code> 代表真正的移除，不光从 <code>ChildView</code> 数组中移除，其他和View树各项联系也会被彻底斩断。</p>
+<h4 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h4><ul>
+<li><code>LayoutManager</code>：负责 <code>item</code> 的 <code>measure</code> 、<code>layout</code></li>
+<li><code>Recycler</code>：四级回收、复用机制</li>
+<li><code>SmoothScroller</code>：滑动速度控制<ul>
+<li><code>LinearSmoothScroller</code></li>
+</ul>
+</li>
+<li><code>SnapHelper</code>：惯性滑动控制<ul>
+<li><code>LinearSnapHelper</code></li>
+<li><code>PagerSnapHelper</code></li>
+</ul>
+</li>
+<li><code>ItemAnimator</code>：<code>Item</code> 动画<ul>
+<li><code>SimpleItemAnimator</code></li>
+<li><code>DefaultlteAnimator</code></li>
+</ul>
+</li>
+<li><code>ItemDecoration</code>：<code>Item</code> 样式装饰<ul>
+<li><code>DividerItemDecoration</code></li>
+<li><code>ItemTouchHelper</code>：可以实现侧滑删除，拖动排序</li>
+<li>可以扩展吸点悬浮的效果</li>
+</ul>
+</li>
+<li><code>OnItemTouchListener</code>：手势拦截器</li>
+<li><code>DiffUtil</code>：差分刷新</li>
+</ul>
+<h4 id="Recyler-回收池-RecycleView-四级缓存"><a href="#Recyler-回收池-RecycleView-四级缓存" class="headerlink" title="Recyler 回收池 - RecycleView 四级缓存"></a><code>Recyler</code> 回收池 - <code>RecycleView</code> 四级缓存</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Recycler</span> </span>&#123;</span><br><span class="line">	<span class="comment">// #1 屏幕内，复用时不需要重新bindViewHolder，因为还会出现在屏幕上面，数据和状态是不会重置的</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mAttachedScrap;</span><br><span class="line">    <span class="comment">// 屏幕上发生变化的会放入changed中，其余放入到attached中</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mChangedScrap;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #2 划出屏幕，默认大小为2，划出去的item存放在这里，再次划进屏幕也是不需要重新绑定数据的；通过setItemViewCacheSize()这个方法调整它的大小</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mCachedViews;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #3 自定义扩展View缓存，允许开发者自定义缓存逻辑，当一二级缓存未命中时会调用该缓存；</span></span><br><span class="line">    <span class="comment">//    注意：该扩展缓存限制较多，因为RecyclerView不知道你创建的viewHolder</span></span><br><span class="line">    ViewCacheExtension mViewCacheExtension;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #4 根据viewType存取ViewHolder，当mCachedViews放不下时会缓存到此</span></span><br><span class="line">    <span class="comment">//    可通过setRecycledViewPool调整，每个类型容量默认为5</span></span><br><span class="line">    RecycledViewPool mRecyclerPool;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h4><ol>
+<li><p>当我们调用 <code>notifyDataSetChanged()</code> 或 <code>notifyItemRangeChanged(p, c) </code> (c这个范围非常大的时候)，会将所有的 <code>ViewHolder</code> 全部放入到 <code>pool</code> 中，即第四级缓存中，由于第四级缓存默认大小为5，所以当界面显示的数量大于5时，会出现丢弃的情况，造成需要重新 <code>craete</code> 和 <code>bind</code> 来补充缺失的 <code>item</code>，对性能影响比较大(<code>notifyItemRangeChanged</code> 哪怕超出屏幕的 <code>item</code> 都会尝试 <code>create</code> 和 <code>bind</code>，同样性能损耗较大)。如果列表显示很多行，且 <code>notifyDataSetChanged()</code> 函数调用较为频繁，可以考虑设置 <code>pool</code> 的大小。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">recyclerView.getRecycledViewPool().setMaxRecycledViews(<span class="number">0</span>, <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者给条目设置全局ID：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// adapter 中复写</span></span><br><span class="line"><span class="function">override fun <span class="title">getItemId</span><span class="params">(position: Int)</span>: Long </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> position.toLong()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mAdapter.setHasStableIds(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ol start="2">
+<li><p>当知道 <code>Item</code> 的改变不会影响到 <code>RecycleView</code> 的宽高时，可以通过 <code>setHasFixedSize(true)</code> 函数增加提高增删改插时的性能，原因如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// onItemRangeChanged</span></span><br><span class="line"><span class="comment">// onItemRangeRemoved</span></span><br><span class="line"><span class="comment">// onItemRangeMoved</span></span><br><span class="line"><span class="comment">// onItemRangeInserted</span></span><br><span class="line"><span class="comment">// 当 mHasFixedSize = true 时，上述四种方法都不会触发 requestLayout 重新布局</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triggerUpdateProcessor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (POST_UPDATES_ON_ANIMATION &amp;&amp; mHasFixedSize &amp;&amp; mIsAttached) &#123;</span><br><span class="line">        ViewCompat.postOnAnimation(RecyclerView.<span class="keyword">this</span>, mUpdateChildViewsRunnable);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mAdapterUpdateDuringMeasure = <span class="keyword">true</span>;</span><br><span class="line">        requestLayout();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>【注意】<code>notifyDataSetChanged()</code> 最终会触发 <code>onChanged()</code> 并调用 <code>requestLayout()</code> 重新测量布局</p>
+</li>
+<li><p>数据预取， <code>Android 5.0</code> 起，显示分为两个阶段：</p>
+<ol>
+<li>UI线程先处理布局信息，即创建和绑定View</li>
+<li>渲染(Render)线程把指令发送给GPU</li>
+</ol>
+<p>在不卡顿的前提下，帧与帧之间UI线程会有闲置的时机，<code>RecycleView</code> 在新条目即将进入视野前，会花大量的时间来创建和绑定 <code>View</code>，造成下一帧出现卡顿，数据预取的思想就是利用闲置的线程，提前将下一帧创建和绑定 <code>View</code> 的工作移至前一帧的空闲时间来完成。</p>
+<p>如果使用 <code>RecycleView</code> 内部的 <code>LayoutManager</code>，已经自动优化了。</p>
+<p>需要手动优化有以下两种场景：</p>
+<ol>
+<li>嵌套 <code>RecyclerView</code>：内部的 <code>LayoutManager</code> 需要调用  <code>LinearLayoutManager#setInitialPrefetchItemCount</code> 来设置预存取的数量，如：至少展示三个条目，则需要传入4</li>
+<li>自定义 <code>LayoutManager</code>：需要重写 <code>LayoutManager#collectInitialPrefetchPositions</code> 方法实现预取逻辑，参考：<a href="https://juejin.cn/post/6844903661382959118">https://juejin.cn/post/6844903661382959118</a></li>
+</ol>
+</li>
+<li><p>在 <code>TabLayout+ViewPager+RecyclerView</code> 的场景中，多个界面的条目布局是一致的，可以考虑多个 <code>RecyclerView</code> 共用一个 <code>RecycledViewPool</code> 来减少创建 <code>ViewHolder</code> 的开销</p>
+</li>
+<li><p>在条目中需要加载图片等场景，滚动时加载或只加载内存中的图片</p>
+</li>
+<li><p>尽可能的使用局部刷新函数，善用 <code>DiffUtil</code></p>
+</li>
+<li><p>避免在 <code>onCreate</code> 和 <code>onBind</code> 中创建过多对象</p>
+</li>
+<li><p><code>RecycleView</code> 和 <code>Item</code> 尽可能的不要使用 <code>wrap_content</code></p>
+</li>
+<li><p>不要在 <code>ScrollView</code> 中添加 <code>RecycleView</code></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>原理</tag>
+        <tag>View</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SparseArray和ArrayMap</title>
     <url>/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/</url>
     <content><![CDATA[<h1 id="SparseArray和ArrayMap"><a href="#SparseArray和ArrayMap" class="headerlink" title="SparseArray和ArrayMap"></a>SparseArray和ArrayMap</h1><h5 id="SparseArray"><a href="#SparseArray" class="headerlink" title="SparseArray"></a>SparseArray</h5><ol>
@@ -1603,50 +1695,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>线程安全的集合</title>
-    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
-    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">ConcurrentHashMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListMap</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentSkipListSet</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">ConcurrentLinkedQueue</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArrayList</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left">CopyOnWriteArraySet</td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>集合</tag>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>通用集合</title>
     <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E9%80%9A%E7%94%A8%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<h1 id="通用集合"><a href="#通用集合" class="headerlink" title="通用集合"></a>通用集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
@@ -1771,6 +1819,50 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <li>以<strong>链表</strong>为模型的集合，多次使用get获取某个位置的元素效率极低，可以使用<strong>列表迭代器ListIterator</strong>的nextIndex、next、previousIndex、previous等方法优化该操作，<strong>备注：</strong>ListIterator的add和set方法也是插入操作的一个优化点</li>
 <li>原本**for(Map.Entry&lt;&gt; entry : map.entrySet())**的map遍历操作最高效，在Java 1.8后直接通过map.forEach方法直接操作node更加高效</li>
 </ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>集合</tag>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线程安全的集合</title>
+    <url>/2020/09/15/Java/%E9%9B%86%E5%90%88/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E9%9B%86%E5%90%88/</url>
+    <content><![CDATA[<h1 id="线程安全的集合"><a href="#线程安全的集合" class="headerlink" title="线程安全的集合"></a>线程安全的集合</h1><h5 id="常用集合描述"><a href="#常用集合描述" class="headerlink" title="常用集合描述"></a>常用集合描述</h5><table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ConcurrentHashMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListMap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentSkipListSet</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ConcurrentLinkedQueue</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArrayList</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CopyOnWriteArraySet</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>Java</category>
