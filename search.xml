@@ -138,6 +138,58 @@
       </tags>
   </entry>
   <entry>
+    <title>Annotation Processing</title>
+    <url>/2020/12/03/Android/Annotation%20Processing/</url>
+    <content><![CDATA[<h1 id="Annotation-Processing"><a href="#Annotation-Processing" class="headerlink" title="Annotation Processing"></a>Annotation Processing</h1><blockquote>
+<p>简称APT，通过注解动态生成必要的类；</p>
+<p>使用该技术的有：ButterKnife、EventBus</p>
+</blockquote>
+<h5 id="第一步：创建工程"><a href="#第一步：创建工程" class="headerlink" title="第一步：创建工程"></a>第一步：创建工程</h5><p>![](新建APT 库.png)</p>
+<h5 id="第二步：复写AbstractProcessor和声明注解处理器"><a href="#第二步：复写AbstractProcessor和声明注解处理器" class="headerlink" title="第二步：复写AbstractProcessor和声明注解处理器"></a>第二步：复写AbstractProcessor和声明注解处理器</h5><p><img src="/2020/12/03/Android/Annotation%20Processing/APT%E5%A4%84%E7%90%86%E5%99%A8.png"></p>
+<p>继承<code>AbstractProcessor</code></p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProcessor</span> : <span class="type">AbstractProcessor</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">lateinit</span> <span class="keyword">var</span> filer: Filer</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">init</span><span class="params">(processingEnv: <span class="type">ProcessingEnvironment</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(processingEnv)</span><br><span class="line">        filer = processingEnv.filer <span class="comment">// 在初始化函数中获取文件输出类</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回回ture表示该注解已经被处理, 后续不会再有其他处理器处理; 返回false表示仍可被其他处理器处理</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">process</span><span class="params">(annotations: <span class="type">MutableSet</span>&lt;<span class="type">out</span> <span class="type">TypeElement</span>&gt;?, roundEnv: <span class="type">RoundEnvironment</span>?)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="comment">// 这里通过 Filer 输出目标文件</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 集合中指定支持的注解类型的名称（这里必须时完整的包名+类名)</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span>: MutableSet&lt;String&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getSupportedAnnotationTypes()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支持的命令行参数选项</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getSupportedOptions</span><span class="params">()</span></span>: MutableSet&lt;String&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getSupportedOptions()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定当前正在使用的Java版本</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getSupportedSourceVersion</span><span class="params">()</span></span>: SourceVersion &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getSupportedSourceVersion()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>声明注解处理器：</p>
+<p>mian目录下声明 <code>resources/META-INF/services/javax.annotation.processing.Processor</code> 文件</p>
+<p>文件内声明注解处理器类全称：com.benben.lib_processor.MyProcessor</p>
+<p>引用：</p>
+<p>annotationProcessor project(‘:lib-processor’)</p>
+<h5 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h5><p>可以使用 <code>Filer</code> 直接输出文件，也可以使用<code>javapoet</code> 第三方库来输出文件</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>Gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Base64 和 Base58</title>
+    <url>/2020/11/29/Android/Base64%E5%92%8CBase58/</url>
+    <content><![CDATA[<h1 id="Base64-和-Base58"><a href="#Base64-和-Base58" class="headerlink" title="Base64 和 Base58"></a>Base64 和 Base58</h1><h3 id="Base64算法："><a href="#Base64算法：" class="headerlink" title="Base64算法："></a>Base64算法：</h3><p>将原数据每6位对应成Base 64索引表中的一个字符编排成一个字符串（每个字符8位）。</p>
+<h5 id="Base64索引表"><a href="#Base64索引表" class="headerlink" title="Base64索引表"></a>Base64索引表</h5><p><img src="/2020/11/29/Android/Base64%E5%92%8CBase58/Base64%E7%A0%81%E8%A1%A8.jpg"></p>
+<p>编码示例：把【Man】进行Base64编码</p>
+<p><img src="/2020/11/29/Android/Base64%E5%92%8CBase58/Base64%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B.jpg"></p>
+<p>编码示例：Base64的末尾补足</p>
+<p><img src="/2020/11/29/Android/Base64%E5%92%8CBase58/%E6%9C%AB%E5%B0%BE%E8%A1%A5%E8%B6%B3.jpg"></p>
+<h5 id="Base64用途"><a href="#Base64用途" class="headerlink" title="Base64用途"></a>Base64用途</h5><ol>
+<li>将二进制数据扩充了存储和传输途径，即：允许通过文本传输任何数据</li>
+<li>有一定的保密性，非肉眼可见</li>
+</ol>
+<h5 id="Base64的缺点"><a href="#Base64的缺点" class="headerlink" title="Base64的缺点"></a>Base64的缺点</h5><p>因为原理是6位变8位，即每次编码后数据会增大1\3，所以会影响存储和传输性能。</p>
+<h5 id="问题：Base64加密图片传输更安全和更高效？"><a href="#问题：Base64加密图片传输更安全和更高效？" class="headerlink" title="问题：Base64加密图片传输更安全和更高效？"></a>问题：Base64加密图片传输更安全和更高效？</h5><p>提供的安全性很小，Base64会让原有数据增大1\3，所以也并不高效，对传输速度有要求的就是画蛇添足的操作。</p>
+<h3 id="Base58"><a href="#Base58" class="headerlink" title="Base58"></a>Base58</h3><p><strong>Base64的变种</strong>，数字货币常用的编码方式（比特币等）。去掉了数字0、字母大写O、字母大写I、和字母小写l，以及+和/符号，主要是方便人工抄写，去掉符号也让大多数软件方便双击复制</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Bitmap</title>
     <url>/2020/11/27/Android/Bitmap/</url>
     <content><![CDATA[<h1 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h1><blockquote>
