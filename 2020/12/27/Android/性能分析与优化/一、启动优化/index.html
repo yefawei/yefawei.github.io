@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="相关任务： 冷启动之前 1. 启动&#96;app&#96; 2. 加载空白&#96;Window&#96; 3. 创建进程 随后任务 1. 创建&#96;Application&#96; 2. 创建主线程 3. 创建&#96;MainActivity&#96; 绘制任务 1. 加载布局 2. 布置屏幕 3. 首帧绘制 ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="启动优化">
+<meta property="og:url" content="https://yefawei.github.io/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%80%E3%80%81%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="相关任务： 冷启动之前 1. 启动&#96;app&#96; 2. 加载空白&#96;Window&#96; 3. 创建进程 随后任务 1. 创建&#96;Application&#96; 2. 创建主线程 3. 创建&#96;MainActivity&#96; 绘制任务 1. 加载布局 2. 布置屏幕 3. 首帧绘制 ...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-27T11:37:31.000Z">
+<meta property="article:modified_time" content="2021-07-06T17:39:30.208Z">
+<meta property="article:author" content="BenBen">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="性能">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yefawei.github.io/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%80%E3%80%81%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>启动优化 | BenBen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BenBen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/yefawei" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%80%E3%80%81%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          启动优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-27 19:37:31" itemprop="dateCreated datePublished" datetime="2020-12-27T19:37:31+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">相关任务： 冷启动之前 1. 启动`app` 2. 加载空白`Window` 3. 创建进程 随后任务 1. 创建`Application` 2. 创建主线程 3. 创建`MainActivity` 绘制任务 1. 加载布局 2. 布置屏幕 3. 首帧绘制 ...</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="启动优化"><a href="#启动优化" class="headerlink" title="启动优化"></a>启动优化</h1><h4 id="app启动流程"><a href="#app启动流程" class="headerlink" title="app启动流程"></a>app启动流程</h4><p><code>Click Event -&gt; IP -&gt; Process.start -&gt; ActivityThread -&gt; bindApplication -&gt; LifeCycle -&gt; ViewRootImpl</code></p>
+<p>相关任务：</p>
+<ul>
+<li>冷启动之前<ol>
+<li>启动<code>app</code></li>
+<li>加载空白<code>Window</code></li>
+<li>创建进程</li>
+</ol>
+</li>
+<li>随后任务<ol>
+<li>创建<code>Application</code></li>
+<li>创建主线程</li>
+<li>创建<code>MainActivity</code></li>
+</ol>
+</li>
+<li>绘制任务<ol>
+<li>加载布局</li>
+<li>布置屏幕</li>
+<li>首帧绘制</li>
+</ol>
+</li>
+</ul>
+<h4 id="相关工具的使用"><a href="#相关工具的使用" class="headerlink" title="相关工具的使用"></a>相关工具的使用</h4><p><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/">参考：TraceView</a></p>
+<p><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/">参考：Systrace</a></p>
+<h4 id="启动时间测量方式"><a href="#启动时间测量方式" class="headerlink" title="启动时间测量方式"></a>启动时间测量方式</h4><p><a href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F/">参考：启动时间测量方式</a></p>
+<h4 id="获取方法耗时"><a href="#获取方法耗时" class="headerlink" title="获取方法耗时"></a>获取方法耗时</h4><p><a href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6/">参考：获取方法耗时</a></p>
+<h4 id="启动优化核心思想"><a href="#启动优化核心思想" class="headerlink" title="启动优化核心思想"></a>启动优化核心思想</h4><ul>
+<li>子线程分担主线程任务，并行减少时间</li>
+<li>异步、延迟、懒加载</li>
+</ul>
+<h4 id="启动优化常规方案"><a href="#启动优化常规方案" class="headerlink" title="启动优化常规方案"></a>启动优化常规方案</h4><h5 id="一、优化小技巧"><a href="#一、优化小技巧" class="headerlink" title="一、优化小技巧"></a>一、优化小技巧</h5><p>注意一：<code>Theme</code> 切换只是感觉上的快，实际启动时间并没有改变</p>
+<p>注意二：会延长低版本（7.0或6.0以下）手机闪屏时间，需要综合考量是否需要在低版本使用 <code>Theme</code></p>
+<p><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%AE%BE%E7%BD%AE%E5%90%AF%E5%8A%A8Theme/">参考设置启动Theme</a></p>
+<h5 id="二、采用启动器实现并发初始化"><a href="#二、采用启动器实现并发初始化" class="headerlink" title="二、采用启动器实现并发初始化"></a>二、采用启动器实现并发初始化</h5><ol>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/alibaba/alpha">阿里开源 <code>alpha</code> 启动器</a></p>
+<p>alpha 定位为异步启动框架。<strong>在执行启动任务时判断其是否是主线程执行，如果是则通过 handler#post 发送出去排队处理, 否则交给线程池处理。</strong></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/YummyLau/Anchors">更复杂图例启动器，适合负责场景</a></p>
+</li>
+</ol>
+<h5 id="三、延迟初始化"><a href="#三、延迟初始化" class="headerlink" title="三、延迟初始化"></a>三、延迟初始化</h5><p>在界面的真实数据展示里的UI显示后对可延迟初始化的任务进行初始化,如列表的第一条数据、可交互控件的显示等</p>
+<ul>
+<li><p><code>android 6.0</code> 之前：</p>
+<p><strong>发送延迟消息对任务进行初始化</strong></p>
+<p>缺点：无法确定延时的时长</p>
+</li>
+<li><p><code>android 6.0（含6.0）</code> 使用 <code>IdleHandler</code> 在app闲置时初始化，可有效利用闲置时间：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelayInitDispatcher</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;Task&gt; mDelayTasks = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DelayInitDispatcher <span class="title">addTask</span><span class="params">(Task task)</span></span>&#123;</span><br><span class="line">        mDelayTasks.add(task);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequiresApi(api = Build.VERSION_CODES.M)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Looper.myQueue().addIdleHandler(<span class="keyword">new</span> MessageQueue.IdleHandler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">queueIdle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(mDelayTasks.size()&gt;<span class="number">0</span>)&#123;</span><br><span class="line">                    Task task = mDelayTasks.poll();</span><br><span class="line">                    <span class="comment">// 执行 task</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> !mDelayTasks.isEmpty();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="四、懒加载"><a href="#四、懒加载" class="headerlink" title="四、懒加载"></a>四、懒加载</h5><p>在需要用到的时候再进行加载</p>
+<h4 id="其它优化方案"><a href="#其它优化方案" class="headerlink" title="其它优化方案"></a>其它优化方案</h4><h5 id="一、Multidex-阶段提前加载-SharedPreference"><a href="#一、Multidex-阶段提前加载-SharedPreference" class="headerlink" title="一、Multidex 阶段提前加载 SharedPreference"></a>一、<code>Multidex</code> 阶段提前加载 <code>SharedPreference</code></h5><p><a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/multidex">Multidex官方文档</a></p>
+<p>在 <code>Multidex</code> 加载阶段，由于此阶段更多是在 <code>io</code> 操作，所以可以充分利用此阶段的 <code>CPU</code> 加载 <code>SP</code></p>
+<p><code>Multidex</code> 优化参考项目：<a target="_blank" rel="noopener" href="https://github.com/lanshifu/MultiDexTest">MultiDex优化源码</a></p>
+<p>注意：该方法只在低版本（Android 5.0 之前的平台，即 Dalvik 虚拟机）有效</p>
+<h5 id="二、启动阶段不启动子进程"><a href="#二、启动阶段不启动子进程" class="headerlink" title="二、启动阶段不启动子进程"></a>二、启动阶段不启动子进程</h5><ul>
+<li>子进程会共享 <code>CPU</code> 资源，导致主进程 <code>CPU</code> 紧张</li>
+<li>注意：<code>Application</code> 的 <code>onCreate</code> 之前会启动 <code>ContentProvider</code></li>
+</ul>
+<h5 id="三、提前异步加载类字节码"><a href="#三、提前异步加载类字节码" class="headerlink" title="三、提前异步加载类字节码"></a>三、提前异步加载类字节码</h5><p>一个类的加载本身可能会涉及上千个其它类，可以提前异步加载类字节码</p>
+<p>监控哪些类需要提前加载：可以替换掉系统的<code>ClassLoader</code> 用自己的 <code>ClassLoader</code> 来记录加载时间，按需选取需要异步加载的类</p>
+<ul>
+<li>Class.forName() 只加载类本身及其静态变量的引用类</li>
+<li>new 类实例 可以额外加载类成员变量的引用类</li>
+</ul>
+<h5 id="四、启动阶段抑制-GC"><a href="#四、启动阶段抑制-GC" class="headerlink" title="四、启动阶段抑制 GC"></a>四、启动阶段抑制 GC</h5><p><a href="/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7GC/">监控GC</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/672750">支付宝客户端架构解析：Android 客户端启动速度优化之「垃圾回收」</a></p>
+<h5 id="五、更优的-CPU-资源调度"><a href="#五、更优的-CPU-资源调度" class="headerlink" title="五、更优的 CPU 资源调度"></a>五、更优的 CPU 资源调度</h5><p><a target="_blank" rel="noopener" href="https://github.com/Tencent/Hardcoder">Hardcoder 让 App 充分调度系统资源</a></p>
+<h5 id="六、数据重排"><a href="#六、数据重排" class="headerlink" title="六、数据重排"></a>六、数据重排</h5><p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/680526">支付宝 App 构建优化解析：通过安装包重排布优化 Android 端启动性能</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/facebook/redex">Facebook Redex字节码优化工具</a></p>
+<h4 id="后期维护"><a href="#后期维护" class="headerlink" title="后期维护"></a>后期维护</h4><ul>
+<li>收敛修改涉及启动相关代码的权限：结合 CI 修改启动代码需要 Review 代码并测试通过才可合入</li>
+</ul>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903958113157128">面试官：今日头条启动很快，你觉得可能是做了哪些优化？</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD/" rel="tag"># 性能</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7GC/" rel="prev" title="监控 GC">
+      <i class="fa fa-chevron-left"></i> 监控 GC
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96"><span class="nav-text">启动优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#app%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B"><span class="nav-text">app启动流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">相关工具的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F"><span class="nav-text">启动时间测量方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6"><span class="nav-text">获取方法耗时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-text">启动优化核心思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BC%98%E5%8C%96%E5%B8%B8%E8%A7%84%E6%96%B9%E6%A1%88"><span class="nav-text">启动优化常规方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BC%98%E5%8C%96%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="nav-text">一、优化小技巧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%87%87%E7%94%A8%E5%90%AF%E5%8A%A8%E5%99%A8%E5%AE%9E%E7%8E%B0%E5%B9%B6%E5%8F%91%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">二、采用启动器实现并发初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BB%B6%E8%BF%9F%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">三、延迟初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="nav-text">四、懒加载</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88"><span class="nav-text">其它优化方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E3%80%81Multidex-%E9%98%B6%E6%AE%B5%E6%8F%90%E5%89%8D%E5%8A%A0%E8%BD%BD-SharedPreference"><span class="nav-text">一、Multidex 阶段提前加载 SharedPreference</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%90%AF%E5%8A%A8%E9%98%B6%E6%AE%B5%E4%B8%8D%E5%90%AF%E5%8A%A8%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="nav-text">二、启动阶段不启动子进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8F%90%E5%89%8D%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E7%B1%BB%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-text">三、提前异步加载类字节码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%90%AF%E5%8A%A8%E9%98%B6%E6%AE%B5%E6%8A%91%E5%88%B6-GC"><span class="nav-text">四、启动阶段抑制 GC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%9B%B4%E4%BC%98%E7%9A%84-CPU-%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6"><span class="nav-text">五、更优的 CPU 资源调度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%95%B0%E6%8D%AE%E9%87%8D%E6%8E%92"><span class="nav-text">六、数据重排</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E6%9C%9F%E7%BB%B4%E6%8A%A4"><span class="nav-text">后期维护</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-text">问题</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BenBen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yefawei" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yefawei" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备18051432号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BenBen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
