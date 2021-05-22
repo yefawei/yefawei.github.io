@@ -99,6 +99,113 @@
       </tags>
   </entry>
   <entry>
+    <title>AIDL</title>
+    <url>/2020/12/05/Android/AIDL/</url>
+    <content><![CDATA[<h1 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h1><p>相关文章：</p>
+<p><a href="Binder.md">关于Binder</a></p>
+<blockquote>
+<p>注：<br>一、如果不需要跨进程，则应继承<code>Binder</code>并返回给绑定服务调用处；参考：<a href="https://developer.android.com/guide/components/bound-services#Binder">https://developer.android.com/guide/components/bound-services#Binder</a><br>二、如果需要跨进程但不需要处理多线程，则建议使用<code>Messenger</code>来实现接口；参考：<a href="https://developer.android.com/guide/components/bound-services#Messenger">https://developer.android.com/guide/components/bound-services#Messenger</a></p>
+</blockquote>
+<h5 id="第一"><a href="#第一" class="headerlink" title="第一"></a>第一</h5><blockquote>
+<p>注：最好把所有的aidl文件放在同一个包中,因为另一个进程调用时需要一样的包名才能生效</p>
+</blockquote>
+<p>新建一个以aidl为后缀的文件,其它类型参数必须标上方向:<code>in</code> <code>out</code> 或者<code>inout</code>。<br>in表示输入型参数，即数据只能从客户端传递向服务端，由服务端传递向客户端的参数会变成默认值<br>out表示输出型参数，即数据只能从服务端传递向客户端，由客户端传递向服务的参数会变成默认值<br>inout表示输入输出型，可以双向传递数据</p>
+<p>IBookManager.aidl</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.test.aidl;</span><br><span class="line"><span class="keyword">import</span> com.test.aidl.Book;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IBookManager</span> </span>&#123;</span><br><span class="line">    <span class="function">Book <span class="title">getBookList</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setBook</span><span class="params">(in Book book)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="第二"><a href="#第二" class="headerlink" title="第二"></a>第二</h5><p>由于用到了自定义的Parcelable对象,必须新建一个和它同名的AIDL文件,并在其中声明它为Parcelable类型<br>例:上面我们用到了Book这个类,所以要创建<br>Book.aidl</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.test.aidl;</span><br><span class="line">parcelable Book;</span><br></pre></td></tr></table></figure>
+
+<p>跨进程数据传递需要赋值封装,这样才能跨进程传递数据<br>Book.class</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> <span class="keyword">implements</span> <span class="title">Parcelable</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> mId;</span><br><span class="line">    <span class="keyword">public</span> String mName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">()</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//一定要按照字段顺序写</span></span><br><span class="line">        mId = in.readInt();</span><br><span class="line">        mName = in.readString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">describeContents</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeToParcel</span><span class="params">(Parcel dest, <span class="keyword">int</span> flags)</span> </span>&#123;</span><br><span class="line">        dest.writeInt(mId);</span><br><span class="line">        dest.writeString(mName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Parcelable.Creator&lt;Book&gt; CREATOR = <span class="keyword">new</span> Parcelable</span><br><span class="line">        .Creator&lt;Book&gt;() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Book <span class="title">createFromParcel</span><span class="params">(Parcel in)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Book(in);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Book[] newArray(<span class="keyword">int</span> size) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Book[size];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="第三"><a href="#第三" class="headerlink" title="第三"></a>第三</h5><p>远程服务端Service的实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.test.service;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookManagerService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Book mBook = <span class="keyword">new</span> Book();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Binder mBinder = <span class="keyword">new</span> IBookManager.Stub()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Book <span class="title">getBookList</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> mBook;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBook</span><span class="params">(Book book)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            mBook = book;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mBinder;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="第四"><a href="#第四" class="headerlink" title="第四"></a>第四</h5><p>客户端的实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookManagerActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection()&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName className, IBinder service)</span> </span>&#123;</span><br><span class="line">            IBookManager bookManager = IBookManager.Stub.asInterface(service);</span><br><span class="line">            bookManager.getBookList();<span class="comment">//做你要做的操作</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName className)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>,BookManagerService.class);</span><br><span class="line">        bindService(intent,mConnection,Context.BIND_AUTO_CREATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        unbindService(mConnection);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h5><ol>
+<li>要往子进程传递一个监听类如：<code>IOnNewBookArrivedListener </code>，那么该类必须是Binder的子类；由于跨进程通讯该监听类会序列化传递到子进程再反序列化重新生成一个对象，所以用普通的List去存储监听类是无法移除的；这里要使用<code>RemoteCallBackList</code>的<code>register</code>方法和<code>unregister</code>来存取；<ul>
+<li>由于跨进程传输对象的底层Binder对象是同一个，<code>RemoteCallBackList</code>便是使用这一点来进行添加移除</li>
+<li><code>RemoteCallBackList</code>的遍历需要通过<code>beginBroadcast</code>和<code>finishBroadcast</code>配对使用</li>
+</ul>
+</li>
+</ol>
+<h5 id="跨进程内存泄漏"><a href="#跨进程内存泄漏" class="headerlink" title="跨进程内存泄漏"></a>跨进程内存泄漏</h5><p>在跨进程调用IPC方法，即当前进程传递回调监听<code>Listener</code>到目标进程，在取消监听后该<code>Listener</code>不会立马被回收，会存入一个静态链表<code>ReferenceQueue</code>中，有一个专门的守护线程去维护这个链表，当该线程执行的时候会弹出里面的对象，执行他们的<code>finalize</code>方法，下次执行GC时才会被回收。</p>
+<p>内存泄漏：<br>直接原因时该守护线程优先级比较低，运行的时间比较少。当<code>ReferenceQueue</code>持有的对象过多时，守护线程来不及弹出对象，造成无论如何GC都不会回收。<br>如果监听类持有<code>Context</code>等需要回收的对象，会造成内存泄漏</p>
+<p>其中Android9.0之前对象会被<code>FinalizerFeference</code>持有并存入<code>ReferenceQueue</code>：</p>
+<p><img src="/2020/12/05/Android/AIDL/Android8.1.png"></p>
+<p>Android9.0起（含9.0）对象会被<code>Cleaner</code>持有并存入<code>ReferenceQueue</code>：</p>
+<p><img src="/2020/12/05/Android/AIDL/Android9.0.png"></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>AIDL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Activity启动流程</title>
+    <url>/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h1><p><a href="https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg">https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg</a></p>
+<h4 id="系统启动触发Launcher流程"><a href="#系统启动触发Launcher流程" class="headerlink" title="系统启动触发Launcher流程"></a>系统启动触发Launcher流程</h4><p>系统开机时加载引导程序并初始化各个硬件，初始化完成后会创建出第一个用户进程 <code>Init进程(pid=1)</code>，随后孵化出 <code>adbd(adb 命令)</code> 和 <code>logd(日志输出)</code> 两个守护进程，执行完成之后还会孵化出第一个 <code>java</code> 进程，也就是 <code>Zygote</code> 进程，它会调用 <code>ZygoteInit.java</code> 这个类，在这个类的入口方法会创建 <code>Framework</code> <code>SystemServer</code> 系统服务进程，即 <code>SystemServer.java</code> 这个类，在这个 <code>SystemServer</code> 这个类里面又会创建我们熟知的系统服务：<code>ActivityManagerService</code> 、 <code>WindowManagerService</code> 、<code>PowerManagerService</code> 、<code>InputManagerService</code> 等等，同时创建出 <code>binder</code> 线程池，当所有服务启动完毕后，就会调用 <code>ActivityManagerService.systemReady()</code> 来启动 <code>Launcher</code> 应用了。</p>
+<h4 id="Launcher-启动-App-流程"><a href="#Launcher-启动-App-流程" class="headerlink" title="Launcher 启动 App 流程"></a>Launcher 启动 App 流程</h4><ul>
+<li> <code>Launcher</code> 监听到点击app事件，调用 <code>Activity.startActivityForResult()</code> ,转到 <code>Instrumentation</code> 类的 <code>execStartActivity</code> 方法</li>
+<li> <code>Instrumentation</code>  通过跨进程通信告诉 <code>ATMS</code> 要启动应用的需求</li>
+<li><code>ATMS</code> 反馈 <code>Launcher</code> 让其进入 <code>Paused</code> 状态</li>
+<li>随后 <code>ATMS</code> 转到 <code>ZygoteProcess</code> 类，通过 <code>socket</code> 与 <code>Zygote</code> 通信，告知 <code>Zygote</code> 需要新建进程</li>
+<li><code>Zygote fork</code> 进程，并调用 <code>ActivityThread</code> 的 <code>main</code> 方法，也就是app的入口</li>
+<li><code>ActivityThread</code> 创建 <code>ActivityThread</code> 实例，新建 <code>Looper</code> 实例，开始 <code>loop</code> 循环</li>
+<li>同时 <code>ActivityThread</code> 告知 <code>AMS</code>，进程创建完毕，开始反射创建 <code>Application</code> <code>Provider</code>，并调用 <code>Application</code> 的 <code>attach</code> <code>onCreate</code> 的方法</li>
+<li>最后创建上下文，反射创建 <code>Activity</code>，开始调用生命周期</li>
+</ul>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><ol>
+<li><code>ActivityManagerService</code> 与 <code>ActivityTaskManagerService</code> 的区别?<ul>
+<li>原本四大组件的通信都是 <code>AMS</code> 来处理，后期 <code>AMS</code> 过于臃肿，将 <code>Activity</code> 相关工作转移到 <code>ATMS</code> 中</li>
+</ul>
+</li>
+<li>怎么判断应用进程存在？<ul>
+<li>如果进程存在，<code>ATMS</code> 里面会保存有 <code>WindowProcessController</code> 信息，这个信息包括 <code>processName</code> 和 <code>uid</code>，<code>uid</code> 则是应用程序的 <code>id</code>，可以通过 <code>applicationInfo.uid</code> 获取。所以判断进程是否存在，根据 <code>processName</code> 和 <code>uid</code> 去判断是否有对应的 <code>WindowProcessController</code>，并且 <code>WindowProcessController</code> 里面的线程不为空。</li>
+</ul>
+</li>
+<li>怎么创建进程，为什么要通过 socket 进行 IPC 通信而不是 binder？<ul>
+<li>通过 <code>socket</code> 与 <code>Zygote</code> 进行通信，然后 <code>Zygote</code> 进行 <code>fork</code> 进程并返回新进程的 <code>pid</code></li>
+<li>fork() 方法是类 Unix 操作系统上创建进程的主要方法，用于创建当前进程的副本</li>
+<li>因为 binder 是多线程交互，而 fork 不允许存在多线程，原因是会出现死锁，例如主进程里的A线程持有锁后，fork 出的子进程同样将锁 fork 出来了，当子进程的线程需要用到该锁，那么就会出现死锁</li>
+</ul>
+</li>
+</ol>
+<p><strong><code>ZygoteInit.java</code> 里做的业务：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">main</span><span class="params">(String argv[])</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 1. 预加载 frameworks/base/preloaded-classes 和 framework_res.apk 等系统资源</span></span><br><span class="line">    <span class="comment">// 应用在启动时需要大量调用系统资源，这里预先调用可以提高应用响应速度</span></span><br><span class="line">    preloadClasses();</span><br><span class="line">    preloadResources();</span><br><span class="line">    preloadSharedLibraries();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 启动 system_server 进程。该进程是 framework 核心</span></span><br><span class="line">    <span class="keyword">if</span>(argv[<span class="number">1</span>].equals(<span class="string">&quot;start-system-server&quot;</span>)) &#123;</span><br><span class="line">        startSystemServer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 创建 Socket 服务</span></span><br><span class="line">    registerZygoteSocket();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 进入阻塞状态，等待连接，用以处理来自 AMS 申请进程创建的请求</span></span><br><span class="line">    runSelectLoopMode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>SystemServer.java</code> 里做的业务：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建系统服务管理者</span></span><br><span class="line">    SystemServiceManager mSystemServiceManager = <span class="keyword">new</span> SystemServiceManager(mSystemContext);</span><br><span class="line">    <span class="comment">// 启动引导服务</span></span><br><span class="line">    startBootstrapServices(t);</span><br><span class="line">    <span class="comment">// 启动核心服务</span></span><br><span class="line">    startCoreServices(t);</span><br><span class="line">    <span class="comment">// 启动其它一般服务</span></span><br><span class="line">    startOtherServices(t);</span><br><span class="line">    <span class="comment">// 当所有服务启动完毕会调用ActivityManagerService.systemReady来启动launcher应用</span></span><br><span class="line">    mActivityManagerService.systemReady()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Launcher-启动流程示意"><a href="#Launcher-启动流程示意" class="headerlink" title="Launcher 启动流程示意"></a>Launcher 启动流程示意</h4><img src="/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/Launcher启动流程.png" style="zoom:50%;">
+
+<p>相关成员：</p>
+<ul>
+<li><code>ActivityRecord</code>：<code>Server</code> 端 <code>Activity</code> 的映射，存放了 <code>Activity</code> 的各种信息，当 <code>Activity</code> 被回收时，临时保存的数据也会通过 <code>Instrumentation.callActivityOnSaveInstanceState</code> 跨进程通信保存在该类中</li>
+<li><code>TaskRecord</code>：单个任务栈记录</li>
+<li><code>ActivityStack</code>：<code>Activity</code> 的栈管理，出栈入栈顺序等信息</li>
+<li><code> ActivityStackSupervisor</code>：管理各个app的任务栈管理者</li>
+</ul>
+<p><img src="/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/Activity%E4%BB%BB%E5%8A%A1%E6%A0%88.png"></p>
+<p><strong>【重点】</strong>留意 <code>ActivityStarter</code>，里面有检查配置清单里的信息，如果要处理插件化，<code>Activity</code> 配置清单信息要如何处理同让需要参考该类并hook里面的逻辑</p>
+<h4 id="Activity创建流程示意"><a href="#Activity创建流程示意" class="headerlink" title="Activity创建流程示意"></a>Activity创建流程示意</h4><p><img src="/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B.png"></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Android 中的线程模型</title>
     <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
@@ -614,8 +721,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>View</tag>
         <tag>原理</tag>
+        <tag>View</tag>
       </tags>
   </entry>
   <entry>
@@ -726,8 +833,8 @@
       </categories>
       <tags>
         <tag>Android</tag>
-        <tag>View</tag>
         <tag>原理</tag>
+        <tag>View</tag>
       </tags>
   </entry>
   <entry>
@@ -1828,8 +1935,8 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <category>Java</category>
       </categories>
       <tags>
-        <tag>线程</tag>
         <tag>原理</tag>
+        <tag>线程</tag>
         <tag>Java</tag>
       </tags>
   </entry>
