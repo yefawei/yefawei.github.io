@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/09/11/hello-world/</url>
-    <content><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
-<p>Welcome to my blog.</p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
     <title>正则</title>
     <url>/2020/09/19/%E6%AD%A3%E5%88%99/</url>
     <content><![CDATA[<h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><table>
@@ -148,6 +140,53 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/09/11/hello-world/</url>
+    <content><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
+<p>Welcome to my blog.</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>Android 中的线程模型</title>
+    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
+<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
+<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
+</ul>
+<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
+<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
+<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
+</ul>
+<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
+<ol>
+<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
+<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>priority</code>优先级</p>
+<p>线程优先级，值越大优先级越高</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>cgroup</code></p>
+<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
+</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
+<li>优先级具有继承性</li>
+<li>正确认识任务重要性决定优先级</li>
+<li>线程必须命名，以定位归属</li>
+<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>线程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Activity启动流程</title>
     <url>/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/</url>
     <content><![CDATA[<h1 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h1><p><a href="https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg">https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg</a></p>
@@ -203,45 +242,6 @@
       <tags>
         <tag>Android</tag>
         <tag>原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Android 中的线程模型</title>
-    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
-<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
-<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
-</ul>
-<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
-<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
-<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
-</ul>
-<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
-<ol>
-<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
-<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>priority</code>优先级</p>
-<p>线程优先级，值越大优先级越高</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>cgroup</code></p>
-<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
-</li>
-</ol>
-<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
-<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
-<li>优先级具有继承性</li>
-<li>正确认识任务重要性决定优先级</li>
-<li>线程必须命名，以定位归属</li>
-<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>线程</tag>
       </tags>
   </entry>
   <entry>
@@ -513,98 +513,6 @@
       </tags>
   </entry>
   <entry>
-    <title>RecycleView</title>
-    <url>/2020/11/15/Android/RecycleView/</url>
-    <content><![CDATA[<h1 id="RecycleView"><a href="#RecycleView" class="headerlink" title="RecycleView"></a>RecycleView</h1><blockquote>
-<p>参考：<a href="https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA">https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA</a></p>
-</blockquote>
-<h5 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h5><p>在 <code>RecycleView</code> 的 <code>onMeasure</code> 阶段，默认采用自动测量模式，如果自身宽高不确定，<strong>会尝试通过 <code>LayoutManager</code> 测量子 <code>Item</code> 来确定自己的宽高</strong>，所以尽可能的使用 <code>match_parent</code> 或固定宽高来布局 <code>RecycleView</code>，<strong>减少性能的损耗</strong></p>
-<p><strong>在 <code>RecycleView</code> 的 <code>onLayout</code> 阶段，才会真正调用调用 <code>LayoutManager.onLayoutChildren()</code> 来对 <code>Item</code> 进行测量和布局</strong></p>
-<p>在 <code>LayoutManager.onLayoutChildren()</code> 方法中，会先通过 <code>detachAndScrapAttachedViews()</code> 函数回收布局，然后再通过 <code>file()</code> 函数进行布局，具体流程如下：</p>
-<p><code>file() -&gt; layoutChunk() -&gt; LayoutState.next() -&gt; addView() -&gt; measureChildWithMargins() -&gt; layoutDecoratedWithMargins() </code></p>
-<p>可以看到 <code>LayoutState.next()</code> 函数里最终调用 <code>tryGetViewHolderForPositionByDeadline()</code> 函数，然后通过 <code>Recyler</code> 四级缓存或创建来获取 <code>ViewHolder</code></p>
-<p>从上面可以得出，会先回收布局，然后再从缓存中取出来，这里是不是没事找事做了？这里应该是一种职责分离吧，<code>layout</code> 的事归 <code>LayoutManager</code> 管，缓存的事归 <code>Recycler</code> 管。<code>LayoutManager</code> 不应该知道哪个 <code>viewHolder</code> 是否有效</p>
-<p>可以看到 <code>RecycleView</code>为了提高效率，部分交互是通过 <code>attachViewToParent</code> 和 <code>detachViewFromParent</code> 来对 <code>View</code> 进行轻量级的添加和移除，<strong>其中 <code>attachViewToParent</code> 可以调整 <code>View</code> 的布局顺序，注意与 <code>getChildDrawingOrder</code> 的区别</strong></p>
-<p>【备注一】<code>detach</code> 在 <code>ViewGroup</code> 中的实现很简单，只是将当前 <code>View</code> 从 <code>ParentView</code> 的 <code>ChildView</code> 数组中移除，将当前 <code>View</code> 的 <code>mParent</code> 设置为null, 可以理解为轻量级的临时 <code>remove</code>。</p>
-<p>【备注二】<code>remove</code> 代表真正的移除，不光从 <code>ChildView</code> 数组中移除，其他和View树各项联系也会被彻底斩断。</p>
-<h4 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h4><ul>
-<li><code>LayoutManager</code>：负责 <code>item</code> 的 <code>measure</code> 、<code>layout</code></li>
-<li><code>Recycler</code>：四级回收、复用机制</li>
-<li><code>SmoothScroller</code>：滑动速度控制<ul>
-<li><code>LinearSmoothScroller</code></li>
-</ul>
-</li>
-<li><code>SnapHelper</code>：惯性滑动控制<ul>
-<li><code>LinearSnapHelper</code></li>
-<li><code>PagerSnapHelper</code></li>
-</ul>
-</li>
-<li><code>ItemAnimator</code>：<code>Item</code> 动画<ul>
-<li><code>SimpleItemAnimator</code></li>
-<li><code>DefaultlteAnimator</code></li>
-</ul>
-</li>
-<li><code>ItemDecoration</code>：<code>Item</code> 样式装饰<ul>
-<li><code>DividerItemDecoration</code></li>
-<li><code>ItemTouchHelper</code>：可以实现侧滑删除，拖动排序</li>
-<li>可以扩展吸点悬浮的效果</li>
-</ul>
-</li>
-<li><code>OnItemTouchListener</code>：手势拦截器</li>
-<li><code>DiffUtil</code>：差分刷新</li>
-</ul>
-<h4 id="Recyler-回收池-RecycleView-四级缓存"><a href="#Recyler-回收池-RecycleView-四级缓存" class="headerlink" title="Recyler 回收池 - RecycleView 四级缓存"></a><code>Recyler</code> 回收池 - <code>RecycleView</code> 四级缓存</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Recycler</span> </span>&#123;</span><br><span class="line">	<span class="comment">// #1 屏幕内，复用时不需要重新bindViewHolder，因为还会出现在屏幕上面，数据和状态是不会重置的</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mAttachedScrap;</span><br><span class="line">    <span class="comment">// 屏幕上发生变化的会放入changed中，其余放入到attached中</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mChangedScrap;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #2 划出屏幕，默认大小为2，划出去的item存放在这里，再次划进屏幕也是不需要重新绑定数据的；通过setItemViewCacheSize()这个方法调整它的大小</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mCachedViews;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #3 自定义扩展View缓存，允许开发者自定义缓存逻辑，当一二级缓存未命中时会调用该缓存；</span></span><br><span class="line">    <span class="comment">//    注意：该扩展缓存限制较多，因为RecyclerView不知道你创建的viewHolder</span></span><br><span class="line">    ViewCacheExtension mViewCacheExtension;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #4 根据viewType存取ViewHolder，当mCachedViews放不下时会缓存到此</span></span><br><span class="line">    <span class="comment">//    可通过setRecycledViewPool调整，每个类型容量默认为5</span></span><br><span class="line">    RecycledViewPool mRecyclerPool;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h4><ol>
-<li><p>当我们调用 <code>notifyDataSetChanged()</code> 或 <code>notifyItemRangeChanged(p, c) </code> (c这个范围非常大的时候)，会将所有的 <code>ViewHolder</code> 全部放入到 <code>pool</code> 中，即第四级缓存中，由于第四级缓存默认大小为5，所以当界面显示的数量大于5时，会出现丢弃的情况，造成需要重新 <code>craete</code> 和 <code>bind</code> 来补充缺失的 <code>item</code>，对性能影响比较大(<code>notifyItemRangeChanged</code> 哪怕超出屏幕的 <code>item</code> 都会尝试 <code>create</code> 和 <code>bind</code>，同样性能损耗较大)。如果列表显示很多行，且 <code>notifyDataSetChanged()</code> 函数调用较为频繁，可以考虑设置 <code>pool</code> 的大小。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">recyclerView.getRecycledViewPool().setMaxRecycledViews(<span class="number">0</span>, <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
-
-<p>或者给条目设置全局ID：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// adapter 中复写</span></span><br><span class="line"><span class="function">override fun <span class="title">getItemId</span><span class="params">(position: Int)</span>: Long </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> position.toLong()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mAdapter.setHasStableIds(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ol start="2">
-<li><p>当知道 <code>Item</code> 的改变不会影响到 <code>RecycleView</code> 的宽高时，可以通过 <code>setHasFixedSize(true)</code> 函数增加提高增删改插时的性能，原因如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// onItemRangeChanged</span></span><br><span class="line"><span class="comment">// onItemRangeRemoved</span></span><br><span class="line"><span class="comment">// onItemRangeMoved</span></span><br><span class="line"><span class="comment">// onItemRangeInserted</span></span><br><span class="line"><span class="comment">// 当 mHasFixedSize = true 时，上述四种方法都不会触发 requestLayout 重新布局</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triggerUpdateProcessor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (POST_UPDATES_ON_ANIMATION &amp;&amp; mHasFixedSize &amp;&amp; mIsAttached) &#123;</span><br><span class="line">        ViewCompat.postOnAnimation(RecyclerView.<span class="keyword">this</span>, mUpdateChildViewsRunnable);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mAdapterUpdateDuringMeasure = <span class="keyword">true</span>;</span><br><span class="line">        requestLayout();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>【注意】<code>notifyDataSetChanged()</code> 最终会触发 <code>onChanged()</code> 并调用 <code>requestLayout()</code> 重新测量布局</p>
-</li>
-<li><p>数据预取， <code>Android 5.0</code> 起，显示分为两个阶段：</p>
-<ol>
-<li>UI线程先处理布局信息，即创建和绑定View</li>
-<li>渲染(Render)线程把指令发送给GPU</li>
-</ol>
-<p>在不卡顿的前提下，帧与帧之间UI线程会有闲置的时机，<code>RecycleView</code> 在新条目即将进入视野前，会花大量的时间来创建和绑定 <code>View</code>，造成下一帧出现卡顿，数据预取的思想就是利用闲置的线程，提前将下一帧创建和绑定 <code>View</code> 的工作移至前一帧的空闲时间来完成。</p>
-<p>如果使用 <code>RecycleView</code> 内部的 <code>LayoutManager</code>，已经自动优化了。</p>
-<p>需要手动优化有以下两种场景：</p>
-<ol>
-<li>嵌套 <code>RecyclerView</code>：内部的 <code>LayoutManager</code> 需要调用  <code>LinearLayoutManager#setInitialPrefetchItemCount</code> 来设置预存取的数量，如：至少展示三个条目，则需要传入4</li>
-<li>自定义 <code>LayoutManager</code>：需要重写 <code>LayoutManager#collectInitialPrefetchPositions</code> 方法实现预取逻辑，参考：<a href="https://juejin.cn/post/6844903661382959118">https://juejin.cn/post/6844903661382959118</a></li>
-</ol>
-</li>
-<li><p>在 <code>TabLayout+ViewPager+RecyclerView</code> 的场景中，多个界面的条目布局是一致的，可以考虑多个 <code>RecyclerView</code> 共用一个 <code>RecycledViewPool</code> 来减少创建 <code>ViewHolder</code> 的开销</p>
-</li>
-<li><p>在条目中需要加载图片等场景，滚动时加载或只加载内存中的图片</p>
-</li>
-<li><p>尽可能的使用局部刷新函数，善用 <code>DiffUtil</code></p>
-</li>
-<li><p>避免在 <code>onCreate</code> 和 <code>onBind</code> 中创建过多对象</p>
-</li>
-<li><p><code>RecycleView</code> 和 <code>Item</code> 尽可能的不要使用 <code>wrap_content</code></p>
-</li>
-<li><p>不要在 <code>ScrollView</code> 中添加 <code>RecycleView</code></p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>原理</tag>
-        <tag>View</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Handler 原理</title>
     <url>/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h1 id="Handler-原理"><a href="#Handler-原理" class="headerlink" title="Handler 原理"></a>Handler 原理</h1><ol>
@@ -723,6 +631,98 @@
       <tags>
         <tag>Android</tag>
         <tag>原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RecycleView</title>
+    <url>/2020/11/15/Android/RecycleView/</url>
+    <content><![CDATA[<h1 id="RecycleView"><a href="#RecycleView" class="headerlink" title="RecycleView"></a>RecycleView</h1><blockquote>
+<p>参考：<a href="https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA">https://mp.weixin.qq.com/s/auphzaQF6_wJx6dGFY6niA</a></p>
+</blockquote>
+<h5 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h5><p>在 <code>RecycleView</code> 的 <code>onMeasure</code> 阶段，默认采用自动测量模式，如果自身宽高不确定，<strong>会尝试通过 <code>LayoutManager</code> 测量子 <code>Item</code> 来确定自己的宽高</strong>，所以尽可能的使用 <code>match_parent</code> 或固定宽高来布局 <code>RecycleView</code>，<strong>减少性能的损耗</strong></p>
+<p><strong>在 <code>RecycleView</code> 的 <code>onLayout</code> 阶段，才会真正调用调用 <code>LayoutManager.onLayoutChildren()</code> 来对 <code>Item</code> 进行测量和布局</strong></p>
+<p>在 <code>LayoutManager.onLayoutChildren()</code> 方法中，会先通过 <code>detachAndScrapAttachedViews()</code> 函数回收布局，然后再通过 <code>file()</code> 函数进行布局，具体流程如下：</p>
+<p><code>file() -&gt; layoutChunk() -&gt; LayoutState.next() -&gt; addView() -&gt; measureChildWithMargins() -&gt; layoutDecoratedWithMargins() </code></p>
+<p>可以看到 <code>LayoutState.next()</code> 函数里最终调用 <code>tryGetViewHolderForPositionByDeadline()</code> 函数，然后通过 <code>Recyler</code> 四级缓存或创建来获取 <code>ViewHolder</code></p>
+<p>从上面可以得出，会先回收布局，然后再从缓存中取出来，这里是不是没事找事做了？这里应该是一种职责分离吧，<code>layout</code> 的事归 <code>LayoutManager</code> 管，缓存的事归 <code>Recycler</code> 管。<code>LayoutManager</code> 不应该知道哪个 <code>viewHolder</code> 是否有效</p>
+<p>可以看到 <code>RecycleView</code>为了提高效率，部分交互是通过 <code>attachViewToParent</code> 和 <code>detachViewFromParent</code> 来对 <code>View</code> 进行轻量级的添加和移除，<strong>其中 <code>attachViewToParent</code> 可以调整 <code>View</code> 的布局顺序，注意与 <code>getChildDrawingOrder</code> 的区别</strong></p>
+<p>【备注一】<code>detach</code> 在 <code>ViewGroup</code> 中的实现很简单，只是将当前 <code>View</code> 从 <code>ParentView</code> 的 <code>ChildView</code> 数组中移除，将当前 <code>View</code> 的 <code>mParent</code> 设置为null, 可以理解为轻量级的临时 <code>remove</code>。</p>
+<p>【备注二】<code>remove</code> 代表真正的移除，不光从 <code>ChildView</code> 数组中移除，其他和View树各项联系也会被彻底斩断。</p>
+<h4 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h4><ul>
+<li><code>LayoutManager</code>：负责 <code>item</code> 的 <code>measure</code> 、<code>layout</code></li>
+<li><code>Recycler</code>：四级回收、复用机制</li>
+<li><code>SmoothScroller</code>：滑动速度控制<ul>
+<li><code>LinearSmoothScroller</code></li>
+</ul>
+</li>
+<li><code>SnapHelper</code>：惯性滑动控制<ul>
+<li><code>LinearSnapHelper</code></li>
+<li><code>PagerSnapHelper</code></li>
+</ul>
+</li>
+<li><code>ItemAnimator</code>：<code>Item</code> 动画<ul>
+<li><code>SimpleItemAnimator</code></li>
+<li><code>DefaultlteAnimator</code></li>
+</ul>
+</li>
+<li><code>ItemDecoration</code>：<code>Item</code> 样式装饰<ul>
+<li><code>DividerItemDecoration</code></li>
+<li><code>ItemTouchHelper</code>：可以实现侧滑删除，拖动排序</li>
+<li>可以扩展吸点悬浮的效果</li>
+</ul>
+</li>
+<li><code>OnItemTouchListener</code>：手势拦截器</li>
+<li><code>DiffUtil</code>：差分刷新</li>
+</ul>
+<h4 id="Recyler-回收池-RecycleView-四级缓存"><a href="#Recyler-回收池-RecycleView-四级缓存" class="headerlink" title="Recyler 回收池 - RecycleView 四级缓存"></a><code>Recyler</code> 回收池 - <code>RecycleView</code> 四级缓存</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Recycler</span> </span>&#123;</span><br><span class="line">	<span class="comment">// #1 屏幕内，复用时不需要重新bindViewHolder，因为还会出现在屏幕上面，数据和状态是不会重置的</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mAttachedScrap;</span><br><span class="line">    <span class="comment">// 屏幕上发生变化的会放入changed中，其余放入到attached中</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mChangedScrap;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #2 划出屏幕，默认大小为2，划出去的item存放在这里，再次划进屏幕也是不需要重新绑定数据的；通过setItemViewCacheSize()这个方法调整它的大小</span></span><br><span class="line">    ArrayList&lt;ViewHolder&gt; mCachedViews;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #3 自定义扩展View缓存，允许开发者自定义缓存逻辑，当一二级缓存未命中时会调用该缓存；</span></span><br><span class="line">    <span class="comment">//    注意：该扩展缓存限制较多，因为RecyclerView不知道你创建的viewHolder</span></span><br><span class="line">    ViewCacheExtension mViewCacheExtension;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// #4 根据viewType存取ViewHolder，当mCachedViews放不下时会缓存到此</span></span><br><span class="line">    <span class="comment">//    可通过setRecycledViewPool调整，每个类型容量默认为5</span></span><br><span class="line">    RecycledViewPool mRecyclerPool;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h4><ol>
+<li><p>当我们调用 <code>notifyDataSetChanged()</code> 或 <code>notifyItemRangeChanged(p, c) </code> (c这个范围非常大的时候)，会将所有的 <code>ViewHolder</code> 全部放入到 <code>pool</code> 中，即第四级缓存中，由于第四级缓存默认大小为5，所以当界面显示的数量大于5时，会出现丢弃的情况，造成需要重新 <code>craete</code> 和 <code>bind</code> 来补充缺失的 <code>item</code>，对性能影响比较大(<code>notifyItemRangeChanged</code> 哪怕超出屏幕的 <code>item</code> 都会尝试 <code>create</code> 和 <code>bind</code>，同样性能损耗较大)。如果列表显示很多行，且 <code>notifyDataSetChanged()</code> 函数调用较为频繁，可以考虑设置 <code>pool</code> 的大小。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">recyclerView.getRecycledViewPool().setMaxRecycledViews(<span class="number">0</span>, <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者给条目设置全局ID：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// adapter 中复写</span></span><br><span class="line"><span class="function">override fun <span class="title">getItemId</span><span class="params">(position: Int)</span>: Long </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> position.toLong()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mAdapter.setHasStableIds(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ol start="2">
+<li><p>当知道 <code>Item</code> 的改变不会影响到 <code>RecycleView</code> 的宽高时，可以通过 <code>setHasFixedSize(true)</code> 函数增加提高增删改插时的性能，原因如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// onItemRangeChanged</span></span><br><span class="line"><span class="comment">// onItemRangeRemoved</span></span><br><span class="line"><span class="comment">// onItemRangeMoved</span></span><br><span class="line"><span class="comment">// onItemRangeInserted</span></span><br><span class="line"><span class="comment">// 当 mHasFixedSize = true 时，上述四种方法都不会触发 requestLayout 重新布局</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triggerUpdateProcessor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (POST_UPDATES_ON_ANIMATION &amp;&amp; mHasFixedSize &amp;&amp; mIsAttached) &#123;</span><br><span class="line">        ViewCompat.postOnAnimation(RecyclerView.<span class="keyword">this</span>, mUpdateChildViewsRunnable);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mAdapterUpdateDuringMeasure = <span class="keyword">true</span>;</span><br><span class="line">        requestLayout();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>【注意】<code>notifyDataSetChanged()</code> 最终会触发 <code>onChanged()</code> 并调用 <code>requestLayout()</code> 重新测量布局</p>
+</li>
+<li><p>数据预取， <code>Android 5.0</code> 起，显示分为两个阶段：</p>
+<ol>
+<li>UI线程先处理布局信息，即创建和绑定View</li>
+<li>渲染(Render)线程把指令发送给GPU</li>
+</ol>
+<p>在不卡顿的前提下，帧与帧之间UI线程会有闲置的时机，<code>RecycleView</code> 在新条目即将进入视野前，会花大量的时间来创建和绑定 <code>View</code>，造成下一帧出现卡顿，数据预取的思想就是利用闲置的线程，提前将下一帧创建和绑定 <code>View</code> 的工作移至前一帧的空闲时间来完成。</p>
+<p>如果使用 <code>RecycleView</code> 内部的 <code>LayoutManager</code>，已经自动优化了。</p>
+<p>需要手动优化有以下两种场景：</p>
+<ol>
+<li>嵌套 <code>RecyclerView</code>：内部的 <code>LayoutManager</code> 需要调用  <code>LinearLayoutManager#setInitialPrefetchItemCount</code> 来设置预存取的数量，如：至少展示三个条目，则需要传入4</li>
+<li>自定义 <code>LayoutManager</code>：需要重写 <code>LayoutManager#collectInitialPrefetchPositions</code> 方法实现预取逻辑，参考：<a href="https://juejin.cn/post/6844903661382959118">https://juejin.cn/post/6844903661382959118</a></li>
+</ol>
+</li>
+<li><p>在 <code>TabLayout+ViewPager+RecyclerView</code> 的场景中，多个界面的条目布局是一致的，可以考虑多个 <code>RecyclerView</code> 共用一个 <code>RecycledViewPool</code> 来减少创建 <code>ViewHolder</code> 的开销</p>
+</li>
+<li><p>在条目中需要加载图片等场景，滚动时加载或只加载内存中的图片</p>
+</li>
+<li><p>尽可能的使用局部刷新函数，善用 <code>DiffUtil</code></p>
+</li>
+<li><p>避免在 <code>onCreate</code> 和 <code>onBind</code> 中创建过多对象</p>
+</li>
+<li><p><code>RecycleView</code> 和 <code>Item</code> 尽可能的不要使用 <code>wrap_content</code></p>
+</li>
+<li><p>不要在 <code>ScrollView</code> 中添加 <code>RecycleView</code></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>原理</tag>
+        <tag>View</tag>
       </tags>
   </entry>
   <entry>
@@ -1697,29 +1697,6 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
-    <title>SurfaceFlinger</title>
-    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
-    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
-<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
-
-<p>输出的信息非常多，这里只关注三个信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
-<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
-]]></content>
-      <categories>
-        <category>ADB</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>ADB</tag>
-        <tag>性能</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Android 能用上的Linux命令</title>
     <url>/2020/12/20/Android/ADB/Android%20%E8%83%BD%E7%94%A8%E4%B8%8A%E7%9A%84Linux%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h1 id="Android-能用上的Linux命令"><a href="#Android-能用上的Linux命令" class="headerlink" title="Android 能用上的Linux命令"></a>Android 能用上的Linux命令</h1><ul>
@@ -1758,6 +1735,29 @@ DESCRIPTION
       <tags>
         <tag>Android</tag>
         <tag>ADB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SurfaceFlinger</title>
+    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
+    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
+<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
+
+<p>输出的信息非常多，这里只关注三个信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
+<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
+]]></content>
+      <categories>
+        <category>ADB</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>ADB</tag>
+        <tag>性能</tag>
       </tags>
   </entry>
   <entry>
@@ -2293,8 +2293,8 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <category>Java</category>
       </categories>
       <tags>
-        <tag>原理</tag>
         <tag>线程</tag>
+        <tag>原理</tag>
         <tag>Java</tag>
       </tags>
   </entry>
@@ -2907,59 +2907,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>Systrace</title>
-    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
-    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
-<p>结合Android内核的数据，生成Html报告</p>
-<p>API18以上使用，推荐TraceCompat</p>
-<p>需要python2的环境</p>
-</blockquote>
-<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
-<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
-<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
-
-<p>执行命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
-
-<p>举例</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
-
-<p>更多参数含义如下：</p>
-<ul>
-<li>-t：指定统计时间</li>
-<li>shced：cpu调度信息</li>
-<li>gfx：图形信息</li>
-<li>view：视图</li>
-<li>wm：窗口管理</li>
-<li>am：活动管理</li>
-<li>app：应用信息</li>
-<li>webview：webview信息</li>
-<li>-a：指定目标应用程序的包名</li>
-<li>-o：生成的systrace.html文件</li>
-</ul>
-<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
-<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
-<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
-<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
-<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
-<li>wall time是代码执行时间</li>
-<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>轻量级，开销小</li>
-<li>直观反映cpu利用率</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>性能</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>TraceView</title>
     <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/</url>
     <content><![CDATA[<h1 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h1><blockquote>
@@ -3092,6 +3039,59 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       <tags>
         <tag>Android</tag>
         <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Systrace</title>
+    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
+    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
+<p>结合Android内核的数据，生成Html报告</p>
+<p>API18以上使用，推荐TraceCompat</p>
+<p>需要python2的环境</p>
+</blockquote>
+<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
+<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
+<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
+
+<p>执行命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
+
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
+
+<p>更多参数含义如下：</p>
+<ul>
+<li>-t：指定统计时间</li>
+<li>shced：cpu调度信息</li>
+<li>gfx：图形信息</li>
+<li>view：视图</li>
+<li>wm：窗口管理</li>
+<li>am：活动管理</li>
+<li>app：应用信息</li>
+<li>webview：webview信息</li>
+<li>-a：指定目标应用程序的包名</li>
+<li>-o：生成的systrace.html文件</li>
+</ul>
+<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
+<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
+<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
+<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
+<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
+<li>wall time是代码执行时间</li>
+<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>轻量级，开销小</li>
+<li>直观反映cpu利用率</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
