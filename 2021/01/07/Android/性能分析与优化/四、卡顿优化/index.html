@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yefawei.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="用户对于内存占用过高、网络消耗过大等可能不易察觉，但是app卡顿会很直观的体现在交互上，需要重点针对 卡顿产生的原因很多，代码质量不好、可用内存过低、绘制复杂、IO占用等都会导致卡顿，且线上用户发生的卡顿线下不易复现，与使用场景强相关 ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卡顿优化">
+<meta property="og:url" content="https://yefawei.github.io/2021/01/07/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%9B%9B%E3%80%81%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="BenBen">
+<meta property="og:description" content="用户对于内存占用过高、网络消耗过大等可能不易察觉，但是app卡顿会很直观的体现在交互上，需要重点针对 卡顿产生的原因很多，代码质量不好、可用内存过低、绘制复杂、IO占用等都会导致卡顿，且线上用户发生的卡顿线下不易复现，与使用场景强相关 ...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-07T13:30:32.000Z">
+<meta property="article:modified_time" content="2021-07-06T18:23:08.128Z">
+<meta property="article:author" content="BenBen">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="性能">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yefawei.github.io/2021/01/07/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%9B%9B%E3%80%81%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>卡顿优化 | BenBen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BenBen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/yefawei" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2021/01/07/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%9B%9B%E3%80%81%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          卡顿优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-07 21:30:32" itemprop="dateCreated datePublished" datetime="2021-01-07T21:30:32+08:00">2021-01-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">用户对于内存占用过高、网络消耗过大等可能不易察觉，但是app卡顿会很直观的体现在交互上，需要重点针对 卡顿产生的原因很多，代码质量不好、可用内存过低、绘制复杂、IO占用等都会导致卡顿，且线上用户发生的卡顿线下不易复现，与使用场景强相关 ...</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="卡顿优化"><a href="#卡顿优化" class="headerlink" title="卡顿优化"></a>卡顿优化</h1><blockquote>
+<p>相关参考：<a target="_blank" rel="noopener" href="https://androidperformance.com/2019/07/27/Android-Hardware-Layer/">https://androidperformance.com/2019/07/27/Android-Hardware-Layer/</a></p>
+</blockquote>
+<p>用户对于内存占用过高、网络消耗过大等可能不易察觉，但是app卡顿会很直观的体现在交互上，需要重点针对</p>
+<p>卡顿产生的原因很多，代码质量不好、可用内存过低、绘制复杂、IO占用等都会导致卡顿，且线上用户发生的卡顿线下不易复现，与使用场景强相关</p>
+<h4 id="工具选择"><a href="#工具选择" class="headerlink" title="工具选择"></a>工具选择</h4><ul>
+<li><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/">CPU Profile</a></li>
+<li><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/"><code>Systrace</code></a></li>
+<li><a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/StrictMode/"><code>StrictMode</code></a></li>
+</ul>
+<h4 id="自动化检测卡顿方案"><a href="#自动化检测卡顿方案" class="headerlink" title="自动化检测卡顿方案"></a>自动化检测卡顿方案</h4><blockquote>
+<p>由于卡顿与场景强相关，线下工具复现并不好实现，需要线上自动化监控</p>
+</blockquote>
+<p><strong>方案原理</strong></p>
+<p><code>Android</code> 的消息处理机制，一个线程只有一个 <code>Looper</code>，<code>mLogging</code> 对象再每个message处理前后都会调用，主线程发生卡顿，说明 <code>dispatchMessage</code> 在执行耗时操作。当匹配到 <code> &gt;&gt;&gt;&gt;&gt; Dispatching</code> 我们可以在子线程（<code>HanderThread</code>）中执行一个任务，当达到我们设定的阈值时获取主线程的堆栈来定位耗时函数，当匹配到 <code>&lt;&lt;&lt;&lt;&lt; Finished</code> 时将任务取消掉。</p>
+<p><code>Looper</code> 代码参考如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Looper.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">final</span> Printer logging = me.mLogging;</span><br><span class="line">	<span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">		logging.println(<span class="string">&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback + <span class="string">&quot;: &quot;</span> + msg.what);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	msg.target.dispatchMessage(msg);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">		logging.println(<span class="string">&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相关三方库 <code>BlockCanary </code>：<a target="_blank" rel="noopener" href="https://github.com/markzhai/AndroidPerformanceMonitor">https://github.com/markzhai/AndroidPerformanceMonitor</a></p>
+<p>该库优点：非侵入式，简单方便的定位到代码的某一行</p>
+<p>该库缺点：捕获到的卡顿堆栈可能不准确，并不是真正的卡顿点</p>
+<p>修改方案：采用高频采集堆栈的形式，如卡顿阈值设置500ms，每100ms采集一次堆栈信息，当真的操作500ms阈值，将其中采集的堆栈信息保存起来在合适的时机上报</p>
+<p>再优化：由于上述高频采集会产生很多无效堆栈，且上报数据量过大会造成服务端压力过大，对问题分析也并不友好。由于一个卡顿下多个堆栈大概率重复，找出重复的堆栈进行保存和上传即可</p>
+<h4 id="ANR异常"><a href="#ANR异常" class="headerlink" title="ANR异常"></a>ANR异常</h4><h5 id="场景（ActivityManagerService）"><a href="#场景（ActivityManagerService）" class="headerlink" title="场景（ActivityManagerService）"></a>场景（<code>ActivityManagerService</code>）</h5><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">TimeOut</th>
+<th align="center">是否弹框提示</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Activity</td>
+<td align="center">10</td>
+<td align="center">提示</td>
+<td align="center">Activity切换时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">BroadCast</td>
+<td align="center">10，60</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">系统默认前后台广播，厂商会额外定制广播</td>
+</tr>
+<tr>
+<td align="center">Service</td>
+<td align="center">10</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">创建Servier时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">Provider</td>
+<td align="center">10</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">创建Provider时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">Input</td>
+<td align="center">5</td>
+<td align="center">提示</td>
+<td align="center">厂商或平台会调整此阈值，MTK调整至8秒</td>
+</tr>
+<tr>
+<td align="center">Finalizer</td>
+<td align="center">10</td>
+<td align="center">Crash</td>
+<td align="center">默认10S，厂商调整至20S~120S</td>
+</tr>
+</tbody></table>
+<h5 id="ANR触发原理"><a href="#ANR触发原理" class="headerlink" title="ANR触发原理"></a>ANR触发原理</h5><p>简单来说就是埋炸弹，如在启动服务时，会发送一条延迟消息，这里称为定时炸弹消息，当服务能够正常启动会把这条炸弹消息移除，如果时间到了还没有移除，说明服务没有在指定的时间内正常启动，执行该定时炸弹消息，最终会执行到 <code>AppErrors#appNotResponding</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">appNotResponding</span><span class="params">(ProcessRecord app, ActivityRecord activity,</span></span></span><br><span class="line"><span class="function"><span class="params">        ActivityRecord parent, <span class="keyword">boolean</span> aboveSystem, <span class="keyword">final</span> String annotation)</span> </span>&#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      <span class="comment">//1、写入event log</span></span><br><span class="line">      EventLog.writeEvent(EventLogTags.AM_ANR, app.userId, app.pid,</span><br><span class="line">                app.processName, app.info.flags, annotation);</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      	<span class="comment">// 2、收集需要的log，anr、cpu等，StringBuilder凭借</span></span><br><span class="line">        StringBuilder info = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        info.setLength(<span class="number">0</span>);</span><br><span class="line">        info.append(<span class="string">&quot;ANR in &quot;</span>).append(app.processName);</span><br><span class="line">        <span class="keyword">if</span> (activity != <span class="keyword">null</span> &amp;&amp; activity.shortComponentName != <span class="keyword">null</span>) &#123;</span><br><span class="line">            info.append(<span class="string">&quot; (&quot;</span>).append(activity.shortComponentName).append(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        info.append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        info.append(<span class="string">&quot;PID: &quot;</span>).append(app.pid).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (annotation != <span class="keyword">null</span>) &#123;</span><br><span class="line">            info.append(<span class="string">&quot;Reason: &quot;</span>).append(annotation).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (parent != <span class="keyword">null</span> &amp;&amp; parent != activity) &#123;</span><br><span class="line">            info.append(<span class="string">&quot;Parent: &quot;</span>).append(parent.shortComponentName).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ProcessCpuTracker processCpuTracker = <span class="keyword">new</span> ProcessCpuTracker(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 3、dump堆栈信息，包括java堆栈和native堆栈，保存到文件中</span></span><br><span class="line">    File tracesFile = ActivityManagerService.dumpStackTraces(</span><br><span class="line">            <span class="keyword">true</span>, firstPids,</span><br><span class="line">            (isSilentANR) ? <span class="keyword">null</span> : processCpuTracker,</span><br><span class="line">            (isSilentANR) ? <span class="keyword">null</span> : lastPids,</span><br><span class="line">            nativePids);</span><br><span class="line">    String cpuInfo = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 4、输出ANR 日志</span></span><br><span class="line">    Slog.e(TAG, info.toString());</span><br><span class="line">    <span class="keyword">if</span> (tracesFile == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 5、没有抓到tracesFile，发一个SIGNAL_QUIT信号</span></span><br><span class="line">        Process.sendSignal(app.pid, Process.SIGNAL_QUIT);</span><br><span class="line">    &#125;</span><br><span class="line">    StatsLog.write(StatsLog.ANR_OCCURRED, ...)</span><br><span class="line">    <span class="comment">// 6、输出到drapbox</span></span><br><span class="line">    mService.addErrorToDropBox(<span class="string">&quot;anr&quot;</span>, app, app.processName, activity, parent, annotation, cpuInfo, tracesFile, <span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">synchronized</span> (mService) &#123;</span><br><span class="line">        mService.mBatteryStatsService.noteProcessAnr(app.processName, app.uid);</span><br><span class="line">       <span class="comment">//7、后台ANR，直接杀进程</span></span><br><span class="line">        <span class="keyword">if</span> (isSilentANR) &#123;</span><br><span class="line">            app.kill(<span class="string">&quot;bg anr&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//8、错误报告</span></span><br><span class="line">        makeAppNotRespondingLocked(app,</span><br><span class="line">                activity != <span class="keyword">null</span> ? activity.shortComponentName : <span class="keyword">null</span>,</span><br><span class="line">                annotation != <span class="keyword">null</span> ? <span class="string">&quot;ANR &quot;</span> + annotation : <span class="string">&quot;ANR&quot;</span>,</span><br><span class="line">                info.toString());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//9、弹出ANR dialog，会调用handleShowAnrUi方法</span></span><br><span class="line">        Message msg = Message.obtain();</span><br><span class="line">        msg.what = ActivityManagerService.SHOW_NOT_RESPONDING_UI_MSG;</span><br><span class="line">        msg.obj = <span class="keyword">new</span> AppNotRespondingDialog.Data(app, activity, aboveSystem);</span><br><span class="line"></span><br><span class="line">        mService.mUiHandler.sendMessage(msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>【注意】input的超时检测机制有点不同，需要等到下一次input事件，才会检测上一次的input事件是否超时，相当于需要主动扫雷</p>
+<h5 id="线下解决套路"><a href="#线下解决套路" class="headerlink" title="线下解决套路"></a>线下解决套路</h5><p>导出系统默认 <code>anr</code> 记录信息，<code>adb pull data/anr/traces.txt C:\Users\benbe\Desktop\anr.txt</code></p>
+<h5 id="线上ANR监控"><a href="#线上ANR监控" class="headerlink" title="线上ANR监控"></a>线上ANR监控</h5><ul>
+<li><p>通过 <code>FileOberver</code> 监控 <code>traces</code> 文件变化【注：高版本中有权限问题，监控不到该文件变化】</p>
+</li>
+<li><p>通过 <a target="_blank" rel="noopener" href="https://github.com/SalomonBrys/ANR-WatchDog"><code>WatchDog</code></a> 监控 <code>ANR </code></p>
+<p>原理：开启一个子线程无限循环，将一个变量值变更后往主线程发送一个还原消息，睡眠一定的间隔后检测这个变量值是否被还原，如果没有被还原说明发送了<code>ANR</code></p>
+<p>问题：会有漏检的情况，主线程卡顿1秒后才开启新一轮的监控，如果主线程到达卡顿阈值就不卡了，此时这个变量值已被还原，<code>WatchDog</code> 就以非卡顿的场景进行处理了，需要针对这个问题进行优化，优化：假设原本卡顿阈值为5秒，那么我们可以将检测间隔设定为1秒，当累计卡顿5秒才触发监控ANR的流程，这样就能让误差降低到1s内</p>
+</li>
+</ul>
+<h5 id="BlockCanary-和-WatchDog-的区别"><a href="#BlockCanary-和-WatchDog-的区别" class="headerlink" title="BlockCanary  和 WatchDog  的区别"></a><code>BlockCanary </code> 和 <code>WatchDog</code>  的区别</h5><ul>
+<li><code>BlockCanary</code>：监控的是每条 <code>Msg</code> 的执行耗时</li>
+<li><code>WatchDog</code>： 开启子线程看最终结果，如果值没被还原则认为有问题</li>
+<li>前者适合监控卡顿，后者适合补充 <code>ANR</code> 监控</li>
+</ul>
+<h5 id="死锁监控"><a href="#死锁监控" class="headerlink" title="死锁监控"></a>死锁监控</h5><blockquote>
+<p>死锁引起的 ANR ，如何找出死锁原因？</p>
+</blockquote>
+<p>参考：<a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E9%94%81%E8%B0%83%E7%94%A8%E9%93%BE/">获取锁调用链</a></p>
+<h4 id="单点卡顿问题检测"><a href="#单点卡顿问题检测" class="headerlink" title="单点卡顿问题检测"></a>单点卡顿问题检测</h4><blockquote>
+<p>上诉提到了卡顿和ANR的解决方案，但是还是不够，例如，此时有很多消息在执行，但是又没有达到卡顿和ANR的阈值，但是你自己的消息就是执行不到，造成交互不流畅。</p>
+<p>卡顿点：主线程IPC、DB</p>
+</blockquote>
+<p>下面以 IPC 检测为例，其它的如DB、IO、Looper 消息过多和 View 绘制等也是类似处理</p>
+<h5 id="检测指标"><a href="#检测指标" class="headerlink" title="检测指标"></a>检测指标</h5><ul>
+<li>IPC 调用类型</li>
+<li>调用耗时、次数</li>
+<li>调用堆栈、发生线程</li>
+</ul>
+<h5 id="检测方案"><a href="#检测方案" class="headerlink" title="检测方案"></a>检测方案</h5><ul>
+<li><p>IPC 操作前后加埋点</p>
+</li>
+<li><p><code>adb</code> 命令检测</p>
+<ol>
+<li>开启监控：<code>adb shell am trace-ipc start</code></li>
+<li>停止监控并保存到指定文件：<code>adb shell am trace-ipc stop --dump-file /data/local/tmp/ipc-trace.txt</code></li>
+<li>导出监控文件：<code>adb pull /data/local/tmp/tmp/ipc-trace.txt  C:\Users\benbe\Desktop\ipc-trace.txt</code></li>
+</ol>
+</li>
+<li><p>通过 <a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/ART-Hook/"><code>ART-Hook</code></a> 方式 hook 常用 IPC 方法</p>
+<ol>
+<li>通过 <code>PackageManager</code> 获取进程名</li>
+<li>获取 <code>DeviceID</code> 信息</li>
+<li><code>AMS</code> 相关</li>
+<li><code>View.getWindowVisibleDisplayFrame()</code></li>
+</ol>
+<p>上诉无论那种操作，最终都会调用到 <code>BinderProxy</code> 类里的 <code>transact</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    DexposedBridge.findAndHookMethod(Class.forName(<span class="string">&quot;android.os.BinderProxy&quot;</span>), <span class="string">&quot;transact&quot;</span>,</span><br><span class="line">            <span class="keyword">int</span>.class, Parcel.class, Parcel.class, <span class="keyword">int</span>.class, <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">beforeHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                    LogUtils.i( <span class="string">&quot;BinderProxy beforeHookedMethod &quot;</span> + param.thisObject.getClass().getSimpleName()</span><br><span class="line">                            + <span class="string">&quot;\n&quot;</span> + Log.getStackTraceString(<span class="keyword">new</span> Throwable()));</span><br><span class="line">                    <span class="keyword">super</span>.beforeHookedMethod(param);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="界面秒开实现"><a href="#界面秒开实现" class="headerlink" title="界面秒开实现"></a>界面秒开实现</h4><p>更多参考启动优化和布局优化</p>
+<ul>
+<li>通过 <code>SysTrace</code> 获取布局初始化的执行情况</li>
+<li>异步 <code>Inflate</code>、X2C 、绘制优化</li>
+<li>提前获取页面数据</li>
+<li>监控界面打开耗时：通过在 <code>onCreate</code> 里手动埋点，在UI可交互式统计界面耗时，也可使用 <code>AOP</code> 的方式 Hook 对于相应方法进行实现</li>
+</ul>
+<h4 id="监控耗时盲区"><a href="#监控耗时盲区" class="headerlink" title="监控耗时盲区"></a>监控耗时盲区</h4><ol>
+<li><p><strong>耗时盲区监控难点</strong></p>
+<ul>
+<li>只知道在主线程做了耗时操作，但并不知道具体在做什么</li>
+<li>线上盲区无从追查</li>
+</ul>
+</li>
+<li><p><strong>线下耗时盲区监控</strong></p>
+<ul>
+<li><code>TraceView</code> or <code>Systrace</code><ul>
+<li>特别适合一段时间内的盲区监控</li>
+<li>线程具体做了什么，一目了然</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>线上监控</strong></p>
+<ul>
+<li><p><strong>参考方案：</strong>监听消息 <code>mLogging</code> 方案</p>
+<p><strong>【缺点】</strong>有所有方法的 <code>Msg</code>，但是没有 <code>Msg</code> 具体堆栈，并不知道 <code>Msg</code> 是被谁抛出来的</p>
+</li>
+<li><p><strong>参考方案：</strong>通过 <code>AOP</code> 切 <code>Handler</code> 方法</p>
+<p><strong>【缺点】</strong>可以知道发送 <code>Msg</code> 的堆栈，但是这种方案不清楚 <code>Msg</code> 的具体执行时间</p>
+</li>
+<li><p><strong>推荐方案：</strong>使用统一的 <code>Handler</code>,定制 <code>sendMessageAtTime</code> 和 <code>dispatchMessage</code> 方法，同时可以定制 <code>gradle</code> 插件，编译时动态替换所有 <code>Handler</code>的父类，这样就能让所有 <code>Handler</code>  发送和执行的调用栈执行时间都能捕捉到，<a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/">参考：监控所有消息的发送栈和执行时间</a></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="卡顿优化总结"><a href="#卡顿优化总结" class="headerlink" title="卡顿优化总结"></a>卡顿优化总结</h4><ul>
+<li>耗时操作：异步、延迟</li>
+<li>布局优化：异步 <code>Inflate</code>、<code>X2C</code>、重绘解决</li>
+<li>内存：降低内存占用，减少 <code>GC</code> 时间</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD/" rel="tag"># 性能</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/" rel="prev" title="监控所有消息的发送栈和执行时间">
+      <i class="fa fa-chevron-left"></i> 监控所有消息的发送栈和执行时间
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96"><span class="nav-text">卡顿优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7%E9%80%89%E6%8B%A9"><span class="nav-text">工具选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A3%80%E6%B5%8B%E5%8D%A1%E9%A1%BF%E6%96%B9%E6%A1%88"><span class="nav-text">自动化检测卡顿方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ANR%E5%BC%82%E5%B8%B8"><span class="nav-text">ANR异常</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%EF%BC%88ActivityManagerService%EF%BC%89"><span class="nav-text">场景（ActivityManagerService）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ANR%E8%A7%A6%E5%8F%91%E5%8E%9F%E7%90%86"><span class="nav-text">ANR触发原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E4%B8%8B%E8%A7%A3%E5%86%B3%E5%A5%97%E8%B7%AF"><span class="nav-text">线下解决套路</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E4%B8%8AANR%E7%9B%91%E6%8E%A7"><span class="nav-text">线上ANR监控</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BlockCanary-%E5%92%8C-WatchDog-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">BlockCanary  和 WatchDog  的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E7%9B%91%E6%8E%A7"><span class="nav-text">死锁监控</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E7%82%B9%E5%8D%A1%E9%A1%BF%E9%97%AE%E9%A2%98%E6%A3%80%E6%B5%8B"><span class="nav-text">单点卡顿问题检测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E6%8C%87%E6%A0%87"><span class="nav-text">检测指标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E6%96%B9%E6%A1%88"><span class="nav-text">检测方案</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%95%8C%E9%9D%A2%E7%A7%92%E5%BC%80%E5%AE%9E%E7%8E%B0"><span class="nav-text">界面秒开实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7%E8%80%97%E6%97%B6%E7%9B%B2%E5%8C%BA"><span class="nav-text">监控耗时盲区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93"><span class="nav-text">卡顿优化总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BenBen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yefawei" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yefawei" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备18051432号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BenBen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

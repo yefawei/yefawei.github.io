@@ -187,7 +187,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/03/Android/Annotation%20Processing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -201,7 +201,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">内部类说明</a>
+            <a href="/2020/12/03/Android/Annotation%20Processing/" class="post-title-link" itemprop="url">Annotation Processing</a>
         </h2>
 
         <div class="post-meta">
@@ -211,81 +211,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-11 23:55:12" itemprop="dateCreated datePublished" datetime="2020-11-11T23:55:12+08:00">2020-11-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>1. 内部类实际会被编译成【外部类名$内部类名.class】的字节码文件，并自动在内部类中生成一个持有外部类的【final 外部类名 this$0】的变量，由构造函数进行赋值 2. 内部接口生成的字节码文件与第一点同理，并对接口函数进行【public abstract】声明 3. 匿名内部类则会将类名赋予数字的形式处理，如【外部类名$1.class】，构造函数与第一点相同，如果有调用外部函数变量，则还会在构造函数增加该函数变量参数，并复制给【final 类型 val$别名】的变量上 4. 如果内部类有调用外部类变量，则会在外部类生成一个静态函数【static 该外部类变量 access$000(外部类实例)】供内部类在调用外部类的地方使用...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/11/Java/%E5%86%85%E9%83%A8%E7%B1%BB%E8%AF%B4%E6%98%8E/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">Android 中的线程模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-10 23:45:22" itemprop="dateCreated datePublished" datetime="2020-11-10T23:45:22+08:00">2020-11-10</time>
+              <time title="创建时间：2020-12-03 23:03:01" itemprop="dateCreated datePublished" datetime="2020-12-03T23:03:01+08:00">2020-12-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -308,30 +234,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
-<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
-<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
-</ul>
-<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
-<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
-<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
-</ul>
-<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
-<ol>
-<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
-<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>priority</code>优先级</p>
-<p>线程优先级，值越大优先级越高</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>cgroup</code></p>
-<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
-</li>
-</ol>
-<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5>
+          <p>Annotation Processing 简称APT，通过注解动态生成必要的类； 使用该技术的有：ButterKnife、EventBus ...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2020/12/03/Android/Annotation%20Processing/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -355,7 +261,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/29/Android/Base64%E5%92%8CBase58/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -369,7 +275,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/" class="post-title-link" itemprop="url">ThreadLocal</a>
+            <a href="/2020/11/29/Android/Base64%E5%92%8CBase58/" class="post-title-link" itemprop="url">Base64 和 Base58</a>
         </h2>
 
         <div class="post-meta">
@@ -379,7 +285,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-10 22:15:12" itemprop="dateCreated datePublished" datetime="2020-11-10T22:15:12+08:00">2020-11-10</time>
+              <time title="创建时间：2020-11-29 22:13:21" itemprop="dateCreated datePublished" datetime="2020-11-29T22:13:21+08:00">2020-11-29</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -387,7 +293,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -402,10 +308,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>每一个Thread维护一个`ThreadLocalMap`，通过`ThreadLocal`这个载体，在使用时变量为空则先创建`ThreadLocalMap`并赋值给线程再使用；`ThreadLocalMap`内部维护`table`数组，所有的数据都存在这里。 ...</p>
+          <p>将原数据每6位对应成Base 64索引表中的一个字符编排成一个字符串（每个字符8位） ...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/ThreadLocal/">
+              <a class="btn" href="/2020/11/29/Android/Base64%E5%92%8CBase58/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -429,7 +335,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/27/Android/Bitmap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -443,7 +349,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/" class="post-title-link" itemprop="url">线程通用</a>
+            <a href="/2020/11/27/Android/Bitmap/" class="post-title-link" itemprop="url">Bitmap</a>
         </h2>
 
         <div class="post-meta">
@@ -453,7 +359,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-10 21:16:23" itemprop="dateCreated datePublished" datetime="2020-11-10T21:16:23+08:00">2020-11-10</time>
+              <time title="创建时间：2020-11-27 20:15:18" itemprop="dateCreated datePublished" datetime="2020-11-27T20:15:18+08:00">2020-11-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -461,7 +367,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -476,10 +382,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>早期版本中线程提供stop方法来终止线程，但该方法已经被弃用 取而代之的是外部通知该线程应该结束了，但是具体什么时候结束交由线程自己控制 ...</p>
+          <p>不同 Android 版本时的Bitmap内存模型 ...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/10/Java/%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E9%80%9A%E7%94%A8/">
+              <a class="btn" href="/2020/11/27/Android/Bitmap/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -503,7 +409,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/09/Java/%E4%BB%A3%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/22/Android/Fragment%E4%B8%8EViewPager/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -517,7 +423,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/09/Java/%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">代理</a>
+            <a href="/2020/11/22/Android/Fragment%E4%B8%8EViewPager/" class="post-title-link" itemprop="url">Fragment与ViewPager</a>
         </h2>
 
         <div class="post-meta">
@@ -527,7 +433,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-09 20:18:41" itemprop="dateCreated datePublished" datetime="2020-11-09T20:18:41+08:00">2020-11-09</time>
+              <time title="创建时间：2020-11-22 21:13:52" itemprop="dateCreated datePublished" datetime="2020-11-22T21:13:52+08:00">2020-11-22</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -535,7 +441,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -550,10 +456,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>举出了静态代理例子，动态代理的实现方式，并对java的Proxy与Cglib进行比较说明</p>
+          <p>依附于Activity的组件，可以看作是拥有自己生命周期的UI组件 FragmentTransaction show 方法：显示UI，不涉及生命周期 hide 方法：隐藏UI，不涉及生命周期 attach 方法：触发onStart和onResume detach 方法：触发onPause和onStop add 方法：添加Fragment并走完整的显示流程 remove 方法：移除Fragment并走完整的隐藏流程...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/09/Java/%E4%BB%A3%E7%90%86/">
+              <a class="btn" href="/2020/11/22/Android/Fragment%E4%B8%8EViewPager/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -577,7 +483,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/08/Java/%E6%B3%A8%E8%A7%A3/%E6%B3%A8%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/21/Android/Gradle%20Plugin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -591,7 +497,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/08/Java/%E6%B3%A8%E8%A7%A3/%E6%B3%A8%E8%A7%A3/" class="post-title-link" itemprop="url">注解</a>
+            <a href="/2020/11/21/Android/Gradle%20Plugin/" class="post-title-link" itemprop="url">Gradle Plugin</a>
         </h2>
 
         <div class="post-meta">
@@ -601,7 +507,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-08 21:12:12" itemprop="dateCreated datePublished" datetime="2020-11-08T21:12:12+08:00">2020-11-08</time>
+              <time title="创建时间：2020-11-21 15:43:12" itemprop="dateCreated datePublished" datetime="2020-11-21T15:43:12+08:00">2020-11-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -609,7 +515,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Gradle/" itemprop="url" rel="index"><span itemprop="name">Gradle</span></a>
                 </span>
             </span>
 
@@ -624,10 +530,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>注解本质上就是一个接口，该接口默认继承Annotation接口 public interface TestAnnotation extends java.lang.annotation.Annotation {} 可通过...</p>
+          <p>Gradle Plugin 能够允许我们在编译出的 jar 或 class 文件之后打包成 apk 之前修改文件 插件可以拿 java 、kotlin 或 groovy语言编写...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/08/Java/%E6%B3%A8%E8%A7%A3/%E6%B3%A8%E8%A7%A3/">
+              <a class="btn" href="/2020/11/21/Android/Gradle%20Plugin/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -651,7 +557,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -665,7 +571,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">阻塞队列</a>
+            <a href="/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">Gradle 基本语法结构</a>
         </h2>
 
         <div class="post-meta">
@@ -675,7 +581,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-08 19:06:12" itemprop="dateCreated datePublished" datetime="2020-11-08T19:06:12+08:00">2020-11-08</time>
+              <time title="创建时间：2020-11-21 13:11:45" itemprop="dateCreated datePublished" datetime="2020-11-21T13:11:45+08:00">2020-11-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -683,7 +589,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Gradle/" itemprop="url" rel="index"><span itemprop="name">Gradle</span></a>
                 </span>
             </span>
 
@@ -698,10 +604,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>java 中阻塞队列</p>
+          <p>Gradle 基本语法结构 Closure：闭包，一个可以被传递的方法...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/11/08/Java/%E9%9B%86%E5%90%88/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/">
+              <a class="btn" href="/2020/11/21/Android/Gradle%20%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -725,7 +631,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -739,7 +645,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Kotlin-语法</a>
+            <a href="/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">Handler 原理</a>
         </h2>
 
         <div class="post-meta">
@@ -749,7 +655,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-20 15:23:51" itemprop="dateCreated datePublished" datetime="2020-09-20T15:23:51+08:00">2020-09-20</time>
+              <time title="创建时间：2020-11-15 17:21:04" itemprop="dateCreated datePublished" datetime="2020-11-15T17:21:04+08:00">2020-11-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -757,7 +663,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -772,10 +678,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>基础语法记录，方便查询</p>
+          <p>Handler 原理 1. Handler 被设计出来的原因？有什么用？ 提供一种方便线程间通信的解决方案 2. Handler 的基本原理 外部通过 Handler 往 MessageQueue 里插入任务 Looper 在做死循环，一直从 MessageQueue 中获取任务 如果此时任务为空或当前没有需要执行的任务，则先判...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/20/Kotlin/%E8%AF%AD%E6%B3%95/">
+              <a class="btn" href="/2020/11/15/Android/Handler%20%E5%8E%9F%E7%90%86/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -799,7 +705,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/19/%E6%AD%A3%E5%88%99/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/15/Android/RecycleView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -813,7 +719,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/19/%E6%AD%A3%E5%88%99/" class="post-title-link" itemprop="url">正则</a>
+            <a href="/2020/11/15/Android/RecycleView/" class="post-title-link" itemprop="url">RecycleView</a>
         </h2>
 
         <div class="post-meta">
@@ -823,7 +729,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-19 23:01:03" itemprop="dateCreated datePublished" datetime="2020-09-19T23:01:03+08:00">2020-09-19</time>
+              <time title="创建时间：2020-11-15 11:43:18" itemprop="dateCreated datePublished" datetime="2020-11-15T11:43:18+08:00">2020-11-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -831,7 +737,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%AD%A3%E5%88%99/" itemprop="url" rel="index"><span itemprop="name">正则</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -846,89 +752,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><table>
-<thead>
-<tr>
-<th>符号</th>
-<th>说明</th>
-<th>举例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>.</td>
-<td>匹配除“\n”和”\r”之外的任何单个字符。要匹配包括“\n”和”\r”在内的任何字符，请使用像“[\s\S]”的模式。</td>
-<td></td>
-</tr>
-<tr>
-<td>^</td>
-<td>匹配输入字行首。如果设置了RegExp对象的Multiline属性，^也匹配“\n”或“\r”之后的位置。</td>
-<td></td>
-</tr>
-<tr>
-<td>$</td>
-<td>匹配输入行尾。如果设置了RegExp对象的Multiline属性，$也匹配“\n”或“\r”之前的位置。</td>
-<td></td>
-</tr>
-<tr>
-<td>*</td>
-<td>匹配前面的子表达式任意次。例如，zo<em>能匹配“z”，也能匹配“zo”以及“zoo”。</em>等价于{0,}。</td>
-<td></td>
-</tr>
-<tr>
-<td>+</td>
-<td>匹配前面的子表达式一次或多次(大于等于1次）。例如，“zo+”能匹配“zo”以及“zoo”，但不能匹配“z”。+等价于{1,}。</td>
-<td></td>
-</tr>
-<tr>
-<td>?</td>
-<td>匹配前面的子表达式零次或一次。例如，“do(es)?”可以匹配“do”或“does”。?等价于{0,1}。</td>
-<td></td>
-</tr>
-<tr>
-<td>?</td>
-<td>当该字符紧跟在任何一个其他限制符（*,+,?，{n}，{n,}，{n,m}）后面时，匹配模式是非贪婪的。</td>
-<td></td>
-</tr>
-<tr>
-<td>{n} {n,}{n,m}</td>
-<td>匹配确定的<em>n</em>次 / 至少匹配<em>n</em>次 / 最少匹配<em>n</em>次且最多匹配<em>m</em>次</td>
-<td></td>
-</tr>
-<tr>
-<td>[]</td>
-<td>字符集合</td>
-<td></td>
-</tr>
-<tr>
-<td>|</td>
-<td>将两个匹配条件进行逻辑“或”（or）运算</td>
-<td></td>
-</tr>
-<tr>
-<td>\d \D</td>
-<td>匹配一个数字字符。等价于[0-9] / 匹配一个非数字字符。等价于[^0-9]</td>
-<td></td>
-</tr>
-<tr>
-<td>\s \S</td>
-<td>匹配任何不可见字符，包括空格、制表符、换页符等等。等价于[ \f\n\r\t\v]。/ 匹配任何可见字符。等价于[^\f\n\r\t\v]。</td>
-<td></td>
-</tr>
-<tr>
-<td>\w \W</td>
-<td>匹配字母、数字、下划线。等价于 [A-Za-z0-9_] / 匹配任何非单词字符,等价于“[^A-Za-z0-9]”</td>
-<td></td>
-</tr>
-<tr>
-<td>()</td>
-<td>组</td>
-<td></td>
-</tr>
-</tbody></table>
-
+          <p>在 RecycleView 的 onMeasure 阶段，默认采用自动测量模式，如果自身宽高不确定，会尝试通过 LayoutManager 测量子 Item 来确定自己的宽高，所以尽可能的使用 match_parent 或固定宽高来布局 RecycleView，减少性能的损耗 在 RecycleView 的 onLayout 阶段，才会真正调用调用 LayoutManager.onLayoutChildren() 来对 Item 进行测量和布局 在 LayoutManager.onLayoutChildren() 方法中，会先通过 detachAndScrapAttachedViews() 函数回收布局，然后再通过 file() 函数进行布局，具体流程如...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/19/%E6%AD%A3%E5%88%99/#more" rel="contents">
+              <a class="btn" href="/2020/11/15/Android/RecycleView/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -952,7 +779,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/09/18/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%BA%8C%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -966,7 +793,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/18/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%BA%8C%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Java核心技术卷二高级特性-笔记</a>
+            <a href="/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/" class="post-title-link" itemprop="url">SparseArray和ArrayMap</a>
         </h2>
 
         <div class="post-meta">
@@ -976,7 +803,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-18 20:10:59" itemprop="dateCreated datePublished" datetime="2020-09-18T20:10:59+08:00">2020-09-18</time>
+              <time title="创建时间：2020-11-15 01:03:17" itemprop="dateCreated datePublished" datetime="2020-11-15T01:03:17+08:00">2020-11-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -984,7 +811,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -999,10 +826,84 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>卷二中个人认为需要记笔记的内容，最核心的就是java 8的流和相关的Channel</p>
+          <p>SparseArray和ArrayMap SparseArray 1. 以双数组键值分开的形式存储，基于二分查找获取数据； 2. 采用int作为Key，避免了HashMap的装箱拆箱操作，同时它的数据结构不需要额外的Entry对象 3. 采用了延迟删除的机制（针对数组删除位移问题的优化），在remove时把目标值标记为delete，在下次有符合的值直接放到该位置，就没有位移了...</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/18/Java/Java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E4%BA%8C%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7-%E7%AC%94%E8%AE%B0/">
+              <a class="btn" href="/2020/11/15/Android/SparseArray%E5%92%8CArrayMap/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/11/14/Android/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/14/Android/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">View 的绘制流程及原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-14 19:44:08" itemprop="dateCreated datePublished" datetime="2020-11-14T19:44:08+08:00">2020-11-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>当我们在调用Activity#setContentView(int layoutResID)时，实际上调用的是PhoneWindow#setContentView(int layoutResID) PhoneWindow 流程代码如...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/14/Android/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8E%9F%E7%90%86/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1025,7 +926,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1091,7 +992,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

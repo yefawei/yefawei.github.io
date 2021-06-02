@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/09/11/hello-world/</url>
+    <content><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
+<p>Welcome to my blog.</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
     <title>正则</title>
     <url>/2020/09/19/%E6%AD%A3%E5%88%99/</url>
     <content><![CDATA[<h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><table>
@@ -140,53 +148,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/09/11/hello-world/</url>
-    <content><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><blockquote>
-<p>Welcome to my blog.</p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
-    <title>Android 中的线程模型</title>
-    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
-<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
-<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
-</ul>
-<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
-<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
-<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
-</ul>
-<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
-<ol>
-<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
-<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>priority</code>优先级</p>
-<p>线程优先级，值越大优先级越高</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>cgroup</code></p>
-<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
-</li>
-</ol>
-<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
-<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
-<li>优先级具有继承性</li>
-<li>正确认识任务重要性决定优先级</li>
-<li>线程必须命名，以定位归属</li>
-<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>线程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Activity启动流程</title>
     <url>/2020/12/07/Android/Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%88AMS%EF%BC%89/</url>
     <content><![CDATA[<h1 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h1><p><a href="https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg">https://mp.weixin.qq.com/s/1bfi-BVe23_96A2AlhaPKg</a></p>
@@ -269,6 +230,45 @@
       <tags>
         <tag>Android</tag>
         <tag>Gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android 中的线程模型</title>
+    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
+<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
+<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
+</ul>
+<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
+<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
+<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
+</ul>
+<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
+<ol>
+<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
+<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>priority</code>优先级</p>
+<p>线程优先级，值越大优先级越高</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>cgroup</code></p>
+<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
+</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
+<li>优先级具有继承性</li>
+<li>正确认识任务重要性决定优先级</li>
+<li>线程必须命名，以定位归属</li>
+<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>线程</tag>
       </tags>
   </entry>
   <entry>
@@ -1474,49 +1474,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Ubuntu环境变量</title>
-    <url>/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
-<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
-</li>
-<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
-</li>
-<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
-</li>
-<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
-</li>
-<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
-</li>
-</ul>
-<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
-<li><p>临时设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>当前用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
-<li><p>所有用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5><p><a href="https://github.com/shadowsocks/shadowsocks-qt5">https://github.com/shadowsocks/shadowsocks-qt5</a></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install shadowsocks-qt5</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Ubuntu</tag>
-        <tag>环境变量</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux 学习笔记-解压缩命令详解</title>
     <url>/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1 id="Linux-学习笔记-解压缩命令详解"><a href="#Linux-学习笔记-解压缩命令详解" class="headerlink" title="Linux 学习笔记-解压缩命令详解"></a>Linux 学习笔记-解压缩命令详解</h1><h2 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h2><pre><code>独立命令：
@@ -1574,6 +1531,49 @@ unzip file.zip //解压zip
       <tags>
         <tag>Linux</tag>
         <tag>解压缩命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu环境变量</title>
+    <url>/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
+<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
+</li>
+<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
+</li>
+<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
+</li>
+<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
+</li>
+<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
+</li>
+</ul>
+<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
+<li><p>临时设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>当前用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
+<li><p>所有用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5><p><a href="https://github.com/shadowsocks/shadowsocks-qt5">https://github.com/shadowsocks/shadowsocks-qt5</a></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install shadowsocks-qt5</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+        <tag>环境变量</tag>
       </tags>
   </entry>
   <entry>
@@ -1761,7 +1761,7 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
-    <title>测试UI性能</title>
+    <title>gfxinfo 测试UI性能</title>
     <url>/2020/12/20/Android/ADB/gfxinfo%20%E6%B5%8B%E8%AF%95UI%E6%80%A7%E8%83%BD/</url>
     <content><![CDATA[<h1 id="gfxinfo-测试UI性能"><a href="#gfxinfo-测试UI性能" class="headerlink" title="gfxinfo 测试UI性能"></a>gfxinfo 测试UI性能</h1><blockquote>
 <p>参考：<a href="https://developer.android.com/training/testing/performance">https://developer.android.com/training/testing/performance</a></p>
@@ -1967,6 +1967,369 @@ DESCRIPTION
 <li>收敛修改涉及启动相关代码的权限：结合 CI 修改启动代码需要 Review 代码并测试通过才可合入</li>
 </ul>
 <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p><a href="https://juejin.cn/post/6844903958113157128">面试官：今日头条启动很快，你觉得可能是做了哪些优化？</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>布局优化</title>
+    <url>/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%89%E3%80%81%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h1><blockquote>
+<p>相关参考：<a href="https://androidperformance.com/2019/07/27/Android-Hardware-Layer/">https://androidperformance.com/2019/07/27/Android-Hardware-Layer/</a></p>
+</blockquote>
+<h4 id="优化工具"><a href="#优化工具" class="headerlink" title="优化工具"></a>优化工具</h4><ul>
+<li><a href="(%E5%B7%A5%E5%85%B7/Systrace.md)"><code>Systrace</code></a>：<ul>
+<li> 关注 <code>Frames</code> 行：正常绿色，丢帧黄色或红色</li>
+<li>关注 <code>Alerts</code> 栏：自动分析性能问题的一些条目</li>
+</ul>
+</li>
+<li><code>Layout Inspector</code>：<ul>
+<li><code>Android Studio</code> 自带工具，查看视图层次结构</li>
+</ul>
+</li>
+<li><code>Choreographer</code>：<ul>
+<li>系统 <code>api</code> 监控帧率：<a href="/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/#more">获取帧率</a></li>
+</ul>
+</li>
+<li><code>uiautomatorviewer</code>：<ul>
+<li>SDK 自带布局查看工具：<code>&lt;SDK&gt;/tools/bin/uiautomatorviewer.bat</code></li>
+</ul>
+</li>
+<li><code>adb</code> 命令测试：<ul>
+<li><a href="/2020/12/20/Android/ADB/gfxinfo%20%E6%B5%8B%E8%AF%95UI%E6%80%A7%E8%83%BD/"><code>adb shell dumpsys gfxinfo com.**.** </code></a></li>
+</ul>
+</li>
+</ul>
+<h4 id="Android-布局加载原理"><a href="#Android-布局加载原理" class="headerlink" title="Android 布局加载原理"></a>Android 布局加载原理</h4><ol>
+<li><code>setContentView</code>：调用 <code>LayoutInflater.inflate</code></li>
+<li><code>Resources.getLayout</code>：解析 <code>xml</code> IO 耗时</li>
+<li><code>LayoutInflater.createViewFromTag</code>：通过 <code>Factory2</code> 、 <code>Factory</code> 和 反射创建 <code>View</code> 【备注：<code>mPrivateFactory</code> 为创建 <code>Fragment</code> 用的】</li>
+</ol>
+<p>从上述流程可知两个耗时点：<strong>加载 <code>xml</code> 的 IO 耗时，反射创建 <code>View</code> 耗时</strong></p>
+<p><strong>【说明】</strong><code>Factory2</code> 在 <code>AppCompatActivity.onCraete</code> 中设置，用于将 <code>TextView</code> 转换成 <code>AppCompatTextView</code> 等适配</p>
+<p><strong>【注意】</strong>如果要手动设置 <code>Factory2</code> 要参考 <code>AppCompatViewInflater</code> 的兼容实现</p>
+<h4 id="获取界面布局耗时"><a href="#获取界面布局耗时" class="headerlink" title="获取界面布局耗时"></a>获取界面布局耗时</h4><p><a href="/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E7%95%8C%E9%9D%A2%E5%B8%83%E5%B1%80%E8%80%97%E6%97%B6/">参考：获取界面布局耗时</a></p>
+<h4 id="布局加载优化"><a href="#布局加载优化" class="headerlink" title="布局加载优化"></a>布局加载优化</h4><h5 id="一、异步创建布局：AsyncLayoutInflater"><a href="#一、异步创建布局：AsyncLayoutInflater" class="headerlink" title="一、异步创建布局：AsyncLayoutInflater"></a>一、异步创建布局：<code>AsyncLayoutInflater</code></h5><p>原理：内部开了单独一个线程专门用于异步创建 <code>View</code>，采用 <code>ArrayBlockingQueue</code> 队列做无限循环取数据，对于消息类还做了 <code>SynchronizedPool</code> 对象池，在子线程装载 <code>View</code> 失败还会在主线程再次装载一次</p>
+<p><strong>【注意一】</strong>由于采用系统自身的 <code>Inflater</code> 装载 <code>View</code>，会失去 <code>AppCompat</code> 的兼容效果，可以将源码拷贝出来修改成兼容将 <code>TextView</code> 转换成 <code>AppCompatTextView</code> 等适配</p>
+<p><strong>【注意二】</strong>由于是在子线程进行装载，待装载的 <code>View</code> 内部不能有依赖主线程的操作</p>
+<h5 id="二、Java-代码写布局"><a href="#二、Java-代码写布局" class="headerlink" title="二、Java 代码写布局"></a>二、Java 代码写布局</h5><p>通过 <code>xml</code> 的方式编写布局，会有 <code>IO</code> 和反射耗时，可通过 <code>Java</code> 代码的方式从本质上解决性能问题。</p>
+<p>该方式会引入新问题：不便于开发、可维护性差</p>
+<h5 id="三、X2C-方案"><a href="#三、X2C-方案" class="headerlink" title="三、X2C 方案"></a>三、X2C 方案</h5><p>项目地址：<a href="https://github.com/iReaderAndroid/X2C">https://github.com/iReaderAndroid/X2C</a></p>
+<p>原理：通过 <code>APT</code> 编译期将 <code>xml</code> 文件翻译为 <code>Java</code> 布局文件</p>
+<p>该方案保留了 <code>xml</code> 的优点，同时从根本上解决性能问题</p>
+<p><strong>【注意】</strong>该方案存在兼容性问题，部分属性 <code>Java</code> 代码时不支持的，同时也失去了 <code>AppCompat</code> 的兼容效果</p>
+<h4 id="进阶布局优化"><a href="#进阶布局优化" class="headerlink" title="进阶布局优化"></a>进阶布局优化</h4><h5 id="一、异步布局框架-Litho"><a href="#一、异步布局框架-Litho" class="headerlink" title="一、异步布局框架 Litho"></a>一、异步布局框架 <code>Litho</code></h5><p><a href="https://github.com/facebook/litho"><code>Litho</code></a> 是 Facebook 开源的一款在Android上高效建立UI的声明式框架</p>
+<p>PS：这里没有研究，自行参考官方文档实现方式</p>
+<h5 id="二、条件允许可以使用-Flutter"><a href="#二、条件允许可以使用-Flutter" class="headerlink" title="二、条件允许可以使用 Flutter"></a>二、条件允许可以使用 Flutter</h5><h4 id="视图绘制优化"><a href="#视图绘制优化" class="headerlink" title="视图绘制优化"></a>视图绘制优化</h4><p>布局流程：测量 -&gt; 布局 -&gt; 绘制</p>
+<ul>
+<li><p>减少每个布局流程的耗时</p>
+</li>
+<li><p>减少布局层级和复杂度：有的布局会多次测量，如果产生嵌套，就会呈几何上升的进行测量，推荐使用 <code>ConstraintLayout</code> 约束布局</p>
+</li>
+<li><p>不嵌套使用 <code>RelativeLayout</code>，会对子 <code>View</code> 做两次测量</p>
+</li>
+<li><p>不在嵌套 <code>LinearLayout</code> 中使用 <code>weight</code>，会对子 <code>View</code> 做两次测量</p>
+</li>
+<li><p><code>merge</code> 标签：可以减少一个层级，用于根 <code>View</code></p>
+</li>
+<li><p><code>ViewStub</code>：可以在真正需要使用时才加载布局</p>
+</li>
+<li><p>避免过度绘制：<a href="https://developer.android.com/topic/performance/rendering/inspect-gpu-rendering">官方文档</a></p>
+<ul>
+<li>减少多余背景色，减少复杂的 <code>Shape</code> 的使用</li>
+<li>避层级叠加</li>
+<li>当在 <code>onDraw</code> 中绘制的内容前后有产生覆盖的，需要使用 <code>clipRect</code> 来屏蔽被覆盖的区域，如果需要绘制的对象不在剪裁范围内，需要直接返回，减少<code>CPU</code> 和 <code>GPU</code> 的计算工作，如前后绘制了两个有重叠的<code>Bitmap</code></li>
+</ul>
+</li>
+<li><p>避免在 <code>onDraw</code> 中创建对象和执行耗时操作</p>
+</li>
+<li><p>在 <code>Android 5.0</code> 以下的自定义 <code>View</code> 触发刷新需要考虑刷新的范围 <code>invalidate(int l, int t, int r, int b)</code>，5.0 以上的直接 <code>invalidate()</code> 即可</p>
+</li>
+<li><p><code>canvas</code> 在使用离屏缓存时很耗资源，范围设置为所需范围即可</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">val count = canvas.saveLayer(<span class="number">100f</span>, <span class="number">100f</span>, <span class="number">200f</span>, <span class="number">200f</span>, paint)</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">canvas.restoreToCount(count)</span><br></pre></td></tr></table></figure></li>
+<li><p>通过 <code>Systrace</code> 发现每一帧都在 <code>buildDrawingCache/SW</code> （主线程） 或 <code>buildLayer</code> （渲染线程），那么需要检查代码的逻辑，尝试调整 <code>LayerType</code> 查看情况是否改良</p>
+<ul>
+<li>如果只是单纯的做动画，不动态修改 View 的内容，那么性能表现为 ：Hardware Layer &gt;= Software Layer &gt; Normal Layer</li>
+<li>如果做动画同时动态修改 View 的内容，那么性能表现为 ：Normal Layer &gt; Software Layer = Hardware Layer</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内存优化</title>
+    <url>/2020/12/31/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h1><blockquote>
+<p>意义：减少因为频繁GC导致的卡顿，减少因为内存占用应用存活率降低</p>
+</blockquote>
+<h4 id="内存问题"><a href="#内存问题" class="headerlink" title="内存问题"></a>内存问题</h4><ul>
+<li>内存抖动：表现为内存锯齿状，频繁GC，导致卡顿</li>
+<li>内存泄露：可用内存减少，频繁GC</li>
+<li>内存溢出：OOM、程序异常</li>
+</ul>
+<h4 id="相关工具的使用"><a href="#相关工具的使用" class="headerlink" title="相关工具的使用"></a>相关工具的使用</h4><p><a href="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Profiler/">参考：Memory Profiler</a></p>
+<p><a href="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/">参考：Memory Analyzer</a></p>
+<p><a href="/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/">参考：Leak Canary</a></p>
+<h4 id="Dalvik-与-Art-的区别"><a href="#Dalvik-与-Art-的区别" class="headerlink" title="Dalvik 与 Art 的区别"></a><code>Dalvik</code> 与 <code>Art</code> 的区别</h4><ul>
+<li><code>Dalvik</code> 仅固定一种回收算法</li>
+<li><code>Art</code> 回收算法可运行期切换，具备内存整理能力，减少内存空洞</li>
+</ul>
+<h4 id="Low-Memory-Killer"><a href="#Low-Memory-Killer" class="headerlink" title="Low Memory Killer"></a>Low Memory Killer</h4><ul>
+<li>进程分类（优先级从高到低）：前台进程、可见进程、服务进程、后台进程、空进程</li>
+<li>回收收益：系统会考虑回收收益执行回收力度</li>
+</ul>
+<h4 id="内存抖动"><a href="#内存抖动" class="headerlink" title="内存抖动"></a>内存抖动</h4><blockquote>
+<p>内存频繁分配和回收导致内存不稳定，频繁 <code>GC</code> ，易导致卡顿和 <code>OOM</code></p>
+</blockquote>
+<p>频繁创建对象、释放对象，导致内存碎片化严重</p>
+<p>不连续的内存片无法被分配，导致 <code>OOM</code></p>
+<p><strong>解决技巧：</strong>通过 <code>Memory Profiler</code> 找对象，重点寻找循环或者频繁调用的地方</p>
+<p><strong>【注意】</strong>内存泄漏造成内存减少，也会出现频繁回收对象而出现内存抖动</p>
+<h4 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h4><p><code>dump</code>  出的内存文件通过 <code>Memory Analyzer</code> 工具进行分析</p>
+<p><a href="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/">参考：Memory Analyzer</a></p>
+<p><a href="/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">参考：dump 内存的几种方式</a></p>
+<h4 id="大图监控"><a href="#大图监控" class="headerlink" title="大图监控"></a>大图监控</h4><p>由于图片是占用内存的大头，所以必须对其严格控制，可以使用 <code>AOP</code> 或 <code>ART</code> 方式获取相应控件的大小和 <code>Bitmap</code> 的大小，提前警告</p>
+<p><a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/ART-Hook/">参考：ART-Hook</a></p>
+<p><a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/AOP-Aspectjx/">参考：Aspectjx</a></p>
+<h4 id="线上内存监控"><a href="#线上内存监控" class="headerlink" title="线上内存监控"></a>线上内存监控</h4><ul>
+<li>常规方案：超过最大内存80%，<code>Dump</code> 内存，待到 <code>wifi</code> 环境下回传文件分析<ul>
+<li><code>Dump</code> 文件太大，和对象数正相关，可剪裁</li>
+<li>文件较大上传失败率高，分析困难</li>
+<li>效果有限</li>
+</ul>
+</li>
+<li><a href="/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/"><code>LeakCanary</code></a> 线上监控，预设怀疑点，发现泄漏回传<ul>
+<li>不适合所有场景，需要预设坏一点</li>
+<li>该库分析比较耗时，容易OOM</li>
+<li>建议定制 <code>LeakCanary</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="线上监控完整方案"><a href="#线上监控完整方案" class="headerlink" title="线上监控完整方案"></a>线上监控完整方案</h4><ul>
+<li>待机内存、重点模块内存、OOM率</li>
+<li>整体及重点模块GC次数、GC时间</li>
+<li>增强 <code>LeakCanary</code> 自动化内存泄漏分析</li>
+</ul>
+<h4 id="优化大方向"><a href="#优化大方向" class="headerlink" title="优化大方向"></a>优化大方向</h4><ul>
+<li>内存泄漏</li>
+<li>内存抖动</li>
+<li>Bitmap</li>
+</ul>
+<h4 id="优化细节"><a href="#优化细节" class="headerlink" title="优化细节"></a>优化细节</h4><ul>
+<li><p>设置 <code>LargeHeap</code> 属性，向系统申请更多内存</p>
+</li>
+<li><p>系统回调 <code>onTrimMemory</code> 根据回调级别做适当的资源释放，当系统回调严重级别时可以将所有界面关闭强制重启主界面的操作</p>
+</li>
+<li><p>使用优化过的集合：<code>SparseArray</code> 、<code>ArrayMap</code>，性能虽不及 <code>HashMap</code>，但在数据量较少的情况下是可以接受的</p>
+</li>
+<li><p>谨慎使用 <code>SharedPreference</code>，首次加载时会将涉及的文件所有数据加载到内存里，如果单个文件过大造成内存占用过多</p>
+</li>
+<li><p>可以考虑使用 <code>IntDef</code> <code>StringDef</code> 来减少枚举类型的使用</p>
+</li>
+<li><p>谨慎使用外部库</p>
+</li>
+<li><p>尽可能使用静态内部类减少外部引用</p>
+</li>
+<li><p>图片优化</p>
+<ul>
+<li>对图片质量要求不高的可以适当降低图片质量，如 ARGB_4444 或 RGB_565</li>
+<li><a href="/2020/11/27/Android/Bitmap/">适当对图片进行缩小加载</a></li>
+<li><a href="/2020/11/27/Android/Bitmap/">重用 Bitmap 内存</a></li>
+<li>类似 Glide 图片加载库，默认兼容 gif 和 webp，但是执行效率和内存使用率并不高，可以接入 giflib 和 libwebp 进行优化</li>
+<li>Item 被回收不可见时释放图片的引用<ul>
+<li><code>ListView</code>：条目被回收后都会重新绑定数据，只需要在 <code>ImageView.onDetachFromWindow()</code> 时释放图片引用</li>
+<li><code>RecycleView</code>：当条目不可见时优先放入 <code>mCacheView</code> 缓存中，重新展示并不会触发 <code>bindViewHolder</code> 来绑定数据，只有被收录到 <code>mRecyclePool</code> 中才会拿出来复用并绑定，需要在 <code>Adapter.onViewRecycled()</code> 函数中释放图片引用，该函数会在条目收录到 <code>mRecyclePool</code> 缓存时回调</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>卡顿优化</title>
+    <url>/2021/01/07/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%9B%9B%E3%80%81%E5%8D%A1%E9%A1%BF%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="卡顿优化"><a href="#卡顿优化" class="headerlink" title="卡顿优化"></a>卡顿优化</h1><blockquote>
+<p>相关参考：<a href="https://androidperformance.com/2019/07/27/Android-Hardware-Layer/">https://androidperformance.com/2019/07/27/Android-Hardware-Layer/</a></p>
+</blockquote>
+<p>用户对于内存占用过高、网络消耗过大等可能不易察觉，但是app卡顿会很直观的体现在交互上，需要重点针对</p>
+<p>卡顿产生的原因很多，代码质量不好、可用内存过低、绘制复杂、IO占用等都会导致卡顿，且线上用户发生的卡顿线下不易复现，与使用场景强相关</p>
+<h4 id="工具选择"><a href="#工具选择" class="headerlink" title="工具选择"></a>工具选择</h4><ul>
+<li><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/">CPU Profile</a></li>
+<li><a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/"><code>Systrace</code></a></li>
+<li><a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/StrictMode/"><code>StrictMode</code></a></li>
+</ul>
+<h4 id="自动化检测卡顿方案"><a href="#自动化检测卡顿方案" class="headerlink" title="自动化检测卡顿方案"></a>自动化检测卡顿方案</h4><blockquote>
+<p>由于卡顿与场景强相关，线下工具复现并不好实现，需要线上自动化监控</p>
+</blockquote>
+<p><strong>方案原理</strong></p>
+<p><code>Android</code> 的消息处理机制，一个线程只有一个 <code>Looper</code>，<code>mLogging</code> 对象再每个message处理前后都会调用，主线程发生卡顿，说明 <code>dispatchMessage</code> 在执行耗时操作。当匹配到 <code> &gt;&gt;&gt;&gt;&gt; Dispatching</code> 我们可以在子线程（<code>HanderThread</code>）中执行一个任务，当达到我们设定的阈值时获取主线程的堆栈来定位耗时函数，当匹配到 <code>&lt;&lt;&lt;&lt;&lt; Finished</code> 时将任务取消掉。</p>
+<p><code>Looper</code> 代码参考如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Looper.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">final</span> Printer logging = me.mLogging;</span><br><span class="line">	<span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">		logging.println(<span class="string">&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback + <span class="string">&quot;: &quot;</span> + msg.what);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	msg.target.dispatchMessage(msg);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="keyword">if</span> (logging != <span class="keyword">null</span>) &#123;</span><br><span class="line">		logging.println(<span class="string">&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot;</span> + msg.target + <span class="string">&quot; &quot;</span> + msg.callback);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相关三方库 <code>BlockCanary </code>：<a href="https://github.com/markzhai/AndroidPerformanceMonitor">https://github.com/markzhai/AndroidPerformanceMonitor</a></p>
+<p>该库优点：非侵入式，简单方便的定位到代码的某一行</p>
+<p>该库缺点：捕获到的卡顿堆栈可能不准确，并不是真正的卡顿点</p>
+<p>修改方案：采用高频采集堆栈的形式，如卡顿阈值设置500ms，每100ms采集一次堆栈信息，当真的操作500ms阈值，将其中采集的堆栈信息保存起来在合适的时机上报</p>
+<p>再优化：由于上述高频采集会产生很多无效堆栈，且上报数据量过大会造成服务端压力过大，对问题分析也并不友好。由于一个卡顿下多个堆栈大概率重复，找出重复的堆栈进行保存和上传即可</p>
+<h4 id="ANR异常"><a href="#ANR异常" class="headerlink" title="ANR异常"></a>ANR异常</h4><h5 id="场景（ActivityManagerService）"><a href="#场景（ActivityManagerService）" class="headerlink" title="场景（ActivityManagerService）"></a>场景（<code>ActivityManagerService</code>）</h5><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">TimeOut</th>
+<th align="center">是否弹框提示</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Activity</td>
+<td align="center">10</td>
+<td align="center">提示</td>
+<td align="center">Activity切换时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">BroadCast</td>
+<td align="center">10，60</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">系统默认前后台广播，厂商会额外定制广播</td>
+</tr>
+<tr>
+<td align="center">Service</td>
+<td align="center">10</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">创建Servier时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">Provider</td>
+<td align="center">10</td>
+<td align="center">无感知场景不会有提示</td>
+<td align="center">创建Provider时会设置TimeOut</td>
+</tr>
+<tr>
+<td align="center">Input</td>
+<td align="center">5</td>
+<td align="center">提示</td>
+<td align="center">厂商或平台会调整此阈值，MTK调整至8秒</td>
+</tr>
+<tr>
+<td align="center">Finalizer</td>
+<td align="center">10</td>
+<td align="center">Crash</td>
+<td align="center">默认10S，厂商调整至20S~120S</td>
+</tr>
+</tbody></table>
+<h5 id="ANR触发原理"><a href="#ANR触发原理" class="headerlink" title="ANR触发原理"></a>ANR触发原理</h5><p>简单来说就是埋炸弹，如在启动服务时，会发送一条延迟消息，这里称为定时炸弹消息，当服务能够正常启动会把这条炸弹消息移除，如果时间到了还没有移除，说明服务没有在指定的时间内正常启动，执行该定时炸弹消息，最终会执行到 <code>AppErrors#appNotResponding</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">appNotResponding</span><span class="params">(ProcessRecord app, ActivityRecord activity,</span></span></span><br><span class="line"><span class="function"><span class="params">        ActivityRecord parent, <span class="keyword">boolean</span> aboveSystem, <span class="keyword">final</span> String annotation)</span> </span>&#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      <span class="comment">//1、写入event log</span></span><br><span class="line">      EventLog.writeEvent(EventLogTags.AM_ANR, app.userId, app.pid,</span><br><span class="line">                app.processName, app.info.flags, annotation);</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">      	<span class="comment">// 2、收集需要的log，anr、cpu等，StringBuilder凭借</span></span><br><span class="line">        StringBuilder info = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        info.setLength(<span class="number">0</span>);</span><br><span class="line">        info.append(<span class="string">&quot;ANR in &quot;</span>).append(app.processName);</span><br><span class="line">        <span class="keyword">if</span> (activity != <span class="keyword">null</span> &amp;&amp; activity.shortComponentName != <span class="keyword">null</span>) &#123;</span><br><span class="line">            info.append(<span class="string">&quot; (&quot;</span>).append(activity.shortComponentName).append(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        info.append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        info.append(<span class="string">&quot;PID: &quot;</span>).append(app.pid).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (annotation != <span class="keyword">null</span>) &#123;</span><br><span class="line">            info.append(<span class="string">&quot;Reason: &quot;</span>).append(annotation).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (parent != <span class="keyword">null</span> &amp;&amp; parent != activity) &#123;</span><br><span class="line">            info.append(<span class="string">&quot;Parent: &quot;</span>).append(parent.shortComponentName).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ProcessCpuTracker processCpuTracker = <span class="keyword">new</span> ProcessCpuTracker(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 3、dump堆栈信息，包括java堆栈和native堆栈，保存到文件中</span></span><br><span class="line">    File tracesFile = ActivityManagerService.dumpStackTraces(</span><br><span class="line">            <span class="keyword">true</span>, firstPids,</span><br><span class="line">            (isSilentANR) ? <span class="keyword">null</span> : processCpuTracker,</span><br><span class="line">            (isSilentANR) ? <span class="keyword">null</span> : lastPids,</span><br><span class="line">            nativePids);</span><br><span class="line">    String cpuInfo = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 4、输出ANR 日志</span></span><br><span class="line">    Slog.e(TAG, info.toString());</span><br><span class="line">    <span class="keyword">if</span> (tracesFile == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 5、没有抓到tracesFile，发一个SIGNAL_QUIT信号</span></span><br><span class="line">        Process.sendSignal(app.pid, Process.SIGNAL_QUIT);</span><br><span class="line">    &#125;</span><br><span class="line">    StatsLog.write(StatsLog.ANR_OCCURRED, ...)</span><br><span class="line">    <span class="comment">// 6、输出到drapbox</span></span><br><span class="line">    mService.addErrorToDropBox(<span class="string">&quot;anr&quot;</span>, app, app.processName, activity, parent, annotation, cpuInfo, tracesFile, <span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">synchronized</span> (mService) &#123;</span><br><span class="line">        mService.mBatteryStatsService.noteProcessAnr(app.processName, app.uid);</span><br><span class="line">       <span class="comment">//7、后台ANR，直接杀进程</span></span><br><span class="line">        <span class="keyword">if</span> (isSilentANR) &#123;</span><br><span class="line">            app.kill(<span class="string">&quot;bg anr&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//8、错误报告</span></span><br><span class="line">        makeAppNotRespondingLocked(app,</span><br><span class="line">                activity != <span class="keyword">null</span> ? activity.shortComponentName : <span class="keyword">null</span>,</span><br><span class="line">                annotation != <span class="keyword">null</span> ? <span class="string">&quot;ANR &quot;</span> + annotation : <span class="string">&quot;ANR&quot;</span>,</span><br><span class="line">                info.toString());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//9、弹出ANR dialog，会调用handleShowAnrUi方法</span></span><br><span class="line">        Message msg = Message.obtain();</span><br><span class="line">        msg.what = ActivityManagerService.SHOW_NOT_RESPONDING_UI_MSG;</span><br><span class="line">        msg.obj = <span class="keyword">new</span> AppNotRespondingDialog.Data(app, activity, aboveSystem);</span><br><span class="line"></span><br><span class="line">        mService.mUiHandler.sendMessage(msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>【注意】input的超时检测机制有点不同，需要等到下一次input事件，才会检测上一次的input事件是否超时，相当于需要主动扫雷</p>
+<h5 id="线下解决套路"><a href="#线下解决套路" class="headerlink" title="线下解决套路"></a>线下解决套路</h5><p>导出系统默认 <code>anr</code> 记录信息，<code>adb pull data/anr/traces.txt C:\Users\benbe\Desktop\anr.txt</code></p>
+<h5 id="线上ANR监控"><a href="#线上ANR监控" class="headerlink" title="线上ANR监控"></a>线上ANR监控</h5><ul>
+<li><p>通过 <code>FileOberver</code> 监控 <code>traces</code> 文件变化【注：高版本中有权限问题，监控不到该文件变化】</p>
+</li>
+<li><p>通过 <a href="https://github.com/SalomonBrys/ANR-WatchDog"><code>WatchDog</code></a> 监控 <code>ANR </code></p>
+<p>原理：开启一个子线程无限循环，将一个变量值变更后往主线程发送一个还原消息，睡眠一定的间隔后检测这个变量值是否被还原，如果没有被还原说明发送了<code>ANR</code></p>
+<p>问题：会有漏检的情况，主线程卡顿1秒后才开启新一轮的监控，如果主线程到达卡顿阈值就不卡了，此时这个变量值已被还原，<code>WatchDog</code> 就以非卡顿的场景进行处理了，需要针对这个问题进行优化，优化：假设原本卡顿阈值为5秒，那么我们可以将检测间隔设定为1秒，当累计卡顿5秒才触发监控ANR的流程，这样就能让误差降低到1s内</p>
+</li>
+</ul>
+<h5 id="BlockCanary-和-WatchDog-的区别"><a href="#BlockCanary-和-WatchDog-的区别" class="headerlink" title="BlockCanary  和 WatchDog  的区别"></a><code>BlockCanary </code> 和 <code>WatchDog</code>  的区别</h5><ul>
+<li><code>BlockCanary</code>：监控的是每条 <code>Msg</code> 的执行耗时</li>
+<li><code>WatchDog</code>： 开启子线程看最终结果，如果值没被还原则认为有问题</li>
+<li>前者适合监控卡顿，后者适合补充 <code>ANR</code> 监控</li>
+</ul>
+<h5 id="死锁监控"><a href="#死锁监控" class="headerlink" title="死锁监控"></a>死锁监控</h5><blockquote>
+<p>死锁引起的 ANR ，如何找出死锁原因？</p>
+</blockquote>
+<p>参考：<a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E9%94%81%E8%B0%83%E7%94%A8%E9%93%BE/">获取锁调用链</a></p>
+<h4 id="单点卡顿问题检测"><a href="#单点卡顿问题检测" class="headerlink" title="单点卡顿问题检测"></a>单点卡顿问题检测</h4><blockquote>
+<p>上诉提到了卡顿和ANR的解决方案，但是还是不够，例如，此时有很多消息在执行，但是又没有达到卡顿和ANR的阈值，但是你自己的消息就是执行不到，造成交互不流畅。</p>
+<p>卡顿点：主线程IPC、DB</p>
+</blockquote>
+<p>下面以 IPC 检测为例，其它的如DB、IO、Looper 消息过多和 View 绘制等也是类似处理</p>
+<h5 id="检测指标"><a href="#检测指标" class="headerlink" title="检测指标"></a>检测指标</h5><ul>
+<li>IPC 调用类型</li>
+<li>调用耗时、次数</li>
+<li>调用堆栈、发生线程</li>
+</ul>
+<h5 id="检测方案"><a href="#检测方案" class="headerlink" title="检测方案"></a>检测方案</h5><ul>
+<li><p>IPC 操作前后加埋点</p>
+</li>
+<li><p><code>adb</code> 命令检测</p>
+<ol>
+<li>开启监控：<code>adb shell am trace-ipc start</code></li>
+<li>停止监控并保存到指定文件：<code>adb shell am trace-ipc stop --dump-file /data/local/tmp/ipc-trace.txt</code></li>
+<li>导出监控文件：<code>adb pull /data/local/tmp/tmp/ipc-trace.txt  C:\Users\benbe\Desktop\ipc-trace.txt</code></li>
+</ol>
+</li>
+<li><p>通过 <a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/ART-Hook/"><code>ART-Hook</code></a> 方式 hook 常用 IPC 方法</p>
+<ol>
+<li>通过 <code>PackageManager</code> 获取进程名</li>
+<li>获取 <code>DeviceID</code> 信息</li>
+<li><code>AMS</code> 相关</li>
+<li><code>View.getWindowVisibleDisplayFrame()</code></li>
+</ol>
+<p>上诉无论那种操作，最终都会调用到 <code>BinderProxy</code> 类里的 <code>transact</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    DexposedBridge.findAndHookMethod(Class.forName(<span class="string">&quot;android.os.BinderProxy&quot;</span>), <span class="string">&quot;transact&quot;</span>,</span><br><span class="line">            <span class="keyword">int</span>.class, Parcel.class, Parcel.class, <span class="keyword">int</span>.class, <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">beforeHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">                    LogUtils.i( <span class="string">&quot;BinderProxy beforeHookedMethod &quot;</span> + param.thisObject.getClass().getSimpleName()</span><br><span class="line">                            + <span class="string">&quot;\n&quot;</span> + Log.getStackTraceString(<span class="keyword">new</span> Throwable()));</span><br><span class="line">                    <span class="keyword">super</span>.beforeHookedMethod(param);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="界面秒开实现"><a href="#界面秒开实现" class="headerlink" title="界面秒开实现"></a>界面秒开实现</h4><p>更多参考启动优化和布局优化</p>
+<ul>
+<li>通过 <code>SysTrace</code> 获取布局初始化的执行情况</li>
+<li>异步 <code>Inflate</code>、X2C 、绘制优化</li>
+<li>提前获取页面数据</li>
+<li>监控界面打开耗时：通过在 <code>onCreate</code> 里手动埋点，在UI可交互式统计界面耗时，也可使用 <code>AOP</code> 的方式 Hook 对于相应方法进行实现</li>
+</ul>
+<h4 id="监控耗时盲区"><a href="#监控耗时盲区" class="headerlink" title="监控耗时盲区"></a>监控耗时盲区</h4><ol>
+<li><p><strong>耗时盲区监控难点</strong></p>
+<ul>
+<li>只知道在主线程做了耗时操作，但并不知道具体在做什么</li>
+<li>线上盲区无从追查</li>
+</ul>
+</li>
+<li><p><strong>线下耗时盲区监控</strong></p>
+<ul>
+<li><code>TraceView</code> or <code>Systrace</code><ul>
+<li>特别适合一段时间内的盲区监控</li>
+<li>线程具体做了什么，一目了然</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>线上监控</strong></p>
+<ul>
+<li><p><strong>参考方案：</strong>监听消息 <code>mLogging</code> 方案</p>
+<p><strong>【缺点】</strong>有所有方法的 <code>Msg</code>，但是没有 <code>Msg</code> 具体堆栈，并不知道 <code>Msg</code> 是被谁抛出来的</p>
+</li>
+<li><p><strong>参考方案：</strong>通过 <code>AOP</code> 切 <code>Handler</code> 方法</p>
+<p><strong>【缺点】</strong>可以知道发送 <code>Msg</code> 的堆栈，但是这种方案不清楚 <code>Msg</code> 的具体执行时间</p>
+</li>
+<li><p><strong>推荐方案：</strong>使用统一的 <code>Handler</code>,定制 <code>sendMessageAtTime</code> 和 <code>dispatchMessage</code> 方法，同时可以定制 <code>gradle</code> 插件，编译时动态替换所有 <code>Handler</code>的父类，这样就能让所有 <code>Handler</code>  发送和执行的调用栈执行时间都能捕捉到，<a href="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/">参考：监控所有消息的发送栈和执行时间</a></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="卡顿优化总结"><a href="#卡顿优化总结" class="headerlink" title="卡顿优化总结"></a>卡顿优化总结</h4><ul>
+<li>耗时操作：异步、延迟</li>
+<li>布局优化：异步 <code>Inflate</code>、<code>X2C</code>、重绘解决</li>
+<li>内存：降低内存占用，减少 <code>GC</code> 时间</li>
+</ul>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -2293,8 +2656,8 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <category>Java</category>
       </categories>
       <tags>
-        <tag>线程</tag>
         <tag>原理</tag>
+        <tag>线程</tag>
         <tag>Java</tag>
       </tags>
   </entry>
@@ -2907,6 +3270,175 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
+    <title>Leakcanary</title>
+    <url>/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/</url>
+    <content><![CDATA[<h1 id="Leakcanary"><a href="#Leakcanary" class="headerlink" title="Leakcanary"></a>Leakcanary</h1><h5 id="如何初始化"><a href="#如何初始化" class="headerlink" title="如何初始化"></a>如何初始化</h5><p>通过ContentProvider自动初始化并注册相应的默认监控类型</p>
+<p>默认的监控类型有：</p>
+<ol>
+<li>Activity：在onDestory时观察</li>
+<li>Fragment：在onViewDestory时观察内部View，在onDestory时观察Fragment</li>
+<li>RootView：在Detached时观察</li>
+<li>Service：在onDestory时观察</li>
+</ol>
+<h5 id="怎么判断泄漏"><a href="#怎么判断泄漏" class="headerlink" title="怎么判断泄漏"></a>怎么判断泄漏</h5><p>在需要回收的时机里将对象放入到一个弱引用<code>KeyedWeakReference</code>里并传入自己的引用队列<code>ReferenceQueue</code>，然后放到一个观察map中</p>
+<p>5秒后通过引用队列移除已经回收的数据，如果对象还存在map中说明没有移除成功</p>
+<p>随后开始调用<code>Debug.dumpHprofData()</code>存储内存信息并分析</p>
+<p><strong>注意：</strong>新版本不会立马dump内存信息，默认需要达到5个才会dump</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Memory Analyzer</title>
+    <url>/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/</url>
+    <content><![CDATA[<h1 id="Memory-Analyzer"><a href="#Memory-Analyzer" class="headerlink" title="Memory Analyzer"></a>Memory Analyzer</h1><blockquote>
+<p>俗称MAT，强大的 Java Heap 分析工具，较于 Memory Profiler  更适合查找内存泄漏及内存占用</p>
+<p>建议线下深入使用</p>
+</blockquote>
+<p><a href="https://www.eclipse.org/mat/">工具地址</a></p>
+<p><a href="https://help.eclipse.org/2021-03/index.jsp?topic=/org.eclipse.mat.ui.help/tasks/queryingheapobjects.html">官方文档</a></p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>获取内存文件：<a href="/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">dump 内存的几种方式</a></p>
+<p><code>dump</code> 出来的内存文件 <code>MAT</code> 都无法直接使用，需要通过 <code>hprof-conv</code> 工具对 Dump 文件进行转换</p>
+<p>工具目录：<code>&lt;Android_SDK&gt;/platform-tools/</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hprof-conv dump.hprof &lt;输出目录&gt;&#x2F;&lt;文件名&gt;.hprof</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用功能"><a href="#常用功能" class="headerlink" title="常用功能"></a>常用功能</h4><h5 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h5><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_Histogram.png" style="zoom:80%;">
+
+<ul>
+<li>顶部支持过滤</li>
+<li>with outgoing references：它强引用了谁</li>
+<li>with incoming references：它被谁强引用</li>
+</ul>
+<img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_Histogram_references.png" style="zoom: 80%;">
+
+<ul>
+<li>查看引用链：子选项为需要排除的对象</li>
+</ul>
+<h5 id="dominator-tree"><a href="#dominator-tree" class="headerlink" title="dominator_tree"></a>dominator_tree</h5><p>与 <code>Histogram</code> 功能类似，但是它会显示出具体对象和对象占用内存的百分比，而 <code>Histogram</code> 只会显示具体数量</p>
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_dominator_tree.png"></p>
+<h5 id="OQL"><a href="#OQL" class="headerlink" title="OQL"></a>OQL</h5><p>对象查询语言，类似于从数据库检索东西。类作为表，object 作为行，field 字段作为列</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> com.example.mat.Listener <span class="comment">-- 查询所有Listener</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> toString(l.message), l.message.count <span class="keyword">FROM</span> com.example.mat.Listener l <span class="comment">-- 查询Listener里的message和数量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> toString(s), s.count <span class="keyword">FROM</span> java.lang.String s <span class="keyword">WHERE</span> (toString(s) <span class="keyword">NOT</span> <span class="keyword">LIKE</span> &quot;msg*&quot;) <span class="comment">-- 查询不包含msg的字串</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_OQL.png"></p>
+<h5 id="thread-overview"><a href="#thread-overview" class="headerlink" title="thread_overview"></a>thread_overview</h5><p>详细展现出线程信息</p>
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_thread_overview.png"></p>
+<h5 id="Top-Consumers"><a href="#Top-Consumers" class="headerlink" title="Top Consumers"></a>Top Consumers</h5><p>通过饼图的形式展示内存占用信息，其中 <code>Biggest Objects</code> 还会展示大对象的占用信息</p>
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_Top_Consumers.png"></p>
+<h5 id="Compare-Basket"><a href="#Compare-Basket" class="headerlink" title="Compare_Basket"></a>Compare_Basket</h5><p>通过这种方式可以将两次dump信息进行比对，这样就可以知道业务前后那些对象增长异常</p>
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_Compare_Basket.png"></p>
+<h5 id="Collection-Fill-Ratio"><a href="#Collection-Fill-Ratio" class="headerlink" title="Collection Fill Ratio"></a>Collection Fill Ratio</h5><p>通过 <code>Collection Fill Ratio</code> 可以查看集合的填充率</p>
+<p>如果集合的对象过多且填充率都为0，说明这些集合并没有使用上，可以考虑延迟初始化，在用到的时候再初始化，减少内存占用</p>
+<p>【备注一】也可以通过 <code>Array Fill Ratio</code> 来数组分析</p>
+<p>【备注二】<code>Map Collision Ratio</code> 哈希碰撞统计，如果哈希碰撞率过多，需要优化相关类的哈希算法</p>
+<p><img src="/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/MAT_Collection_fill_Ratio.png"></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Memory Profiler</title>
+    <url>/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Profiler/</url>
+    <content><![CDATA[<h1 id="Memory-Profiler"><a href="#Memory-Profiler" class="headerlink" title="Memory Profiler"></a>Memory Profiler</h1><blockquote>
+<p>实时图表展示应用内存使用量，可以很直观的识别出内存抖动</p>
+<p>提供捕获堆存储、强制GC以及跟踪内存分配的能力</p>
+</blockquote>
+<p><a href="https://developer.android.com/studio/profile/android-profiler">官方地址：Android Profiler</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>StrictMode</title>
+    <url>/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/StrictMode/</url>
+    <content><![CDATA[<h1 id="StrictMode"><a href="#StrictMode" class="headerlink" title="StrictMode"></a>StrictMode</h1><blockquote>
+<p>严苛模式，Android 提供的一种运行时检测机制</p>
+<p>检测两大策略：线程策略，虚拟机策略</p>
+<p>官方地址：<a href="https://developer.android.com/reference/android/os/StrictMode">https://developer.android.com/reference/android/os/StrictMode</a></p>
+</blockquote>
+<p>注意：如需启用严苛模式需尽早启动来使其生效</p>
+<h4 id="线程策略"><a href="#线程策略" class="headerlink" title="线程策略"></a>线程策略</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">StrictMode.setThreadPolicy(</span><br><span class="line">    ThreadPolicy.Builder()</span><br><span class="line">        .detectCustomSlowCalls()	<span class="comment">// 检测耗时调用</span></span><br><span class="line">        .detectResourceMismatches()	<span class="comment">// 检测定义的资源和getter调用之间的不匹配</span></span><br><span class="line">        .detectUnbufferedIo()	<span class="comment">// 检测无缓冲输入/输出操作</span></span><br><span class="line">        .detectDiskReads()		<span class="comment">// 检测磁盘读取</span></span><br><span class="line">        .detectDiskWrites()		<span class="comment">// 检测磁盘写入</span></span><br><span class="line">        .detectNetwork() 	<span class="comment">// 检测网络操作</span></span><br><span class="line">        .penaltyLog()		<span class="comment">// 当检测相应的内容时通过日志打印出来</span></span><br><span class="line">        .penaltyDeath()		<span class="comment">// 当检测相应的内容时应用崩溃</span></span><br><span class="line">        .penaltyDialog()	<span class="comment">// 当检测相应的内容时弹窗</span></span><br><span class="line">        .build()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="虚拟机策略"><a href="#虚拟机策略" class="headerlink" title="虚拟机策略"></a>虚拟机策略</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">StrictMode.setVmPolicy(</span><br><span class="line">    VmPolicy.Builder()</span><br><span class="line">        .setClassInstanceLimit()	<span class="comment">// 指定class允许的实例数量</span></span><br><span class="line">        .detectUntaggedSockets()	<span class="comment">// 检测未加标签的套接字【注：标签用来调查应用内部网络的使用情况】</span></span><br><span class="line">        .detectCleartextNetwork()	<span class="comment">// 检测应用是否有使用明文网络</span></span><br><span class="line">        .detectActivityLeaks()		<span class="comment">// 检测Activity泄漏</span></span><br><span class="line">        .detectContentUriWithoutPermission()	<span class="comment">// 检测content://Uri而没有设置相应权限</span></span><br><span class="line">        .detectCredentialProtectedWhileLocked() <span class="comment">// 检测用户被锁定时访问受凭证保护的存储区域</span></span><br><span class="line">        .detectFileUriExposure()	<span class="comment">// 应用向另一个应用公开文件时检测</span></span><br><span class="line">        .detectImplicitDirectBoot()</span><br><span class="line">        .detectLeakedClosableObjects()			<span class="comment">// 检测Closeable未关闭</span></span><br><span class="line">        .detectLeakedRegistrationObjects()		<span class="comment">// 检测广播监听</span></span><br><span class="line">        .detectLeakedSqlLiteObjects()			<span class="comment">// 检测Sqlite对象泄漏</span></span><br><span class="line">        .detectNonSdkApiUsage()					<span class="comment">// 检测不属于公共Android SDK的api反射用法</span></span><br><span class="line">        .penaltyLog()	<span class="comment">// 当检测相应的内容时通过日志打印出来</span></span><br><span class="line">        .penaltyDeath() <span class="comment">// 当检测相应的内容时应用崩溃</span></span><br><span class="line">        .build()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Systrace</title>
+    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
+    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
+<p>结合Android内核的数据，生成Html报告</p>
+<p>API18以上使用，推荐TraceCompat</p>
+<p>需要python2的环境</p>
+</blockquote>
+<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
+<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
+<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
+
+<p>执行命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
+
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
+
+<p>更多参数含义如下：</p>
+<ul>
+<li>-t：指定统计时间</li>
+<li>shced：cpu调度信息</li>
+<li>gfx：图形信息</li>
+<li>view：视图</li>
+<li>wm：窗口管理</li>
+<li>am：活动管理</li>
+<li>app：应用信息</li>
+<li>webview：webview信息</li>
+<li>-a：指定目标应用程序的包名</li>
+<li>-o：生成的systrace.html文件</li>
+</ul>
+<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
+<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
+<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
+<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
+<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
+<li>wall time是代码执行时间</li>
+<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>轻量级，开销小</li>
+<li>直观反映cpu利用率</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TraceView</title>
     <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/</url>
     <content><![CDATA[<h1 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h1><blockquote>
@@ -2982,6 +3514,24 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
+    <title>dump 内存的几种方式</title>
+    <url>/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="dump-内存的几种方式"><a href="#dump-内存的几种方式" class="headerlink" title="dump 内存的几种方式"></a>dump 内存的几种方式</h1><p>获取内存文件：</p>
+<ol>
+<li>通过 <code>Memory Profiler </code> Dump 内存</li>
+<li>通过 <code>am dumpheap &lt;pid&gt; /data/local/tmp/health.hprof</code> Dump到手机里，然后再导出</li>
+<li>通过内置代码 <code>Debug.dumpHprofData()</code> Dump到手机里，注意需要写权限或者私有目录</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>启动时间测量方式</title>
     <url>/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="启动时间测量方式"><a href="#启动时间测量方式" class="headerlink" title="启动时间测量方式"></a>启动时间测量方式</h1><h3 id="获取启动时间的方式"><a href="#获取启动时间的方式" class="headerlink" title="获取启动时间的方式"></a>获取启动时间的方式</h3><h5 id="方式一：adb-命令"><a href="#方式一：adb-命令" class="headerlink" title="方式一：adb 命令"></a>方式一：<code>adb</code> 命令</h5><p><code>adb shell am start -W  packagename/首屏Activity</code></p>
@@ -3042,48 +3592,10 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>Systrace</title>
-    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
-    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
-<p>结合Android内核的数据，生成Html报告</p>
-<p>API18以上使用，推荐TraceCompat</p>
-<p>需要python2的环境</p>
-</blockquote>
-<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
-<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
-<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
-
-<p>执行命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
-
-<p>举例</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
-
-<p>更多参数含义如下：</p>
-<ul>
-<li>-t：指定统计时间</li>
-<li>shced：cpu调度信息</li>
-<li>gfx：图形信息</li>
-<li>view：视图</li>
-<li>wm：窗口管理</li>
-<li>am：活动管理</li>
-<li>app：应用信息</li>
-<li>webview：webview信息</li>
-<li>-a：指定目标应用程序的包名</li>
-<li>-o：生成的systrace.html文件</li>
-</ul>
-<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
-<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
-<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
-<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
-<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
-<li>wall time是代码执行时间</li>
-<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>轻量级，开销小</li>
-<li>直观反映cpu利用率</li>
-</ul>
+    <title>监控 GC</title>
+    <url>/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7GC/</url>
+    <content><![CDATA[<h1 id="监控-GC"><a href="#监控-GC" class="headerlink" title="监控 GC"></a>监控 GC</h1><p>参考：<code>com.android.internal.os.BinderInternal</code> 里的监控 GC 操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GcWatcherInternal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> WeakReference&lt;GcWatcher&gt; sGcWatcher;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;Runnable&gt; sGcWatchers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">static</span> Runnable[] sTmpWatchers = <span class="keyword">new</span> Runnable[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> sLastGcTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">GcWatcher</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">            sLastGcTime = SystemClock.uptimeMillis();</span><br><span class="line">            <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">                sTmpWatchers = sGcWatchers.toArray(sTmpWatchers);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sTmpWatchers.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (sTmpWatchers[i] != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    sTmpWatchers[i].run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sGcWatcher = <span class="keyword">new</span> WeakReference&lt;GcWatcher&gt;(<span class="keyword">new</span> GcWatcher());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addGcWatcher</span><span class="params">(Runnable watcher)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">            sGcWatchers.add(watcher);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">removeGcWatcher</span><span class="params">(Runnable watcher)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">            sGcWatchers.remove(watcher);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -3091,14 +3603,30 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       <tags>
         <tag>Android</tag>
         <tag>性能</tag>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
-    <title>监控 GC</title>
-    <url>/2020/12/27/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7GC/</url>
-    <content><![CDATA[<h1 id="监控-GC"><a href="#监控-GC" class="headerlink" title="监控 GC"></a>监控 GC</h1><p>参考：<code>com.android.internal.os.BinderInternal</code> 里的监控 GC 操作</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GcWatcherInternal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> WeakReference&lt;GcWatcher&gt; sGcWatcher;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ArrayList&lt;Runnable&gt; sGcWatchers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">static</span> Runnable[] sTmpWatchers = <span class="keyword">new</span> Runnable[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> sLastGcTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">GcWatcher</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">            sLastGcTime = SystemClock.uptimeMillis();</span><br><span class="line">            <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">                sTmpWatchers = sGcWatchers.toArray(sTmpWatchers);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sTmpWatchers.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (sTmpWatchers[i] != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    sTmpWatchers[i].run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sGcWatcher = <span class="keyword">new</span> WeakReference&lt;GcWatcher&gt;(<span class="keyword">new</span> GcWatcher());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addGcWatcher</span><span class="params">(Runnable watcher)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">            sGcWatchers.add(watcher);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">removeGcWatcher</span><span class="params">(Runnable watcher)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">            sGcWatchers.remove(watcher);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>获取帧率</title>
+    <url>/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/</url>
+    <content><![CDATA[<h1 id="获取帧率"><a href="#获取帧率" class="headerlink" title="获取帧率"></a>获取帧率</h1><p>参考：<code>android.view.ViewRootImpl#draw</code> 里的 <code>trackFPS</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FpsCounter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL = <span class="number">160L</span>; <span class="comment">//单次计算FPS使用160毫秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL_NANOS = MONITOR_INTERVAL * <span class="number">1000L</span> * <span class="number">1000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MAX_INTERVAL = <span class="number">1000L</span>; <span class="comment">//设置计算fps的单位时间间隔1000ms,即fps/s;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getFPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mStartFrameTime == <span class="number">0</span>) &#123;</span><br><span class="line">                    mStartFrameTime = frameTimeNanos;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">long</span> interval = frameTimeNanos - mStartFrameTime;</span><br><span class="line">                <span class="keyword">if</span> (interval &gt; MONITOR_INTERVAL_NANOS) &#123;</span><br><span class="line">                    <span class="keyword">double</span> fps = (((<span class="keyword">double</span>) (mFrameCount * <span class="number">1000L</span> * <span class="number">1000L</span>)) / interval) * MAX_INTERVAL;</span><br><span class="line">                    mFrameCount = <span class="number">0</span>;</span><br><span class="line">                    mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ++mFrameCount;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Choreographer.getInstance().postFrameCallback(<span class="keyword">this</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>监控所有消息的发送栈和执行时间</title>
+    <url>/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/</url>
+    <content><![CDATA[<h1 id="监控所有消息的发送栈和执行时间"><a href="#监控所有消息的发送栈和执行时间" class="headerlink" title="监控所有消息的发送栈和执行时间"></a>监控所有消息的发送栈和执行时间</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper, Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper, callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sendMessageAtTime</span><span class="params">(Message msg, <span class="keyword">long</span> uptimeMillis)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> send = <span class="keyword">super</span>.sendMessageAtTime(msg, uptimeMillis);</span><br><span class="line">        <span class="keyword">if</span> (send) &#123;</span><br><span class="line">            GetDetailHandlerHelper.getMsgDetail().put(msg, Log.getStackTraceString(<span class="keyword">new</span> Throwable()).replace(<span class="string">&quot;java.lang.Throwable&quot;</span>, <span class="string">&quot;&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> send;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        mStartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">super</span>.dispatchMessage(msg);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (GetDetailHandlerHelper.getMsgDetail().containsKey(msg)</span><br><span class="line">                &amp;&amp; Looper.myLooper() == Looper.getMainLooper()) &#123;</span><br><span class="line">            JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                jsonObject.put(<span class="string">&quot;Msg_Cost&quot;</span>, System.currentTimeMillis() - mStartTime);</span><br><span class="line">                jsonObject.put(<span class="string">&quot;MsgTrace&quot;</span>, msg.getTarget() + <span class="string">&quot; &quot;</span> + GetDetailHandlerHelper.getMsgDetail().get(msg));</span><br><span class="line"></span><br><span class="line">                Log.i(<span class="string">&quot;MsgDetail &quot;</span> , jsonObject.toString());</span><br><span class="line">                GetDetailHandlerHelper.getMsgDetail().remove(msg);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetDetailHandlerHelper</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; sMsgDetail = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; <span class="title">getMsgDetail</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sMsgDetail;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -3122,6 +3650,111 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <p>无侵入性、推荐使用</p>
 <p>注意：</p>
 <p>需要将简单函数过滤掉，最好支持黑名单过滤</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>获取界面布局耗时</title>
+    <url>/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E7%95%8C%E9%9D%A2%E5%B8%83%E5%B1%80%E8%80%97%E6%97%B6/</url>
+    <content><![CDATA[<h1 id="获取界面布局耗时"><a href="#获取界面布局耗时" class="headerlink" title="获取界面布局耗时"></a>获取界面布局耗时</h1><h4 id="常规方式"><a href="#常规方式" class="headerlink" title="常规方式"></a>常规方式</h4><p>复写方法、手动埋点</p>
+<h4 id="AOP-Art-Hook实现"><a href="#AOP-Art-Hook实现" class="headerlink" title="AOP/Art Hook实现"></a>AOP/Art Hook实现</h4><p>通过 <code>hook</code> <code>setContentView</code> 来优雅的实现布局耗时</p>
+<p><a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/AOP-Aspectjx/">参考Aspectjx</a></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerformanceApp</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around(&quot;execution(* android.app.Activity.setContentView(..))&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getSetContentViewTime</span><span class="params">(ProceedingJoinPoint joinPoint)</span> </span>&#123;</span><br><span class="line">        Signature signature = joinPoint.getSignature();</span><br><span class="line">        String name = signature.toShortString();</span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            joinPoint.proceed();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable throwable) &#123;</span><br><span class="line">            throwable.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        Log.e(name + <span class="string">&quot; cost &quot;</span> + (System.currentTimeMillis() - time));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/ART-Hook/">参考ART</a></p>
+<p>总结：</p>
+<p>无侵入性、推荐使用</p>
+<h4 id="扩展：获取每个控件的加载耗时"><a href="#扩展：获取每个控件的加载耗时" class="headerlink" title="扩展：获取每个控件的加载耗时"></a>扩展：获取每个控件的加载耗时</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        LayoutInflater.from(<span class="keyword">this</span>).setFactory2(<span class="keyword">new</span> LayoutInflater.Factory2() &#123;</span><br><span class="line">            <span class="meta">@Nullable</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(<span class="meta">@Nullable</span> View parent, <span class="meta">@NonNull</span> String name, <span class="meta">@NonNull</span> Context context, <span class="meta">@NonNull</span> AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">                View view = getDelegate().createView(parent, name, context, attrs);</span><br><span class="line">                Log.e(<span class="string">&quot;createViewTime&quot;</span>, <span class="string">&quot;cost: &quot;</span> + (System.currentTimeMillis() - start));</span><br><span class="line">                <span class="keyword">return</span> view;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Nullable</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(<span class="meta">@NonNull</span> String name, <span class="meta">@NonNull</span> Context context, <span class="meta">@NonNull</span> AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> onCreateView(<span class="keyword">null</span>, name, context, attrs);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 注意：需要在super前配置</span></span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>获取锁调用链</title>
+    <url>/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E9%94%81%E8%B0%83%E7%94%A8%E9%93%BE/</url>
+    <content><![CDATA[<blockquote>
+<p>在日常开发中，当出现锁被长期持有或者出现死锁，造成流程无法正常执行，甚至产生ANR，这时候就需要获取被阻塞的线程和持有锁的线程，该 demo 展示了如何获取被阻塞的线程和持有锁的线程相关调用链</p>
+</blockquote>
+<h1 id="获取锁调用链"><a href="#获取锁调用链" class="headerlink" title="获取锁调用链"></a>获取锁调用链</h1><p>需要知道当前线程在等待那个锁，以及这个锁被那个线程持有，然后把发生死锁的线程堆栈信息搜集起来</p>
+<p>流程如下：</p>
+<ol>
+<li>获取当前 <code>blocked</code> 状态的线程</li>
+<li>获取该线程想要竞争的锁</li>
+<li>获取该锁被那个线程持有</li>
+<li>通过关系链，判断死锁的线程，输出堆栈信息</li>
+</ol>
+<p>在 Java 层并没有相关 API 可以实现死锁监控，可以从 Native 层入手</p>
+<h4 id="一、获取当前-blocked-状态的线程"><a href="#一、获取当前-blocked-状态的线程" class="headerlink" title="一、获取当前 blocked 状态的线程"></a>一、获取当前 blocked 状态的线程</h4><p>根据线程状态得到 <code>blocked</code> 的线程，并获取它的内存地址指针 <code>nativePeer</code></p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> allThreads = getAllThreads()</span><br><span class="line"><span class="keyword">for</span> (thread <span class="keyword">in</span> allThreads) &#123;</span><br><span class="line">    <span class="keyword">if</span> (thread!!.state == Thread.State.BLOCKED) &#123;</span><br><span class="line">        <span class="keyword">val</span> nativePeer = (ReflectUtil.getField(Thread::<span class="keyword">class</span>.java, thread, <span class="string">&quot;nativePeer&quot;</span>) <span class="keyword">as</span>? <span class="built_in">Long</span>) ?: <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> (nativePeer == <span class="number">0L</span>) &#123;</span><br><span class="line">            <span class="comment">// 内存地址指针等于0，说明未创建、启动或已销毁</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到 <code>blocked</code> 线程的内存地址指针后，接下来需要寻找第二第三步 Native 层中所需要的函数</p>
+<h4 id="二、Native层：获取当前线程想要竞争的锁和获取目标锁被哪个线程持有"><a href="#二、Native层：获取当前线程想要竞争的锁和获取目标锁被哪个线程持有" class="headerlink" title="二、Native层：获取当前线程想要竞争的锁和获取目标锁被哪个线程持有"></a>二、Native层：获取当前线程想要竞争的锁和获取目标锁被哪个线程持有</h4><ul>
+<li><p>获取当前线程想要竞争的锁</p>
+<p>函数：<code>Monitor::GetContendedMonitor</code></p>
+<p>从源码和源码的解释可以看出，这个函数是用来获取当前线程等待的Monitor</p>
+<p>源码：<a href="http://aosp.opersys.com/xref/android-11.0.0_r37/xref/art/runtime/monitor.cc">http://aosp.opersys.com/xref/android-11.0.0_r37/xref/art/runtime/monitor.cc</a></p>
+<p><img src="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E9%94%81%E8%B0%83%E7%94%A8%E9%93%BE/DeadLockMonitor_GetContendedMonitor.png"></p>
+</li>
+<li><p>获取目标锁被哪个线程持有</p>
+<p>函数：<code>Monitor::GetLockOwnerThreadId</code></p>
+<p>源码：<a href="http://aosp.opersys.com/xref/android-11.0.0_r37/xref/art/runtime/monitor.cc">http://aosp.opersys.com/xref/android-11.0.0_r37/xref/art/runtime/monitor.cc</a></p>
+<p><img src="/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E9%94%81%E8%B0%83%E7%94%A8%E9%93%BE/DeadLockMonitor_GetLockOwnerThreadId.png"></p>
+</li>
+</ul>
+<p>我们可以通过 <code>dlopen</code> 以指定模式打开指定的动态链接库文件，并返回一个句柄给 <code>dlsym</code> 使用，随后通过 <code>dlclose</code> 关闭。</p>
+<p>由于 <code>Android 7.0</code> 开始，系统限制 App 调用 <code>dlopen</code> <code>dlsym</code> <code>dladdr</code> <code>dlclose</code> <code>dlerror</code> 等函数使用系统动态库，这里使用 <a href="https://github.com/Rprop/ndk_dlopen"><code>ndk_dlopen</code></a> 这个库绕开这个限制，用法与原有逻辑一致，只是在调用时需要加上 <code>ndk_</code> 前缀。</p>
+<p>参考：<a href="https://www.sunmoonblog.com/2019/06/04/fake-dlopen/?spm=ata.13261165.0.0.bb4d1bc8hQmHlY">Android dlopen 方法的使用限制及解决方案</a></p>
+<h4 id="三、打开指定的动态链接库"><a href="#三、打开指定的动态链接库" class="headerlink" title="三、打开指定的动态链接库"></a>三、打开指定的动态链接库</h4><p>涉及的相关 Native 层动态库为 <code>libart.so</code></p>
+<p>该库路径：</p>
+<p><code>Android 9.0</code> 以前：<code>/system/lib/libart.so</code></p>
+<p><code>Android 10.0</code> 起：<code>/system/apex/com.android.adbd/lib/libart.so</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ndk_init</span>(env); <span class="comment">// 初始化</span></span><br><span class="line"><span class="keyword">void</span> *so_addr = <span class="built_in">ndk_dlopen</span>(<span class="string">&quot;libart.so&quot;</span>, RTLD_NOLOAD); <span class="comment">// 加载libart.so</span></span><br><span class="line"><span class="keyword">if</span> (so_addr == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开动态库之后，得到动态库句柄，接下来需要通过 <code>dlsym</code> 函数根据动态库句柄和函数符号返回函数对应的地址，即获取 <code>GetContendedMonitor</code> 和 <code>GetLockOwnerThreadId</code> 函数地址。</p>
+<p>【注意】c++ 可以重载，所以它的函数符号比较特殊，需要从 <code>libart.so</code> 中获取，so库可以从上面系统目录中导出，这里提供两个命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nm -D libart.so | grep -E &#x27;GetContendedMonitor|GetLockOwnerThreadId&#x27;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">objdump -tT libart.so | grep -E &#x27;GetContendedMonitor|GetLockOwnerThreadId&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="四、获取函数符号对应的函数地址"><a href="#四、获取函数符号对应的函数地址" class="headerlink" title="四、获取函数符号对应的函数地址"></a>四、获取函数符号对应的函数地址</h4><ul>
+<li><p><code>GetContendedMonitor</code> 函数这里对应的函数符号为 <code>_ZN3art7Monitor19GetContendedMonitorEPNS_6ThreadE</code>，根据函数符号地址获取函数地址</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">get_contended_monitor = <span class="built_in">ndk_dlsym</span>(so_addr, <span class="string">&quot;_ZN3art7Monitor19GetContendedMonitorEPNS_6ThreadE&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (get_contended_monitor == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>GetLockOwnerThreadId</code> 函数对应的函数符号需要通过系统版本来判断</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">get_lock_owner_symbol_name</span><span class="params">(jint level)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (level &lt; <span class="number">29</span>) &#123;</span><br><span class="line">        <span class="comment">//android 9.0 之前</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;_ZN3art7Monitor20GetLockOwnerThreadIdEPNS_6mirror6ObjectE&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (level &lt;= <span class="number">30</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;_ZN3art7Monitor20GetLockOwnerThreadIdENS_6ObjPtrINS_6mirror6ObjectEEE&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据函数符号地址获取函数地址</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">get_lock_owner_thread_id = <span class="built_in">ndk_dlsym</span>(so_addr, <span class="built_in">get_lock_owner_symbol_name</span>(sdk_version));</span><br><span class="line"><span class="keyword">if</span> (get_lock_owner_thread_id == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="五、获取一直不释放锁的线程"><a href="#五、获取一直不释放锁的线程" class="headerlink" title="五、获取一直不释放锁的线程"></a>五、获取一直不释放锁的线程</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">extern <span class="string">&quot;C&quot;</span></span><br><span class="line">JNIEXPORT jint JNICALL</span><br><span class="line">Java_com_benben_deadlockmonitordemo_DeadLockCheck_getBlockThreadNativeId(JNIEnv *env, jobject thiz,</span><br><span class="line">                                                                         jlong nativePeer) &#123;</span><br><span class="line">    LOGI(<span class="string">&quot;getContentThreadIdArt&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> monitor_thread_id = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (get_contended_monitor != nullptr &amp;&amp; get_lock_owner_thread_id != nullptr) &#123;</span><br><span class="line">        <span class="comment">// 获取监视器</span></span><br><span class="line">        <span class="keyword">int</span> monitorObj = ((<span class="keyword">int</span> (*)(<span class="keyword">long</span>)) get_contended_monitor)(nativePeer);</span><br><span class="line">        <span class="keyword">if</span> (monitorObj != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 通过监视器获取具有执行权的线程id</span></span><br><span class="line">            monitor_thread_id = ((<span class="keyword">int</span> (*)(<span class="keyword">int</span>)) get_lock_owner_thread_id)(monitorObj);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            monitor_thread_id = <span class="number">0</span>;</span><br><span class="line">            LOGE(<span class="string">&quot;get_contended_monitor return 0.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (get_contended_monitor == nullptr) &#123;</span><br><span class="line">            LOGE(<span class="string">&quot;get_contended_monitor == null&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (get_lock_owner_thread_id == nullptr) &#123;</span><br><span class="line">            LOGE(<span class="string">&quot;get_lock_owner_thread_id == null&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> monitor_thread_id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里有两个步骤：</p>
+<ol>
+<li>通过 <code>GetContendedMonitor</code> 函数获取当前线程要竞争的锁监视器</li>
+<li>通过 <code>GetLockOwnerThreadId</code> 函数获取监视器的当前具有执行权的线程id</li>
+</ol>
+<p>通过以上两步，就能得到一直不释放的线程id</p>
+<h5 id="六、锁分组并打印调用栈"><a href="#六、锁分组并打印调用栈" class="headerlink" title="六、锁分组并打印调用栈"></a>六、锁分组并打印调用栈</h5><p>我们已经找的阻塞的线程和持有锁的线程，这里涉及到一个关系链：</p>
+<ol>
+<li>场景一：1 &gt; 2, 2 &gt; 1</li>
+<li>场景二：1 &gt; 2, 2 &gt; 3, 3 &gt; 1</li>
+<li>场景三：1 &gt; 2, 2 &gt; 3, 3 &gt; 1, other &gt; 1</li>
+<li>其它</li>
+</ol>
+<p>需要通过算法将不同场景的线程进行归纳分组，找出调用栈</p>
+<p>弹异常框、Toast、数据上报等等</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: waitThread &#x3D; lock2 &gt; lock3</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: blockedThread &#x3D; lock1 &gt; lock2</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: lock1 &gt; lock2 stack.</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$1.invoke(DeadLockUtil.kt:28)</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$1.invoke(DeadLockUtil.kt:23)</span><br><span class="line">    kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: waitThread &#x3D; lock3 &gt; lock1</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: blockedThread &#x3D; lock2 &gt; lock3</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: lock2 &gt; lock3 stack.</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$2.invoke(DeadLockUtil.kt:39)</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$2.invoke(DeadLockUtil.kt:34)</span><br><span class="line">    kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: waitThread &#x3D; lock1 &gt; lock2</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: blockedThread &#x3D; lock3 &gt; lock1</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: lock3 &gt; lock1 stack.</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$3.invoke(DeadLockUtil.kt:50)</span><br><span class="line">    com.benben.deadlockmonitordemo.DeadLockUtil$createDeadLock$3.invoke(DeadLockUtil.kt:45)</span><br><span class="line">    kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)</span><br><span class="line">18752-18752&#x2F;com.benben.deadlockmonitordemo E&#x2F;DL_DeadLockCheck: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~end~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br></pre></td></tr></table></figure>
+
+<h5 id="demo-工程"><a href="#demo-工程" class="headerlink" title="demo 工程"></a>demo 工程</h5><p><code>github</code> 地址：<a href="https://github.com/yefawei/DeadLockMonitorDemo">https://github.com/yefawei/DeadLockMonitorDemo</a></p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>由于时通过动态链接的形式获取的线程信息，需要考虑系统兼容性，如鸿蒙系统、各个厂家的系统、不同安卓版本的系统等等，在线上使用可以只针对已经稳定测试过的系统开放</p>
 ]]></content>
       <categories>
         <category>Android</category>
