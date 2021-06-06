@@ -233,45 +233,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Android 中的线程模型</title>
-    <url>/2020/11/10/Android/Android%20%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="Android-中的线程模型"><a href="#Android-中的线程模型" class="headerlink" title="Android 中的线程模型"></a>Android 中的线程模型</h1><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
-<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
-<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
-</ul>
-<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
-<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
-<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高</li>
-</ul>
-<h3 id="Android-线程调度"><a href="#Android-线程调度" class="headerlink" title="Android 线程调度"></a>Android 线程调度</h3><p>采用抢占式调度模型</p>
-<ol>
-<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
-<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>priority</code>优先级</p>
-<p>线程优先级，值越大优先级越高</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
-<li><p><code>cgroup</code></p>
-<p>更严格的群组调度策略，分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
-</li>
-</ol>
-<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
-<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
-<li>优先级具有继承性</li>
-<li>正确认识任务重要性决定优先级</li>
-<li>线程必须命名，以定位归属</li>
-<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>线程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Base64 和 Base58</title>
     <url>/2020/11/29/Android/Base64%E5%92%8CBase58/</url>
     <content><![CDATA[<h1 id="Base64-和-Base58"><a href="#Base64-和-Base58" class="headerlink" title="Base64 和 Base58"></a>Base64 和 Base58</h1><h3 id="Base64算法："><a href="#Base64算法：" class="headerlink" title="Base64算法："></a>Base64算法：</h3><p>将原数据每6位对应成Base 64索引表中的一个字符编排成一个字符串（每个字符8位）。</p>
@@ -1474,6 +1435,49 @@
       </tags>
   </entry>
   <entry>
+    <title>Ubuntu环境变量</title>
+    <url>/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
+<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
+</li>
+<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
+</li>
+<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
+</li>
+<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
+</li>
+<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
+</li>
+</ul>
+<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
+<li><p>临时设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>当前用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
+<li><p>所有用户的全局设置</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5><p><a href="https://github.com/shadowsocks/shadowsocks-qt5">https://github.com/shadowsocks/shadowsocks-qt5</a></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install shadowsocks-qt5</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+        <tag>环境变量</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 学习笔记-解压缩命令详解</title>
     <url>/2020/09/17/Linux/linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1 id="Linux-学习笔记-解压缩命令详解"><a href="#Linux-学习笔记-解压缩命令详解" class="headerlink" title="Linux 学习笔记-解压缩命令详解"></a>Linux 学习笔记-解压缩命令详解</h1><h2 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h2><pre><code>独立命令：
@@ -1531,49 +1535,6 @@ unzip file.zip //解压zip
       <tags>
         <tag>Linux</tag>
         <tag>解压缩命令</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu环境变量</title>
-    <url>/2020/09/16/Linux/Ubuntu%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<h1 id="Ubuntu环境变量"><a href="#Ubuntu环境变量" class="headerlink" title="Ubuntu环境变量"></a>Ubuntu环境变量</h1><h5 id="在Ubuntu中有如下几个文件可以设置环境变量："><a href="#在Ubuntu中有如下几个文件可以设置环境变量：" class="headerlink" title="在Ubuntu中有如下几个文件可以设置环境变量："></a>在Ubuntu中有如下几个文件可以设置环境变量：</h5><ul>
-<li><p><code>/etc/profile</code>：在登录时,操作系统定制用户环境时使用的第一个文件,此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.</p>
-</li>
-<li><p><code>/etc/environment</code>：在登录时操作系统使用的第二个文件,系统在读取你自己的 <code>profile</code> 前,设置环境文件的环境变量</p>
-</li>
-<li><p><code>~/.profile</code>：在登录时用到的第三个文件是 <code>.profile</code> 文件,每个用户都可使用该文件输入专用于自己使用的 <code>shell</code> 信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的 <code>.bashrc</code> 文件.</p>
-</li>
-<li><p><code>/etc/bashrc</code>：为每一个运行 <code>bash shell</code> 的用户执行此文件。当 <code>bash shell</code> 被打开时,该文件被读取.</p>
-</li>
-<li><p><code>~/.bashrc</code>：该文件包含专用于你的 <code>bash shell</code> 的 <code>bash</code> 信息,当登录时以及每次打开新的 <code>shell</code> 时,该该文件被读取.</p>
-</li>
-</ul>
-<h5 id="通常设置环境变量有三种方法："><a href="#通常设置环境变量有三种方法：" class="headerlink" title="通常设置环境变量有三种方法："></a>通常设置环境变量有三种方法：</h5><ol>
-<li><p>临时设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>当前用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打开 ~/.bashrc，添加行：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> .bashrc</span><br></pre></td></tr></table></figure></li>
-<li><p>所有用户的全局设置</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line"><span class="comment"># 在里面加入：</span></span><br><span class="line"><span class="built_in">export</span> PATH=/home/yan/share/usr/<span class="built_in">local</span>/arm/3.4.1/bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># 使生效</span></span><br><span class="line"><span class="built_in">source</span> profile</span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="JDK-配置"><a href="#JDK-配置" class="headerlink" title="JDK 配置"></a>JDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8/</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="NDK-配置"><a href="#NDK-配置" class="headerlink" title="NDK 配置"></a>NDK 配置</h5><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NDK=/home/benben/AndroidSDK/ndk-bundle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$NDK</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shadowsocks-qt5-配置"><a href="#shadowsocks-qt5-配置" class="headerlink" title="shadowsocks-qt5 配置"></a><code>shadowsocks-qt5</code> 配置</h5><p><a href="https://github.com/shadowsocks/shadowsocks-qt5">https://github.com/shadowsocks/shadowsocks-qt5</a></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install shadowsocks-qt5</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Ubuntu</tag>
-        <tag>环境变量</tag>
       </tags>
   </entry>
   <entry>
@@ -1738,29 +1699,6 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
-    <title>SurfaceFlinger</title>
-    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
-    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
-<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
-
-<p>输出的信息非常多，这里只关注三个信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
-<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
-]]></content>
-      <categories>
-        <category>ADB</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>ADB</tag>
-        <tag>性能</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>gfxinfo 测试UI性能</title>
     <url>/2020/12/20/Android/ADB/gfxinfo%20%E6%B5%8B%E8%AF%95UI%E6%80%A7%E8%83%BD/</url>
     <content><![CDATA[<h1 id="gfxinfo-测试UI性能"><a href="#gfxinfo-测试UI性能" class="headerlink" title="gfxinfo 测试UI性能"></a>gfxinfo 测试UI性能</h1><blockquote>
@@ -1848,6 +1786,29 @@ DESCRIPTION
       <tags>
         <tag>Android</tag>
         <tag>ADB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SurfaceFlinger</title>
+    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
+    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
+<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
+
+<p>输出的信息非常多，这里只关注三个信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
+<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
+]]></content>
+      <categories>
+        <category>ADB</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>ADB</tag>
+        <tag>性能</tag>
       </tags>
   </entry>
   <entry>
@@ -1967,6 +1928,104 @@ DESCRIPTION
 <li>收敛修改涉及启动相关代码的权限：结合 CI 修改启动代码需要 Review 代码并测试通过才可合入</li>
 </ul>
 <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p><a href="https://juejin.cn/post/6844903958113157128">面试官：今日头条启动很快，你觉得可能是做了哪些优化？</a></p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>电量优化</title>
+    <url>/2021/01/11/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%83%E3%80%81%E7%94%B5%E9%87%8F%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="电量优化"><a href="#电量优化" class="headerlink" title="电量优化"></a>电量优化</h1><blockquote>
+<p>重视程度不够、电量消耗线上难以量化</p>
+</blockquote>
+<h4 id="电量消耗监控方案"><a href="#电量消耗监控方案" class="headerlink" title="电量消耗监控方案"></a>电量消耗监控方案</h4><ul>
+<li><p>系统设置–耗电排行</p>
+<ul>
+<li>直观，但没有详细数据，对解决问题没有什么帮助</li>
+</ul>
+</li>
+<li><p>监听电量消耗广播：ACTION_BATTERY_CHANGED</p>
+<ul>
+<li><p>获取电池电量、充电状态、电池状态等信息，价值不大，针对手机整体的耗电量，非特定App</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IntentFilter filter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">filter.addAction(Intent.ACTION_BATTERY_CHANGED);</span><br><span class="line">Intent intent = registerReceiver(<span class="keyword">null</span>, filter);</span><br><span class="line">LogUtils.i(<span class="string">&quot;battery &quot;</span> + intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -<span class="number">1</span>));</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><a href="https://github.com/google/battery-historian">Battery Historian</a>【推荐】</p>
+<ul>
+<li><p>Google 推出的一款 Android 系统电量分析工具，可视化展示各项耗电指标</p>
+</li>
+<li><p>适合线下使用</p>
+</li>
+<li><p>使用方式</p>
+<ul>
+<li><p>安装：参考 <code>github</code> 地址或使用三方网站：<a href="https://bathist.ef.lc/">https://bathist.ef.lc/</a></p>
+</li>
+<li><p>使用：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys batterystats --reset # 电量重置</span><br><span class="line">adb shell dumpsys batterystats --enable full-wake-history # 开始统计耗电信息</span><br><span class="line">adb bugreport bugreport.zip # 导出电量信息</span><br></pre></td></tr></table></figure></li>
+<li><p>上传分析</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="电量辅助监控"><a href="#电量辅助监控" class="headerlink" title="电量辅助监控"></a>电量辅助监控</h4><h5 id="获取系统组件耗电情况"><a href="#获取系统组件耗电情况" class="headerlink" title="获取系统组件耗电情况"></a>获取系统组件耗电情况</h5><p>在 <code>Android</code> 系统中，手机的每个组件：<code>cpu</code>、<code>gps</code>、显示屏、<code>wifi</code>、蓝牙等等，运行时的能耗都保存在一个名为 <code>power_profile </code> 文件中<br>可以通过命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb pull /system/framework/framework-res.apk</span><br></pre></td></tr></table></figure>
+
+<p>反编译找到 <code>power_profile</code> 文件，来获取各个组件的能耗值</p>
+<p>【注意】线上是无法获取该文件的，可以在线下辅助使用，通过查看手机那个模块耗电量比较严重，然后查看项目中那里调用了该模块，然后进行特点调优</p>
+<h5 id="获取耗电组件的调用次数和执行时间"><a href="#获取耗电组件的调用次数和执行时间" class="headerlink" title="获取耗电组件的调用次数和执行时间"></a>获取耗电组件的调用次数和执行时间</h5><ul>
+<li><p>通过 <code>Aop</code> 的方式进行监控：可以在关键性方法中通过 <code>AOP</code> 的形式进行监控调用堆栈和执行时长</p>
+</li>
+<li><p>线程使用时长超过阈值预警：以防止线程在长时间处理循环函数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// lancet aop</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> runTime = <span class="number">0</span>;</span><br><span class="line"><span class="meta">@Insert(value = &quot;run&quot;)</span></span><br><span class="line"><span class="meta">@TargetClass(value = &quot;java.lang.Runnable&quot;,scope = Scope.ALL)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">    runTime = System.currentTimeMillis();</span><br><span class="line">    Origin.callVoid();</span><br><span class="line">    LogUtils.i(<span class="string">&quot;runTime &quot;</span>+(System.currentTimeMillis() - runTime));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="电量优化总结"><a href="#电量优化总结" class="headerlink" title="电量优化总结"></a>电量优化总结</h4><ul>
+<li><p>CPU 时间片</p>
+<ul>
+<li>通过 <code>CPU Profiler</code> 或 <code>TraceView</code> 定位 CPU 占有率异常</li>
+<li>减少后台应用的主动运行</li>
+</ul>
+</li>
+<li><p>网络相关</p>
+<ul>
+<li>要控制好网络请求时间和次数</li>
+<li>数据压缩，减少请求时间</li>
+<li>非必要禁止使用轮询的方式进行业务操作</li>
+</ul>
+</li>
+<li><p>定位相关</p>
+<ul>
+<li>根据场景谨慎选择定位模式</li>
+<li>考虑网络定位代替GPS</li>
+<li>使用后要及时关闭，减少更新频率</li>
+</ul>
+</li>
+<li><p>界面相关</p>
+<ul>
+<li>动画和网络请求等在界面不可见时需要停止相关的活动</li>
+<li>耗电操作判断前后台</li>
+</ul>
+</li>
+<li><p><code>WakeLock</code>相关</p>
+<ul>
+<li>一定要成对出现：<code>acquire</code> 和 <code>release</code>，确保一定会被释放</li>
+<li>可以考虑使用带参数的 <code>acquire</code></li>
+<li>屏幕常亮场景可以考虑使用 <code>keepScreenOn</code> 即可</li>
+</ul>
+</li>
+<li><p><code>JobScheduler</code></p>
+<ul>
+<li>在符合某些条件时创建执行在后台的任务</li>
+<li>把不紧急的任务放到更合适的时机批量处理</li>
+</ul>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -2155,6 +2214,298 @@ DESCRIPTION
 </li>
 </ul>
 </li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线程优化</title>
+    <url>/2021/01/09/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%BA%94%E3%80%81%E7%BA%BF%E7%A8%8B%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h1><h4 id="Anrdoid-中的线程模型"><a href="#Anrdoid-中的线程模型" class="headerlink" title="Anrdoid 中的线程模型"></a>Anrdoid 中的线程模型</h4><h5 id="线程调度原理"><a href="#线程调度原理" class="headerlink" title="线程调度原理"></a>线程调度原理</h5><ul>
+<li>任一时刻，一个 <code>CPU</code> 核心只有一个线程处于运行状态</li>
+<li>多线程并发，轮流获取 <code>CPU</code> 使用权</li>
+</ul>
+<h5 id="线程调度模型"><a href="#线程调度模型" class="headerlink" title="线程调度模型"></a>线程调度模型</h5><ul>
+<li>分时调度模型：轮流获取、均分 <code>CPU</code></li>
+<li>抢占式调度模型：谁抢到谁使用，优先级高的线程抢到的概率更高。所以最直接的干预就是设置线程优先级</li>
+</ul>
+<h5 id="Android-中采用抢占式调度模型"><a href="#Android-中采用抢占式调度模型" class="headerlink" title="Android 中采用抢占式调度模型"></a>Android 中采用抢占式调度模型</h5><ol>
+<li><p><code>nice</code> 值，【注意】nice值不是优先级</p>
+<p>Process 中定义，值越小优先级越高，默认时 <code>THREAD_PRIORITY_DEFAUT = 0</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Process.setThreadPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>priority</code>优先级</p>
+<p>线程优先级，值越大优先级越高</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Therad().setPriority()</span><br></pre></td></tr></table></figure></li>
+<li><p><code>cgroup</code></p>
+<p>更严格的群组调度策略，如果低优先级的线程比较多而高优先级的线程较少，同样会造成高优先级线程饥饿，所以分前台 <code>group</code> 和后台 <code>group</code>，保证前台线程可以获取更多的 <code>CPU</code> 时间片</p>
+</li>
+</ol>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><ul>
+<li>线程过多会导致 <code>CPU</code> 频繁切换，降低线程运行效率，还有可能出现线程饥饿（长时间没有得到执行）</li>
+<li>优先级具有继承性</li>
+<li>正确认识任务重要性决定优先级</li>
+<li>线程必须命名，以定位归属</li>
+<li>注意区分 <code>IO</code> 密集型和 <code>CPU</code> 密集型任务</li>
+</ul>
+<h4 id="Android-中异步的方式"><a href="#Android-中异步的方式" class="headerlink" title="Android 中异步的方式"></a>Android 中异步的方式</h4><ul>
+<li>直接创建 <code>Thread</code><ul>
+<li>不易复用，频繁创建及销毁开销大</li>
+<li>复杂场景不易使用，比如要执行一个定时的任务，能实现，但不易使用</li>
+</ul>
+</li>
+<li><code>HandlerThread</code><ul>
+<li>自带消息循环的线程，串行执行任务，适合长时间运行，不断从队列中获取任务</li>
+</ul>
+</li>
+<li><code>IntentService</code><ul>
+<li>继承自 <code>Service</code> 在内部创建 <code>HandlerThread</code>，异步不占用主线程</li>
+<li>因为是 <code>Service</code> 所以优先级较高，不易被系统 Kill</li>
+</ul>
+</li>
+<li><code>AsyncTask</code><ul>
+<li>Android 提供的异步工具类，内部的实现也是线程池</li>
+<li>无需自己处理线程切换</li>
+</ul>
+</li>
+<li>线程池【推荐】<ul>
+<li>易复用，减少频繁创建、销毁的时间</li>
+<li>功能强大：定时、任务队列、并发数控制等</li>
+</ul>
+</li>
+<li><code>RxJava</code> 【推荐】<ul>
+<li>完善的线程集合，区分 <code>IO</code> 、 <code>Computation</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="线程使用准则"><a href="#线程使用准则" class="headerlink" title="线程使用准则"></a>线程使用准则</h4><ul>
+<li>提供基础线程池供各个业务线使用<ul>
+<li>避免各自维护线程池，导致线程数过多</li>
+<li>同时方便监控线程的调度情况</li>
+</ul>
+</li>
+<li>需要区分不同业务的异步方式，如 <code>IO</code> 、<code>Computation</code><ul>
+<li>CPU密集型线程池大小与CPU核心数相近</li>
+<li>优先级低，长时间执行可以考虑使用 <code>HandlerThread</code></li>
+<li>定时任务，可以考虑使用线程池</li>
+</ul>
+</li>
+<li>创建线程必须命名<ul>
+<li>方便定位线程归属</li>
+<li>运行期 <code>Thread.currentThread().setName()</code> 来修改名字，使用完后再修改回原理的名字</li>
+</ul>
+</li>
+<li>关键异步任务监控</li>
+<li>重视优先级设置<ul>
+<li><code>Process.setThreadPriority()</code></li>
+<li>可以设置多次</li>
+</ul>
+</li>
+</ul>
+<h4 id="锁定线程创建者"><a href="#锁定线程创建者" class="headerlink" title="锁定线程创建者"></a>锁定线程创建者</h4><p>项目变大之后，项目源码、三方库、<code>aar</code>中都有创建线程，线程比较多，那就需要对线程进行收敛，那就需要知道线程是那里创建，是否足够合理。所有的异步方式，都会走到 <code>new Thread</code> 这个构造方法里，可以在这里获取调用栈的信息来锁定线程创建者</p>
+<p>通过 <code>Hook</code> <code>Thread</code> 的构造函数，来定位创建者，下面通过 <a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/ART-Hook/"><code>ART-Hook</code></a> 的方式来 <code>Hook</code> 构造函数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DexposedBridge.hookAllConstructors(Thread.class, <span class="keyword">new</span> XC_MethodHook() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">afterHookedMethod</span><span class="params">(MethodHookParam param)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.afterHookedMethod(param);</span><br><span class="line">        Thread thread = (Thread) param.thisObject;</span><br><span class="line">        LogUtils.i(thread.getName()+<span class="string">&quot; stack &quot;</span>+Log.getStackTraceString(<span class="keyword">new</span> Throwable()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>App 瘦身优化</title>
+    <url>/2021/01/11/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%85%AB%E3%80%81App%20%E7%98%A6%E8%BA%AB%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="App-瘦身优化"><a href="#App-瘦身优化" class="headerlink" title="App 瘦身优化"></a>App 瘦身优化</h1><h4 id="Apk-组成"><a href="#Apk-组成" class="headerlink" title="Apk 组成"></a>Apk 组成</h4><ul>
+<li>代码相关：classes.dex</li>
+<li>资源相关：res、asserts、resources.arsc</li>
+<li>So 相关：lib</li>
+</ul>
+<h4 id="Apk-分析工具"><a href="#Apk-分析工具" class="headerlink" title="Apk 分析工具"></a>Apk 分析工具</h4><ul>
+<li>ApkTool 反编译工具<ul>
+<li>官网：<a href="https://ibotpeaches.github.io/Apktool/">https://ibotpeaches.github.io/Apktool/</a></li>
+<li>使用：apktool d xx.apk</li>
+</ul>
+</li>
+<li>Jadx 反编译工具<ul>
+<li>地址：<a href="https://github.com/skylot/jadx">https://github.com/skylot/jadx</a></li>
+</ul>
+</li>
+<li>Analyze APK Android studio 自带工具<ul>
+<li>查看 Apk 组成、大小、占比</li>
+<li>Apk 对比</li>
+</ul>
+</li>
+<li><a href="https://nimbledroid.com/">https://nimbledroid.com</a> App 性能分析网站<ul>
+<li>文件大小及排行</li>
+<li>Dex 方法数、知名 SDK 方法数</li>
+<li>启动时间、内存等</li>
+</ul>
+</li>
+<li>android-classyshark：二级制检查工具<ul>
+<li>地址：<a href="https://github.com/google/android-classyshark">https://github.com/google/android-classyshark</a></li>
+<li>支持多种格式：Apk、Jar、Class、So 等</li>
+</ul>
+</li>
+</ul>
+<h4 id="瘦身方案"><a href="#瘦身方案" class="headerlink" title="瘦身方案"></a>瘦身方案</h4><ul>
+<li><p>代码混淆</p>
+</li>
+<li><p>三方库统一，减少相同功能的库</p>
+</li>
+<li><p>移除无用代码</p>
+<ul>
+<li>通过 AOP 的方式统计使用情况，可以切onCreate方法和构造方法来确定那个类没有被调用过了</li>
+</ul>
+</li>
+<li><p>移除冗余资源</p>
+<ul>
+<li>右键 -&gt; Refactory -&gt; Remove Unused Resource</li>
+</ul>
+</li>
+<li><p>图片压缩【可以有效的减少资源大小】</p>
+<ul>
+<li>压缩 png：<a href="https://tinify.cn/">https://tinify.cn/</a></li>
+<li>优先使用 webp</li>
+</ul>
+</li>
+<li><p>资源混淆</p>
+<ul>
+<li>地址：<a href="https://github.com/shwenzhang/AndResGuard">https://github.com/shwenzhang/AndResGuard</a></li>
+</ul>
+</li>
+<li><p>图片资源只保留一份</p>
+</li>
+<li><p>资源在线化，将一部分资源放在远端，结合预加载技术手段来减少apk自身的大小</p>
+</li>
+<li><p> So 移除，无需将所有平台的 So 都编译出来并使用</p>
+</li>
+<li><p>abiFilters：设置支持的 So 架构，一般选择 <code>armeabi</code> 【该架构为通用性架构，所有平台都可以使用，但是效率并不如专用架构高】</p>
+</li>
+<li><p>【更优方案】对于性能敏感的模块，可以将对应架构的so库都放到 <code>armeabi</code> 目录，根据 CPU 类型加载对应架构的 So</p>
+</li>
+<li><p>其它：</p>
+<ul>
+<li>So 动态下载：将部分可延迟加载的 So 库放到云端，在需要使用时进行动态下发</li>
+<li>插件化</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络优化</title>
+    <url>/2021/01/10/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%85%AD%E3%80%81%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h1><h4 id="优化维度"><a href="#优化维度" class="headerlink" title="优化维度"></a>优化维度</h4><ul>
+<li>流量维度<ul>
+<li>一段时间流量消耗的精准度，网络类型、前台还是后台</li>
+<li>监控线上用户流量消耗均值、异常率（流量消耗过度、请求次数过多、下载的文件过大）</li>
+<li>理想情况下可以完整链路监控（<code>Request</code>、<code>Response</code>），主动上报</li>
+</ul>
+</li>
+<li>质量维度<ul>
+<li>用户体验：请求速度、成功率</li>
+<li>监控相关：请求时长、业务成功率、失败率、Top失败接口</li>
+</ul>
+</li>
+</ul>
+<h4 id="工具选择"><a href="#工具选择" class="headerlink" title="工具选择"></a>工具选择</h4><ul>
+<li><code>Network Profiler</code></li>
+<li>抓包工具：断点功能、<code>Map Local</code> 、弱网环境模拟<ul>
+<li><code>Charles</code>：Java 开发跨平台，mac 使用比较多</li>
+<li><code>Fiddler</code>：Windows 上面使用比较多</li>
+<li><code>Wireshark</code></li>
+<li><code>TcpDump</code></li>
+</ul>
+</li>
+<li><a href="%E5%B7%A5%E5%85%B7/Stetho.md"><code>Stetho</code></a></li>
+</ul>
+<h4 id="精准获取流量消耗"><a href="#精准获取流量消耗" class="headerlink" title="精准获取流量消耗"></a>精准获取流量消耗</h4><h5 id="如何判断流量偏高"><a href="#如何判断流量偏高" class="headerlink" title="如何判断流量偏高"></a>如何判断流量偏高</h5><ul>
+<li>绝对值不看高低</li>
+<li>与竞品对比，相同功能的情况下对比流量消耗</li>
+<li>后台监控到流量超过正常指标</li>
+</ul>
+<h5 id="流量测试方案"><a href="#流量测试方案" class="headerlink" title="流量测试方案"></a>流量测试方案</h5><ul>
+<li><p>线下流量测试方案</p>
+<ul>
+<li>手机设置只有目标应用可以联网</li>
+<li>通过抓包工具限制只允许本APP联网。【注：不能以域名为限定基准，因为有的三方SDK、网页等你并不清楚它们的域名，所有会把本应放行的域名给拦住了】</li>
+<li>上述两种方式可以解决大多数问题，但是线上场景可能抓不全，如有的H5 zip包并不一定是随app版本一起发布</li>
+</ul>
+</li>
+<li><p>线上流量消耗方案</p>
+<ul>
+<li><p>通过 <code>TrafficStats</code> (API8)获取流量：</p>
+<p><strong>【缺点】</strong>无法获取某个时间段的流量消耗</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">TrafficStats.getUidRxBytes()	<span class="comment">// 指定Uid所有网络接收的流量</span></span><br><span class="line">TrafficStats.getUidTxBytes()	<span class="comment">// 指定Uid所有网络发送的流量</span></span><br><span class="line">TrafficStats.getMobileRxBytes() <span class="comment">// 获取手机移动网络接收的流量</span></span><br><span class="line">TrafficStats.getMobileTxBytes() <span class="comment">// 获取手机移动网络发送的流量</span></span><br><span class="line">TrafficStats.getTotalRxBytes()  <span class="comment">// 获取手机所有网络接收的流量</span></span><br><span class="line">TrafficStats.getTotalTxBytes()  <span class="comment">// 获取手机所有网络发送的流量</span></span><br></pre></td></tr></table></figure></li>
+<li><p>通过 <code>NetworkStatsManager</code> (API23)获取流量统计<strong>【推荐】</strong></p>
+<p>可以获取指定时间间隔内的流量信息和不同网络类型下的消耗</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getNetData</span><span class="params">(Context context, <span class="keyword">long</span> startTime, <span class="keyword">long</span> endTime)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> netDataRx = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">long</span> netDataTx = <span class="number">0</span>;</span><br><span class="line">    TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">    NetworkStatsManager networkStatsManager = (NetworkStatsManager) context.getSystemService(Context.NETWORK_STATS_SERVICE);</span><br><span class="line">    NetworkStats networkStats = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        networkStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_MOBILE, telephonyManager.getSubscriberId(), startTime, endTime);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (networkStats == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    NetworkStats.Bucket bucket = <span class="keyword">new</span> NetworkStats.Bucket();</span><br><span class="line">    <span class="keyword">int</span> uid = getUidByPackageName(context);</span><br><span class="line">    <span class="keyword">while</span> (networkStats.hasNextBucket()) &#123;</span><br><span class="line">        networkStats.getNextBucket(bucket);</span><br><span class="line">        <span class="keyword">if</span> (uid == bucket.getUid()) &#123;</span><br><span class="line">            netDataRx += bucket.getRxBytes();</span><br><span class="line">            netDataTx += bucket.getTxBytes();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> netDataRx + netDataTx;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getUidByPackageName</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        PackageManager pm = context.getPackageManager();</span><br><span class="line">        ApplicationInfo ai = pm.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);</span><br><span class="line">        <span class="keyword">return</span> ai.uid;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (PackageManager.NameNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>前后台流量获取方案</p>
+<p>后台定时任务 -&gt; 获取间隔内流量消耗 -&gt; 区分此时的前后台状态保存数据 -&gt; 合适的时机将数据上报</p>
+<p>【注：该方案有一定的误差，但是该误差处于可接受范围】</p>
+</li>
+</ul>
+<h4 id="网络请求流量优化"><a href="#网络请求流量优化" class="headerlink" title="网络请求流量优化"></a>网络请求流量优化</h4><h5 id="流量消耗点"><a href="#流量消耗点" class="headerlink" title="流量消耗点"></a>流量消耗点</h5><ul>
+<li>数据：API、资源包（升级包、H5、RN、flutter）、配置信息</li>
+<li>图片：上传、下载</li>
+<li>监控：APM相关、单点问题</li>
+</ul>
+<h5 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h5><ul>
+<li>服务端返回数据加上过期时间，客户端网络框架做好缓存逻辑，节约流量且能大幅提高数据访问速度</li>
+<li>数据增量更新，给数据加上版本的概念，只传输有变化的数据，例如配置信息、省市区县等并不会经常变化的数据</li>
+<li>请求响应数据压缩，对Post请求Body使用 <code>Gzip</code> 压缩，如需最求更高压缩率可以使用 <code>brotli</code></li>
+<li>请求头压缩，对一些共性请求头可以在服务器中做好MD5的缓存，客户端只需传递该MD5即可，无需每个请求都携带完整的请求头</li>
+<li>图片视频压缩，在无需保存源文件的场景下可以在上传之前本地先行压缩数据</li>
+<li>优化网络发送频率和时机，相应打点信息性能日志等需要合并网络请求减少请求次数，缓存一定量值或 <code>wifi</code> 下才上报</li>
+<li>条件允许的情况下优先显示缩略图和更优编码的格式图片，需要服务端提供多分辨率图片和格式转码的支持</li>
+</ul>
+<h4 id="网络请求质量优化"><a href="#网络请求质量优化" class="headerlink" title="网络请求质量优化"></a>网络请求质量优化</h4><h5 id="质量指标"><a href="#质量指标" class="headerlink" title="质量指标"></a>质量指标</h5><ul>
+<li>网络请求成功率</li>
+<li>网络响应速度</li>
+</ul>
+<h5 id="请求过程"><a href="#请求过程" class="headerlink" title="请求过程"></a>请求过程</h5><ol>
+<li>请求到达运营商 <code>Dns</code> 服务器并解析成对应的 IP 地址</li>
+<li>创建连接，根据 IP 地址找到相应的服务器，发起一个请求</li>
+<li>服务器找到对应的资源原路返回访问的用户</li>
+</ol>
+<h5 id="【优化点】DNS-相关"><a href="#【优化点】DNS-相关" class="headerlink" title="【优化点】DNS 相关"></a>【优化点】DNS 相关</h5><ul>
+<li>问题：DNS被劫持、DNS解析慢</li>
+<li>方案：使用 <code>HttpDNS</code>, 绕过运营上域名解析的过程，不使用传统的DNS协议向53端口发送请求，而是使用HTTP协议向DNS服务器的80端口发送请求</li>
+<li>优势：可以绕过DNS劫持的风险、降低平均访问时长、提高连接成功率</li>
+</ul>
+<h5 id="【优化点】协议版本升级"><a href="#【优化点】协议版本升级" class="headerlink" title="【优化点】协议版本升级"></a>【优化点】协议版本升级</h5><ul>
+<li>1.0：版本TCP连接不复用</li>
+<li>1.1：引入持久连接，但数据通信还是按顺序进行</li>
+<li>2.0：多工，客户端、服务器双向实时通信</li>
+</ul>
+<h5 id="网络请求质量监控"><a href="#网络请求质量监控" class="headerlink" title="网络请求质量监控"></a>网络请求质量监控</h5><p>之所以客户端也需要做网络监控，是因为有的网络请求并没有到服务器就失败了，服务器没法统计</p>
+<ul>
+<li>在相应的网络请求库中增加接口请求耗时、成功率、错误码监听统计</li>
+<li>在图片请求库中增加图片加载的每一步耗时统计</li>
+</ul>
+<h5 id="网络容灾机制"><a href="#网络容灾机制" class="headerlink" title="网络容灾机制"></a>网络容灾机制</h5><ul>
+<li>备用服务器分流</li>
+<li>多次失败后一定时间内不再进行请求，避免雪崩效应【注意：时间间隔各个用户应该是随机的，避免间隔一段时间后还是出现大批量的请求】</li>
+</ul>
+<h5 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h5><ul>
+<li>CND加速、提高带宽、动静态资源分离（更新后清理缓存）</li>
+<li><code>Okhttp</code> 默认单个域名同时请求数量位5个，这是为了防止某个域名请求过多，其它域名的请求没法执行，如果做了域名收敛，只有一个域名，那么可以适当增加单个域名最大同时请求数量</li>
 </ul>
 ]]></content>
       <categories>
@@ -2657,8 +3008,8 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </categories>
       <tags>
         <tag>原理</tag>
-        <tag>线程</tag>
         <tag>Java</tag>
+        <tag>线程</tag>
       </tags>
   </entry>
   <entry>
@@ -2838,8 +3189,8 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
         <category>Java</category>
       </categories>
       <tags>
-        <tag>线程</tag>
         <tag>Java</tag>
+        <tag>线程</tag>
       </tags>
   </entry>
   <entry>
@@ -3386,59 +3737,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>Systrace</title>
-    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
-    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
-<p>结合Android内核的数据，生成Html报告</p>
-<p>API18以上使用，推荐TraceCompat</p>
-<p>需要python2的环境</p>
-</blockquote>
-<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
-<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
-<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
-
-<p>执行命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
-
-<p>举例</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
-
-<p>更多参数含义如下：</p>
-<ul>
-<li>-t：指定统计时间</li>
-<li>shced：cpu调度信息</li>
-<li>gfx：图形信息</li>
-<li>view：视图</li>
-<li>wm：窗口管理</li>
-<li>am：活动管理</li>
-<li>app：应用信息</li>
-<li>webview：webview信息</li>
-<li>-a：指定目标应用程序的包名</li>
-<li>-o：生成的systrace.html文件</li>
-</ul>
-<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
-<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
-<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
-<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
-<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
-<li>wall time是代码执行时间</li>
-<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>轻量级，开销小</li>
-<li>直观反映cpu利用率</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>性能</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>TraceView</title>
     <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/</url>
     <content><![CDATA[<h1 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h1><blockquote>
@@ -3502,6 +3800,59 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <p><code>cpu profiler</code></p>
 <ul>
 <li>可通过 <code>IDE</code> 随时捕捉线程信息</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Systrace</title>
+    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
+    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
+<p>结合Android内核的数据，生成Html报告</p>
+<p>API18以上使用，推荐TraceCompat</p>
+<p>需要python2的环境</p>
+</blockquote>
+<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
+<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
+<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
+
+<p>执行命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
+
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
+
+<p>更多参数含义如下：</p>
+<ul>
+<li>-t：指定统计时间</li>
+<li>shced：cpu调度信息</li>
+<li>gfx：图形信息</li>
+<li>view：视图</li>
+<li>wm：窗口管理</li>
+<li>am：活动管理</li>
+<li>app：应用信息</li>
+<li>webview：webview信息</li>
+<li>-a：指定目标应用程序的包名</li>
+<li>-o：生成的systrace.html文件</li>
+</ul>
+<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
+<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
+<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
+<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
+<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
+<li>wall time是代码执行时间</li>
+<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>轻量级，开销小</li>
+<li>直观反映cpu利用率</li>
 </ul>
 ]]></content>
       <categories>
@@ -3606,10 +3957,13 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>获取帧率</title>
-    <url>/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/</url>
-    <content><![CDATA[<h1 id="获取帧率"><a href="#获取帧率" class="headerlink" title="获取帧率"></a>获取帧率</h1><p>参考：<code>android.view.ViewRootImpl#draw</code> 里的 <code>trackFPS</code></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FpsCounter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL = <span class="number">160L</span>; <span class="comment">//单次计算FPS使用160毫秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL_NANOS = MONITOR_INTERVAL * <span class="number">1000L</span> * <span class="number">1000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MAX_INTERVAL = <span class="number">1000L</span>; <span class="comment">//设置计算fps的单位时间间隔1000ms,即fps/s;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getFPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mStartFrameTime == <span class="number">0</span>) &#123;</span><br><span class="line">                    mStartFrameTime = frameTimeNanos;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">long</span> interval = frameTimeNanos - mStartFrameTime;</span><br><span class="line">                <span class="keyword">if</span> (interval &gt; MONITOR_INTERVAL_NANOS) &#123;</span><br><span class="line">                    <span class="keyword">double</span> fps = (((<span class="keyword">double</span>) (mFrameCount * <span class="number">1000L</span> * <span class="number">1000L</span>)) / interval) * MAX_INTERVAL;</span><br><span class="line">                    mFrameCount = <span class="number">0</span>;</span><br><span class="line">                    mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ++mFrameCount;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Choreographer.getInstance().postFrameCallback(<span class="keyword">this</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>监控所有消息的发送栈和执行时间</title>
+    <url>/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/</url>
+    <content><![CDATA[<h1 id="监控所有消息的发送栈和执行时间"><a href="#监控所有消息的发送栈和执行时间" class="headerlink" title="监控所有消息的发送栈和执行时间"></a>监控所有消息的发送栈和执行时间</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper, Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper, callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sendMessageAtTime</span><span class="params">(Message msg, <span class="keyword">long</span> uptimeMillis)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> send = <span class="keyword">super</span>.sendMessageAtTime(msg, uptimeMillis);</span><br><span class="line">        <span class="keyword">if</span> (send) &#123;</span><br><span class="line">            GetDetailHandlerHelper.getMsgDetail().put(msg, Log.getStackTraceString(<span class="keyword">new</span> Throwable()).replace(<span class="string">&quot;java.lang.Throwable&quot;</span>, <span class="string">&quot;&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> send;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        mStartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">super</span>.dispatchMessage(msg);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (GetDetailHandlerHelper.getMsgDetail().containsKey(msg)</span><br><span class="line">                &amp;&amp; Looper.myLooper() == Looper.getMainLooper()) &#123;</span><br><span class="line">            JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                jsonObject.put(<span class="string">&quot;Msg_Cost&quot;</span>, System.currentTimeMillis() - mStartTime);</span><br><span class="line">                jsonObject.put(<span class="string">&quot;MsgTrace&quot;</span>, msg.getTarget() + <span class="string">&quot; &quot;</span> + GetDetailHandlerHelper.getMsgDetail().get(msg));</span><br><span class="line"></span><br><span class="line">                Log.i(<span class="string">&quot;MsgDetail &quot;</span> , jsonObject.toString());</span><br><span class="line">                GetDetailHandlerHelper.getMsgDetail().remove(msg);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetDetailHandlerHelper</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; sMsgDetail = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; <span class="title">getMsgDetail</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sMsgDetail;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -3620,13 +3974,10 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
-    <title>监控所有消息的发送栈和执行时间</title>
-    <url>/2021/01/06/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E7%9B%91%E6%8E%A7%E6%89%80%E6%9C%89%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81%E6%A0%88%E5%92%8C%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/</url>
-    <content><![CDATA[<h1 id="监控所有消息的发送栈和执行时间"><a href="#监控所有消息的发送栈和执行时间" class="headerlink" title="监控所有消息的发送栈和执行时间"></a>监控所有消息的发送栈和执行时间</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(Looper.myLooper(), callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper, Callback callback)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper, callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sendMessageAtTime</span><span class="params">(Message msg, <span class="keyword">long</span> uptimeMillis)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> send = <span class="keyword">super</span>.sendMessageAtTime(msg, uptimeMillis);</span><br><span class="line">        <span class="keyword">if</span> (send) &#123;</span><br><span class="line">            GetDetailHandlerHelper.getMsgDetail().put(msg, Log.getStackTraceString(<span class="keyword">new</span> Throwable()).replace(<span class="string">&quot;java.lang.Throwable&quot;</span>, <span class="string">&quot;&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> send;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        mStartTime = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">super</span>.dispatchMessage(msg);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (GetDetailHandlerHelper.getMsgDetail().containsKey(msg)</span><br><span class="line">                &amp;&amp; Looper.myLooper() == Looper.getMainLooper()) &#123;</span><br><span class="line">            JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                jsonObject.put(<span class="string">&quot;Msg_Cost&quot;</span>, System.currentTimeMillis() - mStartTime);</span><br><span class="line">                jsonObject.put(<span class="string">&quot;MsgTrace&quot;</span>, msg.getTarget() + <span class="string">&quot; &quot;</span> + GetDetailHandlerHelper.getMsgDetail().get(msg));</span><br><span class="line"></span><br><span class="line">                Log.i(<span class="string">&quot;MsgDetail &quot;</span> , jsonObject.toString());</span><br><span class="line">                GetDetailHandlerHelper.getMsgDetail().remove(msg);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetDetailHandlerHelper</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; sMsgDetail = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ConcurrentHashMap&lt;Message, String&gt; <span class="title">getMsgDetail</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sMsgDetail;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>获取帧率</title>
+    <url>/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/</url>
+    <content><![CDATA[<h1 id="获取帧率"><a href="#获取帧率" class="headerlink" title="获取帧率"></a>获取帧率</h1><p>参考：<code>android.view.ViewRootImpl#draw</code> 里的 <code>trackFPS</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FpsCounter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL = <span class="number">160L</span>; <span class="comment">//单次计算FPS使用160毫秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL_NANOS = MONITOR_INTERVAL * <span class="number">1000L</span> * <span class="number">1000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MAX_INTERVAL = <span class="number">1000L</span>; <span class="comment">//设置计算fps的单位时间间隔1000ms,即fps/s;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getFPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mStartFrameTime == <span class="number">0</span>) &#123;</span><br><span class="line">                    mStartFrameTime = frameTimeNanos;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">long</span> interval = frameTimeNanos - mStartFrameTime;</span><br><span class="line">                <span class="keyword">if</span> (interval &gt; MONITOR_INTERVAL_NANOS) &#123;</span><br><span class="line">                    <span class="keyword">double</span> fps = (((<span class="keyword">double</span>) (mFrameCount * <span class="number">1000L</span> * <span class="number">1000L</span>)) / interval) * MAX_INTERVAL;</span><br><span class="line">                    mFrameCount = <span class="number">0</span>;</span><br><span class="line">                    mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ++mFrameCount;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Choreographer.getInstance().postFrameCallback(<span class="keyword">this</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Android</category>

@@ -187,6 +187,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/" class="post-title-link" itemprop="url">获取帧率</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-05 10:59:01" itemprop="dateCreated datePublished" datetime="2021-01-05T10:59:01+08:00">2021-01-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="获取帧率"><a href="#获取帧率" class="headerlink" title="获取帧率"></a>获取帧率</h1><p>参考：<code>android.view.ViewRootImpl#draw</code> 里的 <code>trackFPS</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FpsCounter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL = <span class="number">160L</span>; <span class="comment">//单次计算FPS使用160毫秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MONITOR_INTERVAL_NANOS = MONITOR_INTERVAL * <span class="number">1000L</span> * <span class="number">1000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> MAX_INTERVAL = <span class="number">1000L</span>; <span class="comment">//设置计算fps的单位时间间隔1000ms,即fps/s;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getFPS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Choreographer.getInstance().postFrameCallback(<span class="keyword">new</span> Choreographer.FrameCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFrame</span><span class="params">(<span class="keyword">long</span> frameTimeNanos)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mStartFrameTime == <span class="number">0</span>) &#123;</span><br><span class="line">                    mStartFrameTime = frameTimeNanos;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">long</span> interval = frameTimeNanos - mStartFrameTime;</span><br><span class="line">                <span class="keyword">if</span> (interval &gt; MONITOR_INTERVAL_NANOS) &#123;</span><br><span class="line">                    <span class="keyword">double</span> fps = (((<span class="keyword">double</span>) (mFrameCount * <span class="number">1000L</span> * <span class="number">1000L</span>)) / interval) * MAX_INTERVAL;</span><br><span class="line">                    mFrameCount = <span class="number">0</span>;</span><br><span class="line">                    mStartFrameTime = <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    ++mFrameCount;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Choreographer.getInstance().postFrameCallback(<span class="keyword">this</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E5%B8%A7%E7%8E%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/31/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/31/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">内存优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-31 20:27:27" itemprop="dateCreated datePublished" datetime="2020-12-31T20:27:27+08:00">2020-12-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>内存优化 意义：减少因为频繁GC导致的卡顿，减少因为内存占用应用存活率降低 内存问题 内存抖动：表现为内存锯齿状，频繁GC，导致卡顿 内存泄露：可用内存减少，频繁GC 内存溢出：OOM、程序异常 ...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/31/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%BA%8C%E3%80%81%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">dump 内存的几种方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-30 21:12:21" itemprop="dateCreated datePublished" datetime="2020-12-30T21:12:21+08:00">2020-12-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>dump 内存的几种方式 获取内存文件 ...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/30/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/dump%20%E5%86%85%E5%AD%98%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BenBen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BenBen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/" class="post-title-link" itemprop="url">Leakcanary</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 20:27:27" itemprop="dateCreated datePublished" datetime="2020-12-29T20:27:27+08:00">2020-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如何初始化 通过ContentProvider自动初始化并注册相应的默认监控类型 默认的监控类型有： 1. Activity：在onDestory时观察 2. Fragment：在onViewDestory时观察内部View，在onDestory时观察Fragment 3. RootView：在Detached时观察 4. Service：在onDestory时观察 ...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/29/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Leakcanary/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/28/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Memory%20Analyzer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -627,302 +925,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/" class="post-title-link" itemprop="url">TraceView</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-26 11:27:33" itemprop="dateCreated datePublished" datetime="2020-12-26T11:27:33+08:00">2020-12-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>图形的形式展示执行时间、调用栈等 信息全面，包含所有线程 ...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6/" class="post-title-link" itemprop="url">获取方法耗时</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-25 12:27:11" itemprop="dateCreated datePublished" datetime="2020-12-25T12:27:11+08:00">2020-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>获取方法耗时 手动打点 java long start = System.currentTimeMillis() ...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">启动时间测量方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-25 11:23:36" itemprop="dateCreated datePublished" datetime="2020-12-25T11:23:36+08:00">2020-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>获取启动时间的方式 方式一：`adb` 命令 adb shell am start -W  packagename/首屏Activity ...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/25/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E6%8A%80%E5%B7%A7/%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E6%B5%8B%E9%87%8F%E6%96%B9%E5%BC%8F/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yefawei.github.io/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/AOP-Lancet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="BenBen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BenBen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/AOP-Lancet/" class="post-title-link" itemprop="url">AOP-Lancet</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-24 23:51:55" itemprop="dateCreated datePublished" datetime="2020-12-24T23:51:55+08:00">2020-12-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>轻量级 Android AOP 框架 具有编译速度快，支持增量编译的特点 ...</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/24/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/AOP-Lancet/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -992,7 +994,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
