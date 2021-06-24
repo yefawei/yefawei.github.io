@@ -1699,6 +1699,29 @@ DESCRIPTION
       </tags>
   </entry>
   <entry>
+    <title>SurfaceFlinger</title>
+    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
+    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
+<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
+
+<p>输出的信息非常多，这里只关注三个信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
+<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
+]]></content>
+      <categories>
+        <category>ADB</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>ADB</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gfxinfo 测试UI性能</title>
     <url>/2020/12/20/Android/ADB/gfxinfo%20%E6%B5%8B%E8%AF%95UI%E6%80%A7%E8%83%BD/</url>
     <content><![CDATA[<h1 id="gfxinfo-测试UI性能"><a href="#gfxinfo-测试UI性能" class="headerlink" title="gfxinfo 测试UI性能"></a>gfxinfo 测试UI性能</h1><blockquote>
@@ -1786,29 +1809,6 @@ DESCRIPTION
       <tags>
         <tag>Android</tag>
         <tag>ADB</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SurfaceFlinger</title>
-    <url>/2020/12/20/Android/ADB/SurfaceFlinger/</url>
-    <content><![CDATA[<h1 id="SurfaceFlinger"><a href="#SurfaceFlinger" class="headerlink" title="SurfaceFlinger"></a>SurfaceFlinger</h1><blockquote>
-<p>在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，通过 SurfaceFlinger 查看应用缓冲区信息</p>
-</blockquote>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">adb shell dumpsys SurfaceFlinger</span><br></pre></td></tr></table></figure>
-
-<p>输出的信息非常多，这里只关注三个信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......</span><br><span class="line">&#x2F;&#x2F; app 信息</span><br><span class="line">* Layer 0x74dab40d70 (com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0)</span><br><span class="line">      isSecure&#x3D;false geomUsesSourceCrop&#x3D;true geomBufferUsesDisplayInverseTransform&#x3D;false geomLayerTransform 0x00000000 (ROT_0 ) 0x00 (IDENTITY )</span><br><span class="line">    1.0000  0.0000  0.0000</span><br><span class="line">    0.0000  1.0000  0.0000</span><br><span class="line">    0.0000  0.0000  1.0000</span><br><span class="line"></span><br><span class="line">      geomBufferSize&#x3D;[0 0 1080 2160] geomContentCrop&#x3D;[0 0 1080 2160] geomCrop&#x3D;[0 0 1080 2160] geomBufferTransform&#x3D;0</span><br><span class="line">        Region transparentRegionHint (this&#x3D;0x742ab46c20, count&#x3D;1)</span><br><span class="line">    [  0,   0,   0,   0]</span><br><span class="line">      geomLayerBounds&#x3D;[0.000000 0.000000 1080.000000 2160.000000]       shadowRadius&#x3D;0.000000</span><br><span class="line">      blend&#x3D;NONE (1) alpha&#x3D;1.000000 backgroundBlurRadius&#x3D;0</span><br><span class="line">      type&#x3D;1 appId&#x3D;10165 composition type&#x3D;DEVICE (2)</span><br><span class="line">      buffer: slot&#x3D;0 buffer&#x3D;0x73eab35450</span><br><span class="line">      sideband stream&#x3D;0x0</span><br><span class="line">      color&#x3D;[0.000000 0.000000 0.000000]</span><br><span class="line">      isOpaque&#x3D;true hasProtectedContent&#x3D;false isColorspaceAgnostic&#x3D;false dataspace&#x3D;UNKNOWN (0) hdr metadata types&#x3D;0 colorTransform&#x3D;[[1.000,0.000,0.000,0.000][0.000,1.000,0.000,0.000][0.000,0.000,1.000,0.000][</span><br><span class="line">0.000,0.000,0.000,1.000]]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">Slots:</span><br><span class="line">  &#x2F;&#x2F; 需要            &#x2F;&#x2F; 表明是否使用的状态 &#x2F;&#x2F; 对象地址 &#x2F;&#x2F; 当前负责第几帧 &#x2F;&#x2F; 屏幕分辨率</span><br><span class="line"> &gt;[01:0x73eab519b0] state&#x3D;ACQUIRED 0x73aab35bd0 frame&#x3D;3094 [1080x2160:1088,  1]</span><br><span class="line">  [00:0x73eab4eb90] state&#x3D;FREE     0x73aab46d30 frame&#x3D;3093 [1080x2160:1088,  1]</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">&#x2F;&#x2F; 地址       &#x2F;&#x2F; 缓冲区大小</span><br><span class="line">0x73aab31f10:    0.25 KiB |    1 (  64) x    1 |    1 |        1 | 0x300 | placeholder</span><br><span class="line">0x73aab35bd0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab41180: 9720.00 KiB | 1148 (1152) x 2160 |    1 |        2 | 0x10000900 | com.android.systemui.ImageWallpaper#0</span><br><span class="line">0x73aab44ed0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab45bc0:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab46310: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab46d30: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x1a00 | FramebufferSurface</span><br><span class="line">0x73aab48560:  280.50 KiB | 1080 (1088) x   66 |    1 |        1 | 0x10000900 | StatusBar#0</span><br><span class="line">0x73aab49520:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab497f0:  561.00 KiB | 1080 (1088) x  132 |    1 |        1 | 0x10000900 | NavigationBar0#0</span><br><span class="line">0x73aab4a7b0:   20.50 KiB |   27 (  64) x   82 |    1 |        1 | 0x203 | RegionSamplingThread</span><br><span class="line">0x73aab4d8a0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br><span class="line">0x73aab4ddb0: 9180.00 KiB | 1080 (1088) x 2160 |    1 |        1 | 0x10000900 | com.benben.viewpractice&#x2F;com.benben.viewpractice.MainActivity#0</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 <code>com.benben.viewpractice</code> 的所有 Buffer 都没有使用，所以内存占用并没有统计进 app，如果有使用到，会在退后台，灭屏等场景进行部分回收与释放</p>
-<p>可以看到，一个缓冲 Buffer 占用内存 9M 多，分辨率越大单个 Buffer 占用越大，如果有使用其它 Surface，如 <code>SurfaceView</code> 或 <code>TextureView</code> 则会更大</p>
-]]></content>
-      <categories>
-        <category>ADB</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>ADB</tag>
-        <tag>性能</tag>
       </tags>
   </entry>
   <entry>
@@ -2115,6 +2115,110 @@ DESCRIPTION
 <ul>
 <li>如果只是单纯的做动画，不动态修改 View 的内容，那么性能表现为 ：Hardware Layer &gt;= Software Layer &gt; Normal Layer</li>
 <li>如果做动画同时动态修改 View 的内容，那么性能表现为 ：Normal Layer &gt; Software Layer = Hardware Layer</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>稳定性优化</title>
+    <url>/2021/01/13/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B9%9D%E3%80%81%E7%A8%B3%E5%AE%9A%E6%80%A7%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="稳定性优化"><a href="#稳定性优化" class="headerlink" title="稳定性优化"></a>稳定性优化</h1><h4 id="Crash-相关指标"><a href="#Crash-相关指标" class="headerlink" title="Crash 相关指标"></a>Crash 相关指标</h4><ul>
+<li>UV Crash、PV Crash 率<ul>
+<li>UV Crash 率：一段时间内所有用户崩溃的占比</li>
+<li>PV Crash 率：一段时间内所有启动次数崩溃的占比</li>
+</ul>
+</li>
+<li>Java、Native Crash 率</li>
+<li>启动、重点流程 Crash 率【最影响用户的 Crash】</li>
+<li>增量、存量 Crash 率</li>
+</ul>
+<h4 id="Crash-率评价"><a href="#Crash-率评价" class="headerlink" title="Crash 率评价"></a>Crash 率评价</h4><ul>
+<li>必须在千分之二以下</li>
+<li>万分位为优秀</li>
+</ul>
+<h4 id="Crash-关键问题"><a href="#Crash-关键问题" class="headerlink" title="Crash 关键问题"></a>Crash 关键问题</h4><ul>
+<li>尽可能还原 Crash 现场<ul>
+<li>堆栈、设备、OS版本、进程、线程名、Logcat</li>
+<li>前后台、使用时长、App版本、小版本、渠道</li>
+<li>CPU 架构、内存信息、线程数、资源包信息、行为日志</li>
+</ul>
+</li>
+<li>APM 后台聚合展示<ul>
+<li>Crash 现场信息</li>
+<li>Crash Top 机型、OS 版本、分布版本、区域</li>
+<li>Crash 起始版本、上报趋势、是否新增、持续、量级</li>
+</ul>
+</li>
+</ul>
+<h4 id="Crash-率治理方案"><a href="#Crash-率治理方案" class="headerlink" title="Crash 率治理方案"></a>Crash 率治理方案</h4><ul>
+<li>解决线上常规 Crash</li>
+<li>系统级 Crash 尝试 Hook 绕过</li>
+<li>疑难 Crash 重点突破、更换方案</li>
+</ul>
+<h4 id="业务高可用"><a href="#业务高可用" class="headerlink" title="业务高可用"></a>业务高可用</h4><ul>
+<li>异常业务流程监控<ul>
+<li>Catch 代码块：确实不会崩溃，但是业务不能正常执行，同样需要上传该 Catch 到的信息</li>
+<li>异常逻辑：本该正常流程的逻辑但是走到了另一条（else）分支，同样需要上传该异常逻辑的信息</li>
+</ul>
+</li>
+<li>单点问题<ul>
+<li>需要针对性分析的特定问题，全量日志回捞，专项分析</li>
+</ul>
+</li>
+<li>业务不可用兜底策略<ul>
+<li>功能支持配置，不可用时通过配置中心调整功能开关</li>
+<li>组件化路由分发中心进行拦截，不可用时不跳转或者跳转到统一的异常界面，如果网页H5有相同功能且支持手机端还可跳转到该H5</li>
+</ul>
+</li>
+</ul>
+<h4 id="移动端容灾方案"><a href="#移动端容灾方案" class="headerlink" title="移动端容灾方案"></a>移动端容灾方案</h4><p>移动端出现异常处理方案</p>
+<ul>
+<li>传统流程：用户反馈 -&gt; 重新打包 -&gt; 渠道更新 【这是不可接受的】</li>
+<li>动态热修复<ul>
+<li>要做到热修复能力可监控、灰度、回滚、清除的能力</li>
+<li>要做到推拉结合、多场景调用，保证下发率</li>
+</ul>
+</li>
+<li>安全模式<ul>
+<li>根据 Crash 信息自动修复，多次启动失败重置 App</li>
+<li>严重 Bug 可以考虑使用阻塞性热修复，确保修复包正常下发了，才允许进入主界面</li>
+</ul>
+</li>
+</ul>
+<p>容灾方案实现：功能开关 -&gt; 统跳中心 -&gt; 动态修复 -&gt; 安全模式</p>
+<h4 id="全流程-Crash-长效治理"><a href="#全流程-Crash-长效治理" class="headerlink" title="全流程 Crash 长效治理"></a>全流程 Crash 长效治理</h4><ul>
+<li>开发阶段<ul>
+<li>统一编码规范、增强编码功底、技术评审、<code>CodeReview</code> 机制</li>
+<li>架构优化：能力收敛、统一容错，采取统一的路由跳转、统一网络库等基础功能，做到基础功能统一监控和容错</li>
+</ul>
+</li>
+<li>测试阶段<ul>
+<li>功能测试、自动化测试、回归测试、覆盖安装等</li>
+<li>特殊场景机型等边界测试</li>
+</ul>
+</li>
+<li>合码阶段<ul>
+<li>编译检测、静态扫描、CI门禁</li>
+<li>预编译流程、主流程自动回归，通过了才允许合入</li>
+</ul>
+</li>
+<li>发布阶段<ul>
+<li>多轮灰度、由小变多，争取以最小代价暴露最多问题</li>
+<li>分场景、维度全面覆盖，如针对某个地域或某个机型等更有可能出现问题的用户进行下发</li>
+</ul>
+</li>
+<li>运维阶段【正式发版】<ul>
+<li>依靠 APM 的灵敏监控</li>
+<li>针对异常情况考虑回滚、降级处理</li>
+<li>也可热修或使用预留的容灾方案</li>
 </ul>
 </li>
 </ul>
@@ -2506,6 +2610,104 @@ DESCRIPTION
 <h5 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h5><ul>
 <li>CND加速、提高带宽、动静态资源分离（更新后清理缓存）</li>
 <li><code>Okhttp</code> 默认单个域名同时请求数量位5个，这是为了防止某个域名请求过多，其它域名的请求没法执行，如果做了域名收敛，只有一个域名，那么可以适当增加单个域名最大同时请求数量</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>专项优化</title>
+    <url>/2021/01/15/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%8D%81%E3%80%81%E4%B8%93%E9%A1%B9%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="专项优化"><a href="#专项优化" class="headerlink" title="专项优化"></a>专项优化</h1><h4 id="列表页卡顿优化"><a href="#列表页卡顿优化" class="headerlink" title="列表页卡顿优化"></a>列表页卡顿优化</h4><ul>
+<li><p>常规方案</p>
+<ul>
+<li>ListView 复用View</li>
+<li>在 <code>getView</code> 相关方法中有耗时操作，要采用异步处理</li>
+</ul>
+</li>
+<li><p><a href="/2020/11/15/Android/RecycleView/">RecycleView 优化</a></p>
+</li>
+<li><p><a href="/2021/01/05/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E4%B8%89%E3%80%81%E5%B8%83%E5%B1%80%E4%BC%98%E5%8C%96/">布局相关</a></p>
+<ul>
+<li>减少布局层级、避免过度绘制</li>
+<li>采用异步 inflate 或者 X2C</li>
+</ul>
+</li>
+<li><p>图片相关</p>
+<ul>
+<li>避免过大尺寸：GC 频繁、内存抖动</li>
+<li>滑动时取消加载</li>
+</ul>
+</li>
+<li><p>合理使用线程池，避免主线程被过度抢占</p>
+</li>
+<li><p>TextView 优化</p>
+<p>原因：面对复杂文本性能不佳，BoringLayout 单行、StaticLayout 多行、DynamicLayout 可编辑</p>
+<ul>
+<li><p>展示类使用 StaticLayout 即可，性能优于 DynamicLayout</p>
+</li>
+<li><p>异步创建 StaticLayout</p>
+</li>
+<li><p>也可使用 <a href="https://github.com/facebook/TextLayoutBuilder">TextLayoutBuilder</a> 替换原 TextView</p>
+</li>
+<li><p>也还可以使用 google 在 Android 9.0 提供的 <code>PrecomputedText</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Future&lt;PrecomputedTextCompat&gt; future = PrecomputedTextCompat.getTextFuture(</span><br><span class="line">                “text”, textView.getTextMetricsParamsCompat(), <span class="keyword">null</span>)；</span><br><span class="line">textView.setTextFuture(future);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>要留意字符串的拼接【备注：貌似编译器会自动转成 <code>StringBuilder</code> 进行 <code>append</code>】</li>
+</ul>
+<h4 id="存储优化"><a href="#存储优化" class="headerlink" title="存储优化"></a>存储优化</h4><ul>
+<li><p>常规方案</p>
+<ul>
+<li>确保 IO 操作发生在子线程</li>
+</ul>
+</li>
+<li><p>SharePreferences 相关</p>
+<ul>
+<li>加载慢：初始化时会加载整个文件到内存中，虽然加载放在了异步线程，但是内部加锁，同样有 UI 线程等待异步线程的情况</li>
+<li>全量写入：每次改动都会导致整体写入，无论改动的内容有多少</li>
+<li>卡顿：Android 系统补偿策略导致，为了保证数据不会丢失，如在界面销毁时会进行一次全量保存，如果该操作执行时间较长，有可能出现卡顿、ANR 的情况</li>
+<li>【一定要使用时】调优：尽可能的存储小文件，按业务区分模块存储来拆分文件，key可以考虑使用数值来替换长字符串来减少文件大小</li>
+<li>【替换方案】MMKV：支持跨进程，通过mmap和文件锁保证数据完整性，支持增量写入、使用 Protocol Buffer，性能和安全性都优于SP</li>
+</ul>
+</li>
+<li><p>日志存储优化</p>
+<p>要做到不影响性能、日志不丢失、安全</p>
+<ul>
+<li>常规实现一：每产生一个日志都写一遍到磁盘中，每次都会有IO产生，不丢失有性能损耗</li>
+<li>常规实现二：通过 StringBuilder 开辟一个内存，先存 buffer，再存文件，性能较优有丢日志可能</li>
+<li>推荐方案：使用 mmap，内存映射文件，参考 <a href="https://github.com/orhanobut/logger">logger</a>、<a href="https://github.com/elvishew/xLog">Xlog</a>、<a href="https://github.com/Meituan-Dianping/Logan">Logan</a></li>
+</ul>
+</li>
+<li><p>其它</p>
+<ul>
+<li>常用数据缓存，避免多次读取</li>
+<li>合理设置缓冲区Buffer大小：4-8KB</li>
+</ul>
+</li>
+</ul>
+<h4 id="WebView-异常监控"><a href="#WebView-异常监控" class="headerlink" title="WebView 异常监控"></a>WebView 异常监控</h4><blockquote>
+<p>WebView 版本众多以及对接的业务方众多，出现异常的概率比较大</p>
+</blockquote>
+<ul>
+<li><p>资源释放</p>
+<p>WebView 占用资源问题，在应用中只要使用一次WebView，资源就不能完全释放掉而占用内存。</p>
+<p>解决方案：</p>
+<p>为 WebView 开启一个独立的进程，使用 <code>AIDL</code> 通信，WebView 所在进程根据业务的需要在合适的时机进行销毁，达到正常释放内存的目的</p>
+</li>
+<li><p>异常监控思路</p>
+<ul>
+<li><p>监控屏幕是否白屏，白屏则有问题，所有像素都是同一颜色的则认为时白屏</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断Bitmap是否都是一个颜色</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> bitmap</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isBlank</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">	Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);</span><br><span class="line">	Canvas canvas = <span class="keyword">new</span> Canvas(bitmap);</span><br><span class="line">	view.draw(canvas);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (bitmap == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> width = bitmap.getWidth();</span><br><span class="line">    <span class="keyword">int</span> height = bitmap.getHeight();</span><br><span class="line">    <span class="keyword">if</span> (width &gt; <span class="number">0</span> &amp;&amp; height &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> originPix = bitmap.getPixel(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span>[] target = <span class="keyword">new</span> <span class="keyword">int</span>[width];</span><br><span class="line">        Arrays.fill(target, originPix);</span><br><span class="line">        <span class="keyword">int</span>[] source = <span class="keyword">new</span> <span class="keyword">int</span>[width];</span><br><span class="line">        <span class="keyword">boolean</span> isWhiteScreen = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> col = <span class="number">0</span>; col &lt; height; col++) &#123;</span><br><span class="line">            bitmap.getPixels(source, <span class="number">0</span>, width, <span class="number">0</span>, col, width, <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (!Arrays.equals(target, source)) &#123;</span><br><span class="line">                isWhiteScreen = <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> isWhiteScreen;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
 </ul>
 ]]></content>
       <categories>
@@ -3737,6 +3939,59 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
       </tags>
   </entry>
   <entry>
+    <title>Systrace</title>
+    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
+    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
+<p>结合Android内核的数据，生成Html报告</p>
+<p>API18以上使用，推荐TraceCompat</p>
+<p>需要python2的环境</p>
+</blockquote>
+<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
+<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
+<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
+
+<p>执行命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
+
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
+
+<p>更多参数含义如下：</p>
+<ul>
+<li>-t：指定统计时间</li>
+<li>shced：cpu调度信息</li>
+<li>gfx：图形信息</li>
+<li>view：视图</li>
+<li>wm：窗口管理</li>
+<li>am：活动管理</li>
+<li>app：应用信息</li>
+<li>webview：webview信息</li>
+<li>-a：指定目标应用程序的包名</li>
+<li>-o：生成的systrace.html文件</li>
+</ul>
+<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
+<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
+<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
+<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
+<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
+<li>wall time是代码执行时间</li>
+<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>轻量级，开销小</li>
+<li>直观反映cpu利用率</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+        <tag>性能</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TraceView</title>
     <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/TraceView/</url>
     <content><![CDATA[<h1 id="TraceView"><a href="#TraceView" class="headerlink" title="TraceView"></a>TraceView</h1><blockquote>
@@ -3800,59 +4055,6 @@ getDeclaredAnnotations:返回直接存在于此元素上的所有注解
 <p><code>cpu profiler</code></p>
 <ul>
 <li>可通过 <code>IDE</code> 随时捕捉线程信息</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-      <tags>
-        <tag>Android</tag>
-        <tag>性能</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Systrace</title>
-    <url>/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/</url>
-    <content><![CDATA[<h1 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h1><blockquote>
-<p>结合Android内核的数据，生成Html报告</p>
-<p>API18以上使用，推荐TraceCompat</p>
-<p>需要python2的环境</p>
-</blockquote>
-<p>参考官方网站：<a href="https://developer.android.com/topic/performance/tracing/command-line"><code>https://developer.android.com/topic/performance/tracing/command-line</code></a></p>
-<p>在Android 9上还可以使用系统内置的跟踪方法：<code>https://developer.android.com/topic/performance/tracing/on-device</code></p>
-<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开始，参数为tag标记</span></span><br><span class="line">TraceCompat.beginSection(<span class="string">&quot;name&quot;</span>);</span><br><span class="line"><span class="comment">// do something ....</span></span><br><span class="line"><span class="comment">// 结束</span></span><br><span class="line">TraceCompat.endSection();</span><br></pre></td></tr></table></figure>
-
-<p>执行命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python [sdk路径]&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py [option] [categories]</span><br></pre></td></tr></table></figure>
-
-<p>举例</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python systrace.py -o mynewtrace.html sched freq idle am wm gfx view binder_driver hal dalvik camera input res</span><br></pre></td></tr></table></figure>
-
-<p>更多参数含义如下：</p>
-<ul>
-<li>-t：指定统计时间</li>
-<li>shced：cpu调度信息</li>
-<li>gfx：图形信息</li>
-<li>view：视图</li>
-<li>wm：窗口管理</li>
-<li>am：活动管理</li>
-<li>app：应用信息</li>
-<li>webview：webview信息</li>
-<li>-a：指定目标应用程序的包名</li>
-<li>-o：生成的systrace.html文件</li>
-</ul>
-<p>生成的文件需要通过<code>Chrome</code>浏览器进行加载</p>
-<p>在地址栏输入 <code>chrome://tracing</code> 命令，通过 <code>load</code> 载入</p>
-<p><img src="/2020/12/26/Android/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E4%BC%98%E5%8C%96/%E5%B7%A5%E5%85%B7/Systrace/Systrace.png"></p>
-<h4 id="UI快捷键"><a href="#UI快捷键" class="headerlink" title="UI快捷键"></a>UI快捷键</h4><p>W：放大<br>S：缩小<br>A：左移<br>D：右移<br>M：选定函数的耗时时间范围</p>
-<h4 id="cputime与walltime区别"><a href="#cputime与walltime区别" class="headerlink" title="cputime与walltime区别"></a>cputime与walltime区别</h4><ul>
-<li>wall time是代码执行时间</li>
-<li>cpu time时代码消耗cpu的时间（优化方向，应尽可能跑满cpu）</li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>轻量级，开销小</li>
-<li>直观反映cpu利用率</li>
 </ul>
 ]]></content>
       <categories>
